@@ -6,7 +6,7 @@ import { Page } from '@/components/Page.tsx';
 
 import tonSvg from './ton.svg';
 
-export const IndexPage: FC = () => {
+export const ReactjsTemplate: FC = () => {
   return (
     <Page back={false}>
       <List>
