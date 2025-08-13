@@ -1,44 +1,27 @@
-.content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.wallet-content {
   margin-bottom: 20px;
-}
 
-.card {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 15px 20px;
-  width: 100%;
-  justify-content: space-between;
-  border: 0.6px solid rgba(255, 255, 255, 0.1);
-}
+  .wallet-info {
+    gap: 8px;
+  }
 
-.row {
-  display: flex;
-  align-items: center;
-}
+  .wallet-info svg {
+    width: 20px;
+    height: 20px;
+    fill: #ffffff;
+  }
 
-.wallet-info {
-  gap: 8px;
-}
+  .wallet-address {
+    color: #b8b8b8 !important;
+    font-size: 14px;
+    font-weight: 400;
+  }
 
-.wallet-info svg {
-  width: 20px;
-  height: 20px;
-  fill: #ffffff;
-}
-
-.wallet-address {
-  color: #b8b8b8 !important;
-  font-size: 14px;
-  font-weight: 400;
-}
-
-.muted {
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 500;
+  .wallet {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 500;
+  }
 }
 
 #ton-connect-button button {

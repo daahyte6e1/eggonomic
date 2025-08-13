@@ -3,3 +3,27 @@ body {
   padding: 20px;
   margin: 0;
 }
+
+.card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 15px 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border: 0.6px solid rgba(255, 255, 255, 0.1);
+}
+.row {
+  display: flex;
+  align-items: center;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
