@@ -17,8 +17,9 @@ export interface UserServiceResponse {
 }
 
 export class UserService {
-  static async initializeUser(/*initDataRaw: string*/): Promise<UserInfo> {
+  static async initializeUser(initDataRaw: string): Promise<UserInfo> {
     try {
+      console.log(initDataRaw)
       // const jsondata = JSON.stringify({ initData: initDataRaw });
       // const res = await APIManager.post<UserServiceResponse>('/eggs/api/initdata', jsondata);
       //
