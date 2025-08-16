@@ -20,9 +20,9 @@ export const Home: FC = () => {
 
   useEffect(() => {
     if (initDataRaw) {
-      initializeUser(initDataRaw);
+      void initializeUser(initDataRaw);
     }
-  }, [initDataRaw]);
+  }, [initDataRaw, initializeUser]);
 
   return (
     <Page back={false}>

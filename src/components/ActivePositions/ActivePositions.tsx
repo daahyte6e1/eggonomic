@@ -1,37 +1,8 @@
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
 import './ActivePositions.scss'
 
 import {GiftCard} from "@/components/GiftCard/GiftCard";
-import { APIManager } from '@/helpers/APIManager';
-import { useUserData } from '@/hooks/useUserData';
-
-interface NFTData {
-  amount_to_checkin: number;
-  apr: number;
-  count: number;
-  dop_points: number;
-  gift_id: number;
-  id: number;
-  last_claim_unix: number;
-  last_update_points_unix: number;
-  model: string;
-  model_rare: string;
-  name: string;
-  need_checkin: boolean;
-  next_check_in: number;
-  pic: string;
-  points_today: number;
-  points_total: number;
-  unix_cycle: number;
-  user_uid: number;
-}
-
-interface APIResponse {
-  nfts: NFTData[];
-  result: boolean;
-  stake_points_count: number;
-}
+import { useUserContext } from '@/context/UserContext';
 
 interface GiftData {
   collection: string;
@@ -39,54 +10,28 @@ interface GiftData {
   count: number;
   speed: number;
   factor: number;
+  pic: string;
 }
 
 export const ActivePositions: FC = () => {
-  const { key, isAuthenticated } = useUserData();
-  const [giftsData, setGiftsData] = useState<GiftData[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { userInfo, nftsData, isLoading, error, isAuthenticated } = useUserContext();
 
-  useEffect(() => {
-    const loadStakes = async () => {
-      if (!isAuthenticated || !key) {
-        return;
-      }
-
-      try {
-        setIsLoading(true);
-        setError(null);
-        
-        const response: APIResponse = await APIManager.get<APIResponse>('/eggs/api/load_stakes', key);
-        
-        if (response.result && response.nfts) {
-          const transformedData: GiftData[] = response.nfts.map(nft => ({
-            collection: nft.name,
-            model: nft.model,
-            count: nft.count,
-            speed: 24, // пока оставляем 24
-            factor: 4, // пока оставляем 4
-          }));
-          
-          setGiftsData(transformedData);
-        }
-      } catch (err) {
-        console.error('Ошибка при загрузке активных позиций:', err);
-        setError('Не удалось загрузить активные позиции');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadStakes();
-  }, [isAuthenticated, key]);
+  // Трансформируем NFT данные в формат GiftData
+  const giftsData: GiftData[] = nftsData.map(nft => ({
+    collection: nft.name,
+    model: nft.model,
+    count: nft.count,
+    speed: 24, // пока оставляем 24
+    factor: 4, // пока оставляем 4
+    pic: nft.pic,
+  }));
 
   if (!isAuthenticated) {
     return (
       <div className="content position-content">
         <div className="card column">
           <span>Для просмотра активных позиций необходимо авторизоваться</span>
-          <div>key: {key}</div>
+          <div>key: {userInfo.key}</div>
           <div>isAuthenticated: {isAuthenticated}</div>
         </div>
       </div>

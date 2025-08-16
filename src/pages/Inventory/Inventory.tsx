@@ -51,16 +51,16 @@ export const Inventory: FC = () => {
         setError(null);
         
         const data = await APIManager.getTextable(`/eggs/api/inventory/${userInfo.key}`, initDataRaw);
-        setGifts(Array.isArray(data) ? data : []);
-      } catch (err) {
-        console.error('Ошибка при загрузке инвентаря:', err);
+        setGifts(Array.isArray(data) ? (data as Gift[]) : []);
+      } catch {
+        // console.error('Ошибка при загрузке инвентаря:', err);
         setError('Не удалось загрузить инвентарь');
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchInventory();
+    void fetchInventory();
   }, [initDataRaw, userInfo.key]);
 
   const formatDate = (unix: number) => {

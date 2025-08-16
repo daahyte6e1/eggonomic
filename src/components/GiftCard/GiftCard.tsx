@@ -11,6 +11,7 @@ interface GiftCardProps {
     count: number;
     speed: number;
     factor: number;
+    pic: string;
   };
 }
 
@@ -18,7 +19,8 @@ export const GiftCard: FC<GiftCardProps> = ({giftData}) => {
   return (
     <div className="gift-card row">
       <img
-        src={publicUrl('/koshchei.png')}
+        src={publicUrl(giftData.pic)}
+        alt={`${giftData.collection} ${giftData.model}`}
       />
       <div className="description column">
         <span>

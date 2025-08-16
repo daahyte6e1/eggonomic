@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { UserService } from '@/services/UserService';
 import { APIManager } from '@/helpers/APIManager';
 
@@ -8,15 +8,46 @@ interface UserInfo {
   uf_wallet_address: string | null;
 }
 
+interface NFTData {
+  amount_to_checkin: number;
+  apr: number;
+  count: number;
+  dop_points: number;
+  gift_id: number;
+  id: number;
+  last_claim_unix: number;
+  last_update_points_unix: number;
+  model: string;
+  model_rare: string;
+  name: string;
+  need_checkin: boolean;
+  next_check_in: number;
+  pic: string;
+  points_today: number;
+  points_total: number;
+  unix_cycle: number;
+  user_uid: number;
+}
+
+interface StakesResponse {
+  result: boolean;
+  stake_points_count: number;
+  nfts: NFTData[];
+}
+
 interface UserContextType {
   userInfo: UserInfo;
   userPoints: number;
+  nftsData: NFTData[];
+  isAuthenticated: boolean;
   setUserInfo: (info: Partial<UserInfo>) => void;
   clearUserInfo: () => void;
   initializeUser: (initDataRaw: string) => Promise<void>;
   setUserPoints: (points: number) => void;
-  loadUserBalance: () => Promise<void>;
+  loadUserData: () => Promise<void>;
   isLoading: boolean;
+  error: string | null;
+  clearError: () => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -40,24 +71,34 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     uf_wallet_address: null,
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [userPoints, setUserPointsState] = useState<number>(0);
+  const [nftsData, setNftsData] = useState<NFTData[]>([]);
 
-  const setUserInfo = (info: Partial<UserInfo>) => {
+  const setUserInfo = useCallback((info: Partial<UserInfo>) => {
     setUserInfoState(prev => ({ ...prev, ...info }));
-  };
+  }, []);
 
-  const clearUserInfo = () => {
+  const clearUserInfo = useCallback(() => {
     setUserInfoState({
       uid: null,
       key: null,
       uf_wallet_address: null,
     });
-  };
+    setUserPointsState(0);
+    setNftsData([]);
+    setError(null);
+  }, []);
 
-  const [userPoints, setUserPointsState] = useState<number>(0)
+  const clearError = useCallback(() => {
+    setError(null);
+  }, []);
 
-  const initializeUser = async (initDataRaw: string) => {
+  const initializeUser = useCallback(async (initDataRaw: string) => {
     try {
       setIsLoading(true);
+      setError(null);
+      
       const userData = await UserService.initializeUser(initDataRaw);
 
       setUserInfoState({
@@ -66,54 +107,71 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         uf_wallet_address: userData.uf_wallet_address || '',
       });
 
-      // Загружаем баланс пользователя
+      // Загружаем данные пользователя (баланс и NFT)
       try {
-        const balanceResponse = await APIManager.get<{result: boolean, stake_points_count: number}>('/eggs/api/load_stakes', userData.key);
-        if (balanceResponse.result && balanceResponse.stake_points_count !== undefined) {
-          setUserPointsState(balanceResponse.stake_points_count);
+        const stakesResponse = await APIManager.get<StakesResponse>('/eggs/api/load_stakes', userData.key);
+        if (stakesResponse.result) {
+          if (stakesResponse.stake_points_count !== undefined) {
+            setUserPointsState(stakesResponse.stake_points_count);
+          }
+          if (stakesResponse.nfts) {
+            setNftsData(stakesResponse.nfts);
+          }
         }
-      } catch (balanceError) {
-        console.error('Error loading user balance:', balanceError);
-        // Не прерываем инициализацию, если не удалось загрузить баланс
+      } catch {
+        // Не прерываем инициализацию, если не удалось загрузить данные
+        setError('Не удалось загрузить данные пользователя');
       }
     } catch (error) {
-      console.error('Error initializing user:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Ошибка инициализации пользователя';
+      setError(errorMessage);
       throw error;
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
-  const setUserPoints = (points: number) => {
-    setUserPointsState(points)
-  }
+  const setUserPoints = useCallback((points: number) => {
+    setUserPointsState(points);
+  }, []);
 
-  const loadUserBalance = async () => {
+  const loadUserData = useCallback(async () => {
     if (!userInfo.key) {
-      console.error('Cannot load balance: user key is not available');
+      setError('Невозможно загрузить данные: ключ пользователя недоступен');
       return;
     }
 
     try {
-      const balanceResponse = await APIManager.get<{result: boolean, stake_points_count: number}>('/eggs/api/load_stakes', userInfo.key);
-      if (balanceResponse.result && balanceResponse.stake_points_count !== undefined) {
-        setUserPointsState(balanceResponse.stake_points_count);
+      setError(null);
+      const stakesResponse = await APIManager.get<StakesResponse>('/eggs/api/load_stakes', userInfo.key);
+      if (stakesResponse.result) {
+        if (stakesResponse.stake_points_count !== undefined) {
+          setUserPointsState(stakesResponse.stake_points_count);
+        }
+        if (stakesResponse.nfts) {
+          setNftsData(stakesResponse.nfts);
+        }
       }
     } catch (error) {
-      console.error('Error loading user balance:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Ошибка загрузки данных';
+      setError(errorMessage);
       throw error;
     }
-  };
+  }, [userInfo.key]);
 
   const value: UserContextType = {
     setUserPoints,
     userInfo,
     userPoints,
+    nftsData,
+    isAuthenticated: !!userInfo.key,
     setUserInfo,
     clearUserInfo,
     initializeUser,
-    loadUserBalance,
+    loadUserData,
     isLoading,
+    error,
+    clearError,
   };
 
   return (

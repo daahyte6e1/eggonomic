@@ -1,7 +1,7 @@
 import { useUserContext } from '@/context/UserContext';
 
 export const useUserData = () => {
-  const { userInfo, userPoints, setUserInfo, clearUserInfo, initializeUser, isLoading, setUserPoints, loadUserBalance } = useUserContext();
+  const { userInfo, userPoints, nftsData, setUserInfo, clearUserInfo, initializeUser, isLoading, setUserPoints, loadUserData } = useUserContext();
   
   return {
     uid: userInfo.uid,
@@ -11,7 +11,8 @@ export const useUserData = () => {
     clearUserInfo,
     initializeUser,
     setUserPoints,
-    loadUserBalance,
+    loadUserData,
+    nftsData,
     isLoading,
     userPoints,
     isAuthenticated: !!(userInfo.uid && userInfo.key),

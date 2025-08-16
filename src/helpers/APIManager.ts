@@ -4,27 +4,44 @@ interface APIError {
   url: string;
 }
 
-const HOST = 'https://thekeeper.tech'
+interface RequestOptions {
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  url: string;
+  body?: string;
+  signature?: string;
+}
+
+const HOST = (import.meta.env.VITE_API_HOST as string);
 
 export class APIManager {
-  private static readonly API_KEY = "i02KOB2UAQZ8DkuR";
+  private static readonly API_KEY = (import.meta.env.VITE_API_KEY as string);
   
   /**
-   * Выполняет GET запрос к API
-   * @param url - URL для запроса
-   * @param signature - Подпись для авторизации
-   * @returns Promise с данными ответа
+   * Базовый метод для выполнения HTTP запросов
    */
-  static async get<T = any>(url: string, signature: string): Promise<T> {
+  private static async makeRequest<T>(options: RequestOptions): Promise<T> {
+    const { method, url, body, signature } = options;
+    
     try {
-      const response = await fetch(`${HOST}${url}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `signature_${signature}`,
-          'jjj': this.API_KEY
-        }
-      });
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        'jjj': this.API_KEY
+      };
+
+      if (signature) {
+        headers['Authorization'] = `signature_${signature}`;
+      }
+
+      const requestOptions: RequestInit = {
+        method,
+        headers,
+      };
+
+      if (body) {
+        requestOptions.body = body;
+      }
+
+      const response = await fetch(`${HOST}${url}`, requestOptions);
 
       if (!response.ok) {
         const error: APIError = {
@@ -32,159 +49,61 @@ export class APIManager {
           status: response.status,
           url: url
         };
-        throw error;
+        throw new Error(error.message);
       }
 
-      const result = await response.json();
-      return result;
+      // Для GET запросов с текстовым ответом
+      if (method === 'GET' && url.includes('textable')) {
+        const text = await response.text();
+        const parsed = text
+          .trim()
+          .split('\n')
+          .map(line => JSON.parse(line) as unknown);
+        return parsed as T;
+      }
+
+      const result = await response.json() as unknown;
+      return result as T;
     } catch (error) {
-      throw error;
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('Unknown error occurred');
     }
   }
+
   /**
    * Выполняет GET запрос к API
-   * @param url - URL для запроса
-   * @param signature - Подпись для авторизации
-   * @returns Promise с данными ответа
    */
-  static async getTextable(url: string, signature: string): Promise<any[]> {
-    try {
-      const response = await fetch(`${HOST}${url}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `signature_${signature}`,
-          'jjj': this.API_KEY
-        }
-      });
+  static async get<T = unknown>(url: string, signature: string): Promise<T> {
+    return this.makeRequest<T>({ method: 'GET', url, signature });
+  }
 
-      if (!response.ok) {
-        const error: APIError = {
-          message: `HTTP error! status: ${response.status}`,
-          status: response.status,
-          url: url
-        };
-        throw error;
-      }
-      const text = await response.text()
-      const result = text
-        .trim()
-        .split('\n')
-        .map(line => JSON.parse(line));
-      // const result = await response.json();
-      return result;
-    } catch (error) {
-      throw error;
-    }
+  /**
+   * Выполняет GET запрос к API с текстовым ответом
+   */
+  static async getTextable(url: string, signature: string): Promise<unknown[]> {
+    return this.makeRequest<unknown[]>({ method: 'GET', url, signature });
   }
 
   /**
    * Выполняет POST запрос к API
-   * @param url - URL для запроса
-   * @param jsondata - JSON данные для отправки
-   * @param signature - Подпись для авторизации
-   * @returns Promise с данными ответа
    */
-  static async post<T = any>(url: string, jsondata: string, signature?: string): Promise<T> {
-    try {
-      const response = await fetch(`${HOST}${url}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `signature_${signature}`,
-          'jjj': this.API_KEY
-        },
-        body: jsondata
-      });
-
-      if (!response.ok) {
-        const error: APIError = {
-          message: `HTTP error! status: ${response.status}`,
-          status: response.status,
-          url: url
-        };
-        throw error;
-      }
-
-      const result = await response.json();
-      return result;
-    } catch (error) {
-      console.error('POST request failed:', error);
-      throw error;
-    }
+  static async post<T = unknown>(url: string, jsondata: string, signature?: string): Promise<T> {
+    return this.makeRequest<T>({ method: 'POST', url, body: jsondata, signature });
   }
 
   /**
    * Выполняет PUT запрос к API
-   * @param url - URL для запроса
-   * @param jsondata - JSON данные для отправки
-   * @param signature - Подпись для авторизации
-   * @returns Promise с данными ответа
    */
-  static async put<T = any>(url: string, jsondata: string, signature: string): Promise<T> {
-    console.log(`send PUT to ${url} with data: ${jsondata}`);
-
-    try {
-      const response = await fetch(`${HOST}${url}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `signature_${signature}`,
-          'jjj': this.API_KEY
-        },
-        body: jsondata
-      });
-
-      if (!response.ok) {
-        const error: APIError = {
-          message: `HTTP error! status: ${response.status}`,
-          status: response.status,
-          url: url
-        };
-        throw error;
-      }
-
-      const result = await response.json();
-      return result;
-    } catch (error) {
-      console.error('PUT request failed:', error);
-      throw error;
-    }
+  static async put<T = unknown>(url: string, jsondata: string, signature: string): Promise<T> {
+    return this.makeRequest<T>({ method: 'PUT', url, body: jsondata, signature });
   }
 
   /**
    * Выполняет DELETE запрос к API
-   * @param url - URL для запроса
-   * @param signature - Подпись для авторизации
-   * @returns Promise с данными ответа
    */
-  static async delete<T = any>(url: string, signature: string): Promise<T> {
-    console.log(`send DELETE to ${url}`);
-
-    try {
-      const response = await fetch(`${HOST}${url}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `signature_${signature}`,
-          'jjj': this.API_KEY
-        }
-      });
-
-      if (!response.ok) {
-        const error: APIError = {
-          message: `HTTP error! status: ${response.status}`,
-          status: response.status,
-          url: url
-        };
-        throw error;
-      }
-
-      const result = await response.json();
-      return result;
-    } catch (error) {
-      console.error('DELETE request failed:', error);
-      throw error;
-    }
+  static async delete<T = unknown>(url: string, signature: string): Promise<T> {
+    return this.makeRequest<T>({ method: 'DELETE', url, signature });
   }
 }
