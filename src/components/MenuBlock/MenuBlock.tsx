@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import './MenuBlock.scss'
 import {Ranking, Referrals, Inventory} from '@/components/Icons'
+import { Link } from '@/components/Link/Link.tsx';
 
 export const MenuBlock: FC = () => {
   return (
@@ -13,10 +14,10 @@ export const MenuBlock: FC = () => {
         <Referrals />
         Referrals
       </div>
-      <div className="card column">
+      <Link to="/inventory" className="card column">
         <Inventory />
         Inventory
-      </div>
+      </Link>
     </div>
   );
 };

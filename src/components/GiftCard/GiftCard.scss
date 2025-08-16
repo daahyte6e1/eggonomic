@@ -1,0 +1,23 @@
+.gift-card {
+  gap: 10px;
+  img {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 11.5px;
+  }
+  .description {
+    gap: 8px;
+    .factor {
+      font-size: 16px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #b55eff, #7f4dff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .speed {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  }
+}

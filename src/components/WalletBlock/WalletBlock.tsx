@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import {TonConnectButton, TonConnectUIProvider} from '@tonconnect/ui-react';
+import {TonConnectButton} from '@tonconnect/ui-react';
 import './WalletBlock.scss'
 
 import {Coin} from '@/components/Icons'
@@ -13,13 +13,9 @@ export const WalletBlock: FC = () => {
           <span className="wallet">Кошелек</span>
         </div>
 
-        <TonConnectUIProvider
-          manifestUrl='https://thekeeper.tech/eggs/api/tonconnect-manifest.json'
-        >
-          <div className="wallet-connect">
-            <TonConnectButton />
-          </div>
-        </TonConnectUIProvider>
+        <div className="wallet-connect">
+          <TonConnectButton />
+        </div>
       </div>
     </div>
   );
