@@ -7,6 +7,10 @@ import { Page } from '@/components/Page.tsx';
 import { useUserContext } from '@/context/UserContext.tsx';
 import { APIManager } from '@/helpers';
 import './Inventory.scss';
+import {SearchBlock} from "@/components/SearchBlock/SearchBlock";
+import { GiftInventoryCard } from '@/components/GiftInventoryCard';
+import { BalanceBlock } from '@/components/BalanceBlock/BalanceBlock';
+import {Coin} from "@/components/Icons";
 
 interface Gift {
   id: number;
@@ -32,9 +36,11 @@ interface Gift {
 }
 
 export const Inventory: FC = () => {
-  const { userInfo } = useUserContext();
+  const { userInfo, userPoints } = useUserContext();
   const initDataRaw = useSignal(_initDataRaw);
   const [gifts, setGifts] = useState<Gift[]>([]);
+  const [filteredGifts, setFilteredGifts] = useState<Gift[]>([]);
+  const [searchText, setSearchText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,7 +57,9 @@ export const Inventory: FC = () => {
         setError(null);
         
         const data = await APIManager.getTextable(`/eggs/api/inventory/${userInfo.key}`, initDataRaw);
-        setGifts(Array.isArray(data) ? (data as Gift[]) : []);
+        const giftsData = Array.isArray(data) ? (data as Gift[]) : [];
+        setGifts(giftsData);
+        setFilteredGifts(giftsData);
       } catch {
         // console.error('Ошибка при загрузке инвентаря:', err);
         setError('Не удалось загрузить инвентарь');
@@ -63,9 +71,23 @@ export const Inventory: FC = () => {
     void fetchInventory();
   }, [initDataRaw, userInfo.key]);
 
-  const formatDate = (unix: number) => {
-    return new Date(unix * 1000).toLocaleDateString('ru-RU');
+  const handleSearch = (searchText: string) => {
+    setSearchText(searchText);
+    
+    if (!searchText.trim()) {
+      setFilteredGifts(gifts);
+      return;
+    }
+
+    const filtered = gifts.filter(gift => 
+      gift.telegram_gift_name.toLowerCase().includes(searchText.toLowerCase()) ||
+      gift.telegram_gift_model.toLowerCase().includes(searchText.toLowerCase()) ||
+      gift.telegram_gift_symbol.toLowerCase().includes(searchText.toLowerCase())
+    );
+    
+    setFilteredGifts(filtered);
   };
+
 
   if (isLoading) {
     return (
@@ -91,49 +113,40 @@ export const Inventory: FC = () => {
   return (
     <Page back={true} backTo="/">
       <List className="inventory-page">
-        <Section header="Инвентарь">
-          {gifts.length === 0 ? (
-            <div className="inventory-empty">
-              <p>В инвентаре пока нет подарков</p>
+          <SearchBlock onSearch={handleSearch} />
+
+        {filteredGifts.length === 0 && searchText ? (
+          <div className="no-results">
+            <p>По вашему запросу ничего не найдено</p>
+          </div>
+        ) : filteredGifts.length === 0 ? (
+          <div className="inventory-empty">
+            <p>У вас пока нет подарков</p>
+          </div>
+        ) : (
+          <div className="gift-grid-content content">
+            <div className="card">
+              <div className="card-header column">
+                <div className="balance">
+                  {userPoints}
+                  <Coin height="17" width="16" />
+                </div>
+                <div>
+                  test
+                </div>
+              </div>
+            {filteredGifts.filter(gift => gift.staked).length > 0 && (
+              <div className="gifts-grid">
+                {filteredGifts
+                  .filter(gift => gift.staked)
+                  .map((gift) => (
+                    <GiftInventoryCard key={gift.id} gift={gift} />
+                  ))}
+              </div>
+            )}
             </div>
-          ) : (
-            gifts.map((gift) => (
-              <div key={gift.id} className="gift-card">
-              <div className="gift-header">
-                <h3>{gift.telegram_gift_name}</h3>
-                <span className="gift-number">#{gift.telegram_gift_number}</span>
-              </div>
-              
-              <div className="gift-details">
-                <div className="gift-model">
-                  <strong>Модель:</strong> {gift.telegram_gift_model}
-                </div>
-                
-                <div className="gift-backdrop">
-                  <strong>Фон:</strong> {gift.telegram_gift_backdrop}
-                </div>
-                
-                <div className="gift-symbol">
-                  <strong>Символ:</strong> {gift.telegram_gift_symbol}
-                </div>
-              </div>
-              
-              <div className="gift-status">
-                <span className={`status ${gift.staked ? 'staked' : ''}`}>
-                  {gift.staked ? 'Застейкано' : 'Не застейкано'}
-                </span>
-                <span className={`status ${gift.incubate ? 'incubating' : ''}`}>
-                  {gift.incubate ? 'В инкубаторе' : 'Не в инкубаторе'}
-                </span>
-              </div>
-              
-              <div className="gift-date">
-                <small>Получен: {formatDate(gift.unix)}</small>
-              </div>
-            </div>
-          ))
+          </div>
         )}
-        </Section>
       </List>
     </Page>
   );

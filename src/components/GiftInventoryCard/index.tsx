@@ -1,0 +1,1 @@
+export { GiftInventoryCard } from './GiftInventoryCard';

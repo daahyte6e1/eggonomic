@@ -9,6 +9,7 @@ interface RequestOptions {
   url: string;
   body?: string;
   signature?: string;
+  textable?: boolean;
 }
 
 const HOST = (import.meta.env.VITE_API_HOST as string);
@@ -53,7 +54,7 @@ export class APIManager {
       }
 
       // Для GET запросов с текстовым ответом
-      if (method === 'GET' && url.includes('textable')) {
+      if (method === 'GET' && options.textable) {
         const text = await response.text();
         const parsed = text
           .trim()
@@ -83,7 +84,7 @@ export class APIManager {
    * Выполняет GET запрос к API с текстовым ответом
    */
   static async getTextable(url: string, signature: string): Promise<unknown[]> {
-    return this.makeRequest<unknown[]>({ method: 'GET', url, signature });
+    return this.makeRequest<unknown[]>({ method: 'GET', url, signature, textable: true });
   }
 
   /**
