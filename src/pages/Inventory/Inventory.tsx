@@ -9,8 +9,8 @@ import { APIManager } from '@/helpers';
 import './Inventory.scss';
 import {SearchBlock} from "@/components/SearchBlock/SearchBlock";
 import { GiftInventoryCard } from '@/components/GiftInventoryCard';
-import { BalanceBlock } from '@/components/BalanceBlock/BalanceBlock';
 import {Coin} from "@/components/Icons";
+import { GradientCircle } from "@/components/GradientCircle";
 
 interface Gift {
   id: number;
@@ -61,7 +61,6 @@ export const Inventory: FC = () => {
         setGifts(giftsData);
         setFilteredGifts(giftsData);
       } catch {
-        // console.error('Ошибка при загрузке инвентаря:', err);
         setError('Не удалось загрузить инвентарь');
       } finally {
         setIsLoading(false);
@@ -131,7 +130,7 @@ export const Inventory: FC = () => {
                   {userPoints}
                   <Coin height="17" width="16" />
                 </div>
-                <div>
+                <div className='level'>
                   test
                 </div>
               </div>
