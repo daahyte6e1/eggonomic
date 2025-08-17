@@ -1,12 +1,12 @@
 body {
   background: #000000;
   padding: 20px;
+  height: 100%;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-
-  .tgui-cfed40fe81d34ad5 {
-    padding: 0;
-  }
+}
+.tgui-cfed40fe81d34ad5 {
+  padding: 0;
 }
 
 .bg-ellipse-dual:before {
@@ -27,6 +27,7 @@ body {
   background-size: var(--bg-size);
   background-position: var(--bg-x) var(--bg-y);
   background-repeat: var(--bg-repeat);
+  z-index: -1;
 }
 
 .bg-ellipse-dual:after {
@@ -48,8 +49,8 @@ body {
   background-position: var(--bg-x) var(--bg-y);
   background-repeat: var(--bg-repeat);
 
-  transform: scaleX(-1); /* отзеркаливание */
-  z-index: -1; /* чтобы контент был поверх */
+  transform: scaleX(-1);
+  z-index: -1;
 }
 
 .bg-ellipse:before {
@@ -69,23 +70,33 @@ body {
   background-image: url("data:image/svg+xml;utf8,<svg width='405' height='831' viewBox='0 0 405 831' fill='none' xmlns='http://www.w3.org/2000/svg'><g filter='url(%23filter0)'><ellipse cx='383.598' cy='312.021' rx='50' ry='185.5' fill='%235B00D2'/></g><g filter='url(%23filter1)'><ellipse cx='425.103' cy='289.61' rx='50' ry='185.5' transform='rotate(16.1085 425.103 289.61)' fill='%235B00D2'/></g><g filter='url(%23filter2)'><ellipse cx='431.197' cy='249.596' rx='50' ry='185.5' transform='rotate(32.217 431.197 249.596)' fill='%239076B3'/></g><defs><filter id='filter0' x='0.598145' y='-206.479' width='766' height='1037' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'><feFlood flood-opacity='0' result='BackgroundImageFix'/><feBlend mode='normal' in='SourceGraphic' in2='BackgroundImageFix' result='shape'/><feGaussianBlur stdDeviation='166.5' result='effect1_foregroundBlur'/></filter><filter id='filter1' x='132.701' y='-111.155' width='584.806' height='801.53' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'><feFlood flood-opacity='0' result='BackgroundImageFix'/><feBlend mode='normal' in='SourceGraphic' in2='BackgroundImageFix' result='shape'/><feGaussianBlur stdDeviation='111' result='effect1_foregroundBlur'/></filter><filter id='filter2' x='193.607' y='-39.6167' width='475.18' height='578.425' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'><feFlood flood-opacity='0' result='BackgroundImageFix'/><feBlend mode='normal' in='SourceGraphic' in2='BackgroundImageFix' result='shape'/><feGaussianBlur stdDeviation='65' result='effect1_foregroundBlur'/></filter></defs></svg>");
   background-size: var(--bg-size);
   background-position: var(--bg-x) var(--bg-y);
-  background-repeat: var(--bg-repeat);
-  z-index: 1;
+  background-repeat: no-repeat;
+  z-index: -1;
 }
 
-/* Модификаторы размеров */
-.bg-ellipse-sm:before { --bg-size: 200px; }
-.bg-ellipse-md:before { --bg-size: 400px; }
-.bg-ellipse-lg:before { --bg-size: 600px; }
+.bg-ellipse-sm:before {
+  --bg-size: 200px;
+}
+
+.bg-ellipse-md:before {
+  --bg-size: 400px;
+}
+
+.bg-ellipse-lg:before {
+  --bg-size: 600px;
+}
 
 .bg-ellipse-top:before {
-  --bg-y: 25%;
-  transform: rotate(270deg)
+  background-size: 100vw;
+  background-position: unset;
+  background-image: url("data:image/svg+xml;utf8,<svg width='392' height='477' viewBox='0 0 392 477' fill='none' xmlns='http://www.w3.org/2000/svg'><g filter='url(%23filter0)'><ellipse cx='210.598' cy='-34.9795' rx='50' ry='185.5' fill='%235B00D2'/></g><g filter='url(%23filter1)'><ellipse cx='252.103' cy='-57.3897' rx='50' ry='185.5' transform='rotate(16.1085 252.103 -57.3897)' fill='%235B00D2'/></g><g filter='url(%23filter2)'><ellipse cx='258.197' cy='-97.4042' rx='50' ry='185.5' transform='rotate(32.217 258.197 -97.4042)' fill='%239076B3'/></g><defs><filter id='filter0' x='-172.402' y='-553.479' width='766' height='1037' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'><feFlood flood-opacity='0' result='BackgroundImageFix'/><feBlend mode='normal' in='SourceGraphic' in2='BackgroundImageFix' result='shape'/><feGaussianBlur stdDeviation='166.5' result='effect1_foregroundBlur'/></filter><filter id='filter1' x='-40.2996' y='-458.155' width='584.806' height='801.53' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'><feFlood flood-opacity='0' result='BackgroundImageFix'/><feBlend mode='normal' in='SourceGraphic' in2='BackgroundImageFix' result='shape'/><feGaussianBlur stdDeviation='111' result='effect1_foregroundBlur'/></filter><filter id='filter2' x='20.6069' y='-386.617' width='475.18' height='578.425' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'><feFlood flood-opacity='0' result='BackgroundImageFix'/><feBlend mode='normal' in='SourceGraphic' in2='BackgroundImageFix' result='shape'/><feGaussianBlur stdDeviation='65' result='effect1_foregroundBlur'/></filter></defs></svg>");
 }
+
 .bg-ellipse-left:before {
   transform: scaleX(-1);
 }
-.bg-ellipse-right:before   {
+
+.bg-ellipse-right:before {
   transform: scaleX(1);
 }
 
@@ -99,10 +110,12 @@ body {
   justify-content: space-between;
   border: 0.6px solid rgba(255, 255, 255, 0.1);
 }
+
 .row {
   display: flex;
   align-items: center;
 }
+
 .column {
   display: flex;
   flex-direction: column;

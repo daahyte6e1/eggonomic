@@ -1,14 +1,27 @@
 import type { FC } from 'react';
+
+import {useEffect, useState} from "react";
+
+import { Ranking, Referrals, Inventory } from '@/components/Icons'
+import { Link } from '@/components/Link/Link.tsx'
+import { useUserContext } from '@/context/UserContext'
+
 import './MenuBlock.scss'
-import {Ranking, Referrals, Inventory} from '@/components/Icons'
-import { Link } from '@/components/Link/Link.tsx';
+import {getLevelTitleByKey} from "@/helpers/getLevelInfoByKey";
 
 export const MenuBlock: FC = () => {
+  const {userInfo} = useUserContext()
+  const [levelTitle, setLevelTitle] = useState<string>('')
+
+  useEffect(() => {
+    const levelTitle = getLevelTitleByKey(userInfo.level)
+    setLevelTitle(levelTitle)
+  }, [userInfo])
   return (
     <div className="menu-content content row">
       <div className="card column">
         <Ranking />
-        True Believer
+        {levelTitle}
       </div>
       <div className="card column">
         <Referrals />
