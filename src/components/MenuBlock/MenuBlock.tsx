@@ -19,10 +19,10 @@ export const MenuBlock: FC = () => {
   }, [userInfo])
   return (
     <div className="menu-content content row">
-      <div className="card column">
+      <Link to='/level' className="card column">
         <Ranking />
         {levelTitle}
-      </div>
+      </Link>
       <div className="card column">
         <Referrals />
         Referrals

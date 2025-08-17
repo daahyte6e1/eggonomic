@@ -3,6 +3,7 @@ import { TonConnectUIProvider } from '@tonconnect/ui-react';
 import { App } from '@/components/App.tsx';
 import { ErrorBoundary } from '@/components/ErrorBoundary.tsx';
 import { UserProvider } from '@/context/UserContext.tsx';
+import { UserInitializer } from '@/components/UserInitializer.tsx';
 import { publicUrl } from '@/helpers'
 
 function ErrorBoundaryError({ error }: { error: unknown }) {
@@ -29,7 +30,9 @@ export function Root() {
         manifestUrl={publicUrl('tonconnect-manifest.json')}
       >
         <UserProvider>
-          <App/>
+          <UserInitializer>
+            <App/>
+          </UserInitializer>
         </UserProvider>
       </TonConnectUIProvider>
     </ErrorBoundary>
