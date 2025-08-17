@@ -1,6 +1,6 @@
 const LEVEL_INFO = {
   unranked: {
-    numberText: "Ø",
+    numberText: "0",
     textColor: '#000000',
     gradientColors: ["#747474", "#808080", "#656565", "#4B4345"],
     backgroundColors: ["#656565", "#4B4345", "#808080", "#808080"],

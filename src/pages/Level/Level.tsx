@@ -8,6 +8,7 @@ import './Level.scss';
 
 import {getLevelInfoByKey} from "@/helpers/getLevelInfoByKey";
 import LevelBackground from "@/components/LevelBackground";
+import {LevelIndicator} from "@/components/LevelIndicator";
 
 export const Level: FC = () => {
   const { userInfo } = useUserContext();
@@ -19,12 +20,22 @@ export const Level: FC = () => {
     console.log(levelInformation)
     setLevelInformation(levelInformation)
   }, [userInfo])
+  if (!levelInformation) {
+    return (
+      <></>
+    )
+  }
   return (
     <Page back={true}>
       <List className="level-page">
-        {levelInformation && (
+        <div className='background-block'>
           <LevelBackground colors={levelInformation.backgroundColors}/>
-        )}
+        </div>
+        <LevelIndicator
+          colors={levelInformation.gradientColors}
+          number={levelInformation.numberText}
+          numberColor={levelInformation.textColor}
+        />
       </List>
     </Page>
   );

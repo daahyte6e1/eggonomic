@@ -1,4 +1,10 @@
 .level-page {
+  padding-top: 130px;
   display: flex;
   justify-content: center;
+  position: relative;
+  .background-block {
+    position: absolute;
+    top: 0;
+  }
 }
