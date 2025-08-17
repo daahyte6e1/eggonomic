@@ -5,11 +5,7 @@ type GradientCircleProps = {
   text: string;
   colors: string[];
 }
-export const GradientCircle: FC = ({
-  size = 200,
-  text = "Ø",
-  colors,
-}: GradientCircleProps) => {
+export const GradientCircle: FC<GradientCircleProps> = ({size = 200, text = "Ø", colors}) => {
   const gradientId = `gradient-${Math.random()}`;
 
   return (

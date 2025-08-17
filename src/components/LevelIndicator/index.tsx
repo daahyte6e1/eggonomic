@@ -2,14 +2,14 @@ import type { FC } from "react";
 
 type LevelIndicatorProps = {
   colors: string[];
-  number: number;
+  numberText: string;
   numberColor: string;
 };
 
 export const LevelIndicator: FC<LevelIndicatorProps> = ({
   colors = [],
-  number = 1,
-  numberColor = "black",
+  numberText,
+  numberColor,
 }) => {
   // дефолтные цвета, если массив меньше 6 элементов
 
@@ -56,7 +56,7 @@ export const LevelIndicator: FC<LevelIndicatorProps> = ({
         </g>
 
         {/* Цифра по центру */}
-        {number !== undefined && (
+        {numberText !== undefined && (
           <text
             x="50%"
             y="55%"
@@ -66,7 +66,7 @@ export const LevelIndicator: FC<LevelIndicatorProps> = ({
             fontWeight="bold"
             fill={numberColor}
           >
-            {number}
+            {numberText}
           </text>
         )}
       </g>

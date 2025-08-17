@@ -8,6 +8,7 @@ import './Level.scss';
 
 import {getLevelInfoByKey} from "@/helpers/getLevelInfoByKey";
 import LevelBackground from "@/components/LevelBackground";
+import {GradientCircle} from "@/components/GradientCircle";
 import {LevelIndicator} from "@/components/LevelIndicator";
 
 interface LevelInfo {
@@ -15,6 +16,7 @@ interface LevelInfo {
   gradientColors: string[];
   numberText: string;
   textColor: string;
+  isCircle: boolean;
 }
 
 export const Level: FC = () => {
@@ -41,11 +43,22 @@ export const Level: FC = () => {
         <div className='background-block'>
           <LevelBackground colors={levelInformation.backgroundColors}/>
         </div>
-        <LevelIndicator
-          colors={levelInformation.gradientColors}
-          number={levelInformation.numberText}
-          numberColor={levelInformation.textColor}
-        />
+        {levelInformation.isCircle
+          ? (
+            <GradientCircle
+              colors={levelInformation.gradientColors}
+              size={200}
+              text={levelInformation.numberText}
+            />
+          )
+          : (
+            <LevelIndicator
+              colors={levelInformation.gradientColors}
+              numberText={levelInformation.numberText}
+              numberColor={levelInformation.textColor}
+            />
+          )
+        }
       </List>
     </Page>
   );
