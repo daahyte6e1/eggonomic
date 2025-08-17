@@ -1,10 +1,15 @@
 import type { FC } from 'react';
 
+type GradientCircleProps = {
+  size: number;
+  text: string;
+  colors: string[];
+}
 export const GradientCircle: FC = ({
   size = 200,
   text = "Ø",
-  colors = ["#747474", "#808080", "#656565", "#4B4345"],
-}) => {
+  colors,
+}: GradientCircleProps) => {
   const gradientId = `gradient-${Math.random()}`;
 
   return (

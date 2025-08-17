@@ -7,7 +7,6 @@ import { BalanceBlock } from '@/components/BalanceBlock/BalanceBlock';
 import { MenuBlock } from '@/components/MenuBlock/MenuBlock';
 
 import { ActivePositions } from "@/components/ActivePositions/ActivePositions";
-import { LevelIndicator} from "@/components/LevelIndicator";
 
 export const Home: FC = () => {
   return (

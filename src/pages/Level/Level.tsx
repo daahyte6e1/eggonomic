@@ -10,21 +10,31 @@ import {getLevelInfoByKey} from "@/helpers/getLevelInfoByKey";
 import LevelBackground from "@/components/LevelBackground";
 import {LevelIndicator} from "@/components/LevelIndicator";
 
+interface LevelInfo {
+  backgroundColors: string[];
+  gradientColors: string[];
+  numberText: string;
+  textColor: string;
+}
+
 export const Level: FC = () => {
   const { userInfo } = useUserContext();
 
-  const [levelInformation, setLevelInformation] = useState<any>(null)
+  const [levelInformation, setLevelInformation] = useState<LevelInfo | null>(null)
 
   useEffect(() => {
-    const levelInformation = getLevelInfoByKey(userInfo.level)
-    console.log(levelInformation)
-    setLevelInformation(levelInformation)
+    const levelInfo = getLevelInfoByKey(userInfo.level)
+    if (levelInfo) {
+      setLevelInformation(levelInfo)
+    }
   }, [userInfo])
+
   if (!levelInformation) {
     return (
       <></>
     )
   }
+
   return (
     <Page back={true}>
       <List className="level-page">

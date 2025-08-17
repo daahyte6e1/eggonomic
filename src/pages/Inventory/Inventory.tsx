@@ -47,19 +47,16 @@ export const Inventory: FC = () => {
   const [filteredGifts, setFilteredGifts] = useState<FilteredGifts>({staked: [], notStaked: []});
   const [searchText, setSearchText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchInventory = async () => {
       if (!initDataRaw) {
-        setError('Данные инициализации не найдены');
         setIsLoading(false);
         return;
       }
 
       try {
         setIsLoading(true);
-        setError(null);
         
         const data = await APIManager.getTextable(`/eggs/api/inventory/${userInfo.key}`, initDataRaw);
         // const giftsData = [];
@@ -73,7 +70,7 @@ export const Inventory: FC = () => {
         setGifts(giftsData);
         setFilteredGifts(filteredGifts);
       } catch {
-        setError('Не удалось загрузить инвентарь');
+        // Ошибка обрабатывается в UI через состояние isLoading
       } finally {
         setIsLoading(false);
       }
@@ -90,7 +87,7 @@ export const Inventory: FC = () => {
       return;
     }
 
-    const filtered = gifts.reduce((accumulator, gift: Gift) => {
+    const filtered = gifts.reduce((accumulator: FilteredGifts, gift: Gift) => {
       const isCorrectBySearchText =
         gift.telegram_gift_name.toLowerCase().includes(searchText.toLowerCase()) ||
         gift.telegram_gift_model.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -102,7 +99,7 @@ export const Inventory: FC = () => {
       if (!gift.staked) accumulator.notStaked.push(gift)
 
       return accumulator
-    }, {staked: [], notStaked: []})
+    }, {staked: [], notStaked: []} as FilteredGifts)
     
     setFilteredGifts(filtered);
   };
@@ -112,7 +109,9 @@ export const Inventory: FC = () => {
 
   useEffect(() => {
     const levelTitle = getLevelTitleByKey(userInfo.level)
-    setLevelTitle(levelTitle)
+    if (levelTitle) {
+      setLevelTitle(levelTitle)
+    }
   }, [userInfo])
 
   const hasStakedGifts = Boolean(filteredGifts.staked.length)

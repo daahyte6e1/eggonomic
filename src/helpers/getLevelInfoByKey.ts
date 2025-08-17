@@ -88,6 +88,6 @@ const LEVEL_INFO = {
   }
 }
 
-export const getLevelInfoByKey = (key) => LEVEL_INFO[key]
+export const getLevelInfoByKey = (key: string) => LEVEL_INFO[key as keyof typeof LEVEL_INFO]
 
-export const getLevelTitleByKey = (key) => LEVEL_INFO[key]?.title || ''
+export const getLevelTitleByKey = (key: string) => LEVEL_INFO[key as keyof typeof LEVEL_INFO]?.title || ''

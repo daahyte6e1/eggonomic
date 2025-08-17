@@ -15,7 +15,9 @@ export const MenuBlock: FC = () => {
 
   useEffect(() => {
     const levelTitle = getLevelTitleByKey(userInfo.level)
-    setLevelTitle(levelTitle)
+    if (levelTitle) {
+      setLevelTitle(levelTitle)
+    }
   }, [userInfo])
   return (
     <div className="menu-content content row">
