@@ -3,16 +3,17 @@ import type { FC } from 'react';
 type GradientCircleProps = {
   size: number;
   text: string;
+  textColor: string;
   colors: string[];
 }
-export const GradientCircle: FC<GradientCircleProps> = ({size = 200, text = "Ø", colors}) => {
+export const GradientCircle: FC<GradientCircleProps> = ({size = 200, text = "Ø", colors, textColor}) => {
   const gradientId = `gradient-${Math.random()}`;
 
   return (
     <svg
-      width='200'
-      height='200'
-      viewBox={`0 0 200 200`}
+      width={size}
+      height={size}
+      viewBox={`0 0 ${size} ${size}`}
       xmlns="http://www.w3.org/2000/svg"
     >
       {/* Градиент */}
@@ -39,7 +40,7 @@ export const GradientCircle: FC<GradientCircleProps> = ({size = 200, text = "Ø"
         textAnchor="middle"
         dominantBaseline="central"
         fontSize="31"
-        fill="#000000"
+        fill={textColor}
         fontWeight="500"
       >
         {text}

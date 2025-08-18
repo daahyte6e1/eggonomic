@@ -8,10 +8,12 @@ import { MenuBlock } from '@/components/MenuBlock/MenuBlock';
 
 import { ActivePositions } from "@/components/ActivePositions/ActivePositions";
 
+import './Home.css'
+
 export const Home: FC = () => {
   return (
     <Page back={false}>
-      <List className='home-page bg-ellipse-dual'>
+      <List className='home-page bg-ellipse-dual page'>
         <WalletBlock />
         <BalanceBlock />
         {/*<LevelIndicator*/}

@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { List } from '@telegram-apps/telegram-ui';
 import { initDataRaw as _initDataRaw, useSignal } from '@telegram-apps/sdk-react';
-
+import { Link } from '@/components/Link/Link.tsx'
 import { Page } from '@/components/Page.tsx';
 import { useUserContext } from '@/context/UserContext.tsx';
 import { APIManager } from '@/helpers';
@@ -120,7 +120,7 @@ export const Inventory: FC = () => {
 
   return (
     <Page back={true}>
-      <List className="inventory-page">
+      <List className="inventory-page page">
         <div className="">
           <SearchBlock onSearch={handleSearch} />
           {isLoading
@@ -145,10 +145,10 @@ export const Inventory: FC = () => {
                             {userPoints}
                             <Coin height="17" width="16" />
                           </div>
-                          <div className='level'>
+                          <Link to='/level' className='level'>
                             {levelTitle}
                             <Arrow/>
-                          </div>
+                          </Link>
                           <div className="staked-block">
                             <span> Добыча в час: </span>
                             <span>1000 <Coin width='9' height='10'/> </span>

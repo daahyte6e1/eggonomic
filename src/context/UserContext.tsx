@@ -70,7 +70,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     uid: null,
     key: null,
     uf_wallet_address: null,
-    level: 'unranked'
+    level: 'member'
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -86,7 +86,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       uid: null,
       key: null,
       uf_wallet_address: null,
-      level: 'unranked'
+      level: 'member'
     });
     setUserPointsState(0);
     setNftsData([]);
@@ -108,7 +108,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         uid: userData.uid,
         key: userData.key,
         uf_wallet_address: userData.uf_wallet_address || '',
-        level: 'unranked'
+        level: 'member'
       });
 
       // Загружаем данные пользователя (баланс и NFT)

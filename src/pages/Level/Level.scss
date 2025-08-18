@@ -1,10 +1,96 @@
 .level-page {
-  padding-top: 130px;
+  padding: 130px 20px 20px;
   display: flex;
   justify-content: center;
   position: relative;
+  .level-list {
+    display: flex;
+    gap: 15px;
+    padding-bottom: 50px;
+
+    .card {
+      width: unset;
+      display: flex;
+      gap: 15px;
+      cursor: pointer;
+
+      &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      &.active {
+        border: 0.6px solid rgba(255, 255, 255, 1);
+      }
+
+      .title {
+        font-size: 24px;
+        font-weight: 500;
+      }
+
+      .item {
+        align-items: center;
+        display: flex;
+        gap: 10px;
+      }
+      .price-item {
+        color: transparent;
+        background-clip: text;
+        svg {
+          height: 15px;
+          width: 14px;
+        }
+      }
+      .member {
+        background-image: linear-gradient(
+                        to top,
+                        #F1C396 100%,
+                        #CD7B2E 0%
+        );
+      }
+      .supporter {
+        background-image: linear-gradient(
+                        to top,
+                        #F7F066 100%,
+                        #E6C13E 0%
+        );
+      }
+      .believer {
+        background-image: linear-gradient(
+                        to top,
+                        #A77FDC 100%,
+                        #5D01D6 0%
+        );
+      }
+    }
+  }
+  .button {
+    position: fixed;
+    bottom: 0;
+  }
   .background-block {
+    z-index: -1;
     position: absolute;
     top: 0;
+    left: 0;
+    svg {
+      width: 100vw;
+      max-width: 100vw;
+      margin: 0 auto;
+      display: block;
+    }
+  }
+  .information-block {
+    padding-top: 130px;
+    align-items: center;
+    text-align: center;
+    .title {
+      font-weight: 500;
+      font-size: 36px;
+      padding-bottom: 15px;
+      padding-top: 40px;
+    }
+    .description {
+      font-size: 16px;
+    }
   }
 }
