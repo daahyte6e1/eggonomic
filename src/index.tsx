@@ -1,3 +1,6 @@
+// Import polyfills for Node.js APIs
+import './polyfills';
+
 // Include Telegram UI styles first to allow our code override the package CSS.
 import '@telegram-apps/telegram-ui/dist/styles.css';
 

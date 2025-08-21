@@ -33,5 +33,19 @@ export default defineConfig({
     // Exposes your dev server and makes it accessible for the devices in the same network.
     host: true,
   },
+  define: {
+    global: 'globalThis',
+    'process.env': {},
+  },
+  resolve: {
+    alias: {
+      buffer: 'buffer',
+      process: 'process/browser',
+      util: 'util',
+    },
+  },
+  optimizeDeps: {
+    include: ['buffer', 'process', 'util'],
+  },
 });
 
