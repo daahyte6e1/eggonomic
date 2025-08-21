@@ -20,11 +20,6 @@ export class UserService {
   static async initializeUser(initDataRaw: string): Promise<UserInfo> {
     try {
       console.log(initDataRaw)
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(undefined)
-        }, 1000)
-      })
       // const jsondata = JSON.stringify({ initData: initDataRaw });
       // const res = await APIManager.post<UserServiceResponse>('/eggs/api/initdata', jsondata);
       //
