@@ -1,17 +1,18 @@
 import type { FC } from 'react';
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
+import { beginCell } from '@ton/core';
 
 import { useEffect, useState } from 'react';
 import { List } from '@telegram-apps/telegram-ui';
 
 import { Page } from '@/components/Page.tsx';
 import './SingleLevel.scss';
-import {GradientCircle} from "@/components/GradientCircle";
-import {LevelIndicator} from "@/components/LevelIndicator";
-import {getLevelInfoByKey} from "@/helpers";
+import {GradientCircle} from '@/components/GradientCircle';
+import {LevelIndicator} from '@/components/LevelIndicator';
+import {getLevelInfoByKey} from '@/helpers';
 import { useTonConnectUI, SendTransactionRequest } from '@tonconnect/ui-react';
 
-import {TonCoin} from "@/components/Icons";
+import {TonCoin} from '@/components/Icons';
 
 interface LevelInfo {
   level: number;
@@ -30,11 +31,8 @@ interface LevelInfo {
   levelPageDescription: string;
 }
 
-
-
-
 export const SingleLevel: FC = () => {
-  const { levelKey } = useParams(); // достаем параметр из url
+  const { levelKey } = useParams();
   const [levelInformation, setLevelInformation] = useState<LevelInfo | null>(null)
 
   useEffect(() => {
@@ -45,8 +43,7 @@ export const SingleLevel: FC = () => {
 
   const [tonConnectUI] = useTonConnectUI();
 
-  async function createTransaction(amount, memo) {
-    const { beginCell } = await import('https://esm.sh/@ton/core');
+  async function createTransaction(amount: number, memo: string): void {
 
     const cell = beginCell()
       .storeUint(0, 32)
@@ -58,10 +55,10 @@ export const SingleLevel: FC = () => {
 
     const transaction: SendTransactionRequest = {
       validUntil: Math.floor(Date.now() / 1000) + 60,
-      network: -3,
+      network: -3, //todo need delete
       messages: [
         {
-          address: "UQAc2HeqsF1fQaoMPueedr5aIByh2PUCMbtrH3nbctOBFtXk",
+          address: 'UQAc2HeqsF1fQaoMPueedr5aIByh2PUCMbtrH3nbctOBFtXk',
           amount: Math.round(amount * 1e9).toString(),
           payload: payload
         }
@@ -78,9 +75,9 @@ export const SingleLevel: FC = () => {
   }
   return (
     <Page back={true}>
-      <List className="single-level-page column page">
+      <List className='single-level-page column page'>
 
-        <div className="column information-block">
+        <div className='column information-block'>
           {levelInformation.isCircle
             ? (
               <GradientCircle
@@ -98,15 +95,15 @@ export const SingleLevel: FC = () => {
               />
             )
           }
-          <span className="title">{levelInformation.cardTitle}</span>
-          <span className="description">{levelInformation.levelPageDescription}</span>
+          <span className='title'>{levelInformation.cardTitle}</span>
+          <span className='description'>{levelInformation.levelPageDescription}</span>
         </div>
-        <div className="level-list column">
+        <div className='level-list column'>
           {levelInformation.prices.map((price) => (
             <div
               onClick={() => createTransaction(price.price, price.key)}
               key={price.key}
-              className="card"
+              className='card'
             >
               <span className='title'>{price.title}</span>
               <div className='price'>{price.price} <TonCoin /></div>

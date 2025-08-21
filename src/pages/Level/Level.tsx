@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import { openLink } from '@telegram-apps/sdk-react';
 
 import { useEffect, useState } from 'react';
 import { List } from '@telegram-apps/telegram-ui';
@@ -40,7 +39,7 @@ export const Level: FC = () => {
   const [levelInformation, setLevelInformation] = useState<LevelInfo | null>(null)
   const [activeLevel, setActiveLevel] = useState<string>('')
 
-  const updateActiveLevelHandler = (level) => {
+  const updateActiveLevelHandler = (level: string) => {
     if (checkIsDisabled(level)) return
 
     setActiveLevel(level)
@@ -52,7 +51,7 @@ export const Level: FC = () => {
 
   }, [userInfo.level])
 
-  const checkIsDisabled = (levelKey) => {
+  const checkIsDisabled = (levelKey: string) => {
     const levelNumber = getLevelByKey(levelKey)
     const activeLevelNumber = getLevelByKey(userInfo.level)
     return levelNumber <= activeLevelNumber

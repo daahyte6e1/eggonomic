@@ -1,5 +1,4 @@
 import {FC} from 'react'
-import {F} from "vite/dist/node/moduleRunnerTransport.d-CXw_Ws6P";
 
 interface IconProps {
   width?: string | number;
