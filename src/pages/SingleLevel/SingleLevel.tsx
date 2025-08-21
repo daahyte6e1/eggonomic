@@ -36,14 +36,15 @@ export const SingleLevel: FC = () => {
   const [levelInformation, setLevelInformation] = useState<LevelInfo | null>(null)
 
   useEffect(() => {
-    const levelInfo = getLevelInfoByKey(levelKey)
-    if (levelInfo) setLevelInformation(levelInfo)
-
+    if (levelKey) {
+      const levelInfo = getLevelInfoByKey(levelKey)
+      if (levelInfo) setLevelInformation(levelInfo)
+    }
   }, [levelKey])
 
   const [tonConnectUI] = useTonConnectUI();
 
-  async function createTransaction(amount: number, memo: string): void {
+  async function createTransaction(amount: number, memo: string): Promise<void> {
 
     const cell = beginCell()
       .storeUint(0, 32)
@@ -55,7 +56,7 @@ export const SingleLevel: FC = () => {
 
     const transaction: SendTransactionRequest = {
       validUntil: Math.floor(Date.now() / 1000) + 60,
-      network: -3, //todo need delete
+      network: -3 as any, //todo need delete
       messages: [
         {
           address: 'UQAc2HeqsF1fQaoMPueedr5aIByh2PUCMbtrH3nbctOBFtXk',

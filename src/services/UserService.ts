@@ -22,7 +22,7 @@ export class UserService {
       console.log(initDataRaw)
       await new Promise((resolve) => {
         setTimeout(() => {
-          resolve()
+          resolve(undefined)
         }, 1000)
       })
       // const jsondata = JSON.stringify({ initData: initDataRaw });
