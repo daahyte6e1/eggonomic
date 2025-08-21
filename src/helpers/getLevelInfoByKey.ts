@@ -34,19 +34,34 @@ const LEVEL_INFO = {
     levelPageDescription: 'Чем выше ранг, тем больше дохода приносит стейкинг',
     factor: 2,
     prices: [
+      // {
+      //   key: 'one_month_member',
+      //   price: 4,
+      //   title: '1 месяц'
+      // },
+      // {
+      //   key: 'six_month_member',
+      //   price: 12,
+      //   title: '6 месяцев'
+      // },
+      // {
+      //   key: 'one_year_member',
+      //   price: 20,
+      //   title: '1 месяцев'
+      // }
       {
         key: 'one_month_member',
-        price: 4,
+        price: 1,
         title: '1 месяц'
       },
       {
         key: 'six_month_member',
-        price: 12,
+        price: 1,
         title: '6 месяцев'
       },
       {
         key: 'one_year_member',
-        price: 20,
+        price: 1,
         title: '1 месяцев'
       }
     ]
@@ -68,19 +83,34 @@ const LEVEL_INFO = {
     levelPageDescription: 'Чем выше ранг, тем больше дохода приносит стейкинг',
     factor: 4,
     prices: [
+      // {
+      //   key: 'one_month_supporter',
+      //   price: 7,
+      //   title: '1 месяц'
+      // },
+      // {
+      //   key: 'six_month_supporter',
+      //   price: 21,
+      //   title: '6 месяцев'
+      // },
+      // {
+      //   key: 'one_year_supporter',
+      //   price: 35,
+      //   title: '12 месяцев'
+      // }
       {
         key: 'one_month_supporter',
-        price: 7,
+        price: 1,
         title: '1 месяц'
       },
       {
         key: 'six_month_supporter',
-        price: 21,
+        price: 1,
         title: '6 месяцев'
       },
       {
         key: 'one_year_supporter',
-        price: 35,
+        price: 1,
         title: '12 месяцев'
       }
     ]
@@ -102,19 +132,34 @@ const LEVEL_INFO = {
     levelPageDescription: 'Поздравляем, у вас максимальный ранг!',
     factor: 8,
     prices: [
+      // {
+      //   key: 'one_month_supporter',
+      //   price: 10,
+      //   title: '1 месяц'
+      // },
+      // {
+      //   key: 'six_month_supporter',
+      //   price: 30,
+      //   title: '6 месяцев'
+      // },
+      // {
+      //   key: 'one_year_supporter',
+      //   price: 50,
+      //   title: '12 месяцев'
+      // }
       {
         key: 'one_month_supporter',
-        price: 10,
+        price: 1,
         title: '1 месяц'
       },
       {
         key: 'six_month_supporter',
-        price: 30,
+        price: 1,
         title: '6 месяцев'
       },
       {
         key: 'one_year_supporter',
-        price: 50,
+        price: 1,
         title: '12 месяцев'
       }
     ]
