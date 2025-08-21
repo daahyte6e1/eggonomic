@@ -12,7 +12,9 @@
       width: unset;
       display: flex;
       gap: 15px;
-      cursor: pointer;
+      &.disabled {
+        cursor: default;
+      }
 
       &:hover {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -20,6 +22,9 @@
 
       &.active {
         border: 0.6px solid rgba(255, 255, 255, 1);
+      }
+      &.disabled {
+        opacity: .5;
       }
 
       .title {
@@ -63,9 +68,33 @@
       }
     }
   }
-  .button {
+  .button-block {
     position: fixed;
     bottom: 0;
+    width: 100%;
+    left: 0;
+    border-top: 0.6px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    background-color: #000000;
+    .block {
+      padding: 10px 15px;
+      .button {
+        display: flex;
+        background-color: #FFFFFF;
+        color: #000000;
+        justify-content: center;
+        text-align: center;
+        border-radius: 15px;
+        padding: 15px 0;
+        width: 100%;
+        &.active {
+          cursor: pointer;
+        }
+        &.in-active {
+          opacity: .5;
+        }
+      }
+    }
   }
   .background-block {
     z-index: -1;

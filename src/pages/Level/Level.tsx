@@ -1,4 +1,6 @@
 import type { FC } from 'react';
+import { openLink } from '@telegram-apps/sdk-react';
+
 import { useEffect, useState } from 'react';
 import { List } from '@telegram-apps/telegram-ui';
 
@@ -7,6 +9,7 @@ import { useUserContext } from '@/context/UserContext.tsx';
 import './Level.scss';
 
 import {
+  getLevelByKey,
   getLevelCardTitleByKey,
   getLevelFactorByKey, getLevelGradientTextColorByKey,
   getLevelInfoByKey,
@@ -17,6 +20,7 @@ import LevelBackground from "@/components/LevelBackground";
 import {GradientCircle} from "@/components/GradientCircle";
 import {LevelIndicator} from "@/components/LevelIndicator";
 import {Factor, GradientCoin} from "@/components/Icons";
+import {Link} from "@/components/Link/Link";
 
 interface LevelInfo {
   level: number;
@@ -36,13 +40,23 @@ export const Level: FC = () => {
   const [levelInformation, setLevelInformation] = useState<LevelInfo | null>(null)
   const [activeLevel, setActiveLevel] = useState<string>('')
 
+  const updateActiveLevelHandler = (level) => {
+    if (checkIsDisabled(level)) return
+
+    setActiveLevel(level)
+  }
+
   useEffect(() => {
     const levelInfo = getLevelInfoByKey(userInfo.level)
-    if (levelInfo) {
-      setLevelInformation(levelInfo)
-      setActiveLevel(userInfo.level) // Устанавливаем текущий уровень как активный
-    }
+    if (levelInfo) setLevelInformation(levelInfo)
+
   }, [userInfo.level])
+
+  const checkIsDisabled = (levelKey) => {
+    const levelNumber = getLevelByKey(levelKey)
+    const activeLevelNumber = getLevelByKey(userInfo.level)
+    return levelNumber <= activeLevelNumber
+  }
 
   if (!levelInformation) {
     return (
@@ -80,9 +94,9 @@ export const Level: FC = () => {
         <div className="level-list column">
           {LEVEL_LIST.map((el) => (
             <div 
-              onClick={() => setActiveLevel(el)} 
+              onClick={() => updateActiveLevelHandler(el)}
               key={el} 
-              className={`card column ${activeLevel === el ? 'active' : ''}`}
+              className={`card column ${activeLevel === el ? 'active' : ''} ${checkIsDisabled(el) ? 'disabled' : ''}`}
             >
               <span className="title">
                 {getLevelCardTitleByKey(el)}
@@ -100,9 +114,13 @@ export const Level: FC = () => {
             </div>
           ))}
         </div>
-        <button className="button">
-          Повысить ранг
-        </button>
+        <div className="button-block">
+          <div className="block">
+          <Link to={`/level/${activeLevel}`} className={`button ${activeLevel ? 'active' : 'in-active'}`}>
+            Повысить ранг
+          </Link>
+          </div>
+        </div>
       </List>
     </Page>
   );

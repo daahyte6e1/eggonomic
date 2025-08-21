@@ -1,0 +1,43 @@
+.single-level-page {
+  justify-content: center;
+  position: relative;
+
+  .information-block {
+    padding-top: 130px;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 40px;
+    .title {
+      font-weight: 500;
+      font-size: 36px;
+      padding-bottom: 15px;
+      padding-top: 40px;
+    }
+    .description {
+      font-size: 16px;
+    }
+  }
+  .level-list {
+    display: flex;
+    gap: 15px;
+    padding-bottom: 50px;
+
+    .card {
+      width: unset;
+      display: flex;
+      gap: 15px;
+      cursor: pointer;
+      .title {
+        font-size: 16px;
+        font-weight: 500;
+      }
+      .price {
+        font-size: 14px;
+        font-weight: 500;
+        display: flex;
+        gap: 4px;
+        align-items: center;
+      }
+    }
+  }
+}

@@ -29,8 +29,8 @@ const LEVEL_INFO = {
     },
     title: 'Member',
     isCircle: false,
-    levelPageTitle: 'Вы Egg Shaper',
     cardTitle: 'Egg Shaper',
+    levelPageTitle: 'Вы Egg Shaper',
     levelPageDescription: 'Чем выше ранг, тем больше дохода приносит стейкинг',
     factor: 2,
     prices: [
@@ -126,6 +126,8 @@ export const LEVEL_LIST = ['believer', 'supporter', 'member']
 export const getLevelInfoByKey = (key: string) => LEVEL_INFO[key as keyof typeof LEVEL_INFO]
 
 export const getLevelCardTitleByKey = (key: string) => LEVEL_INFO[key as keyof typeof LEVEL_INFO].cardTitle
+
+export const getLevelByKey = (key: string) => LEVEL_INFO[key as keyof typeof LEVEL_INFO].level
 
 export const getLevelFactorByKey = (key: string) => LEVEL_INFO[key as keyof typeof LEVEL_INFO].factor
 

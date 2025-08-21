@@ -3,6 +3,7 @@ import type { ComponentType, JSX } from 'react';
 import { Home } from '@/pages/Home/Home';
 import { Inventory } from '@/pages/Inventory/Inventory';
 import {Level} from '@/pages/Level/Level'
+import {SingleLevel} from "@/pages/SingleLevel/SingleLevel";
 
 interface Route {
   path: string;
@@ -14,5 +15,6 @@ interface Route {
 export const routes: Route[] = [
   { path: '/', Component: Home },
   { path: '/inventory', Component: Inventory, title: 'Инвентарь' },
-  { path: '/level', Component: Level, title: 'Уровень' },
+  { path: '/level', Component: Level, title: 'Уровни' },
+  { path: '/level/:levelKey', Component: SingleLevel, title: 'Уровень' },
 ];
