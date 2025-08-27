@@ -2,6 +2,9 @@ import type { FC } from 'react';
 import { useState, useRef, useEffect } from 'react';
 import Lottie from 'lottie-react';
 import './GiftDetailModal.scss';
+import {TonCoin} from "@/components/Icons";
+import {Link} from "@/components/Link/Link";
+import {createTransaction} from "@/helpers";
 
 interface LottieData {
   [key: string]: unknown;
@@ -54,20 +57,19 @@ export const GiftDetailModal: FC<GiftDetailModalProps> = ({ gift, isOpen, onClos
         .then((data: LottieData) => {
           setLottieData(data);
           setIsLottieLoaded(true);
-          setIsLottieLoading(true);
+          setIsLottieLoading(false);
         })
         .catch(() => {
-          setIsLottieLoading(true);
+          setIsLottieLoading(false);
         });
     }
   }, [isOpen, gift.pic_url, isLottieLoaded, isLottieLoading]);
 
-  // Сброс состояния при закрытии модала
   useEffect(() => {
     if (!isOpen) {
       setIsLottieLoaded(false);
       setLottieData(null);
-      setIsLottieLoading(true);
+      setIsLottieLoading(false);
     }
   }, [isOpen]);
 
@@ -157,6 +159,8 @@ export const GiftDetailModal: FC<GiftDetailModalProps> = ({ gift, isOpen, onClos
     };
   }, [isOpen]);
 
+  const withdrawal = () => createTransaction(0.2, `refund${gift.telegram_gift_id}`)
+
   if (!isOpen) return null;
 
   return (
@@ -178,47 +182,74 @@ export const GiftDetailModal: FC<GiftDetailModalProps> = ({ gift, isOpen, onClos
         <div className="modal-header">
           <div className="drag-indicator"></div>
         </div>
-        <div className="modal-body">
-          <div className="gift-modal-image-container">
-            {/* Показываем изображение пока Lottie не загрузился */}
-            {!isLottieLoaded && (
-              <img
-                src={gift.data_url}
-                alt={`${gift.telegram_gift_name} ${gift.telegram_gift_model}`}
-                className="gift-modal-image"
-              />
-            )}
-            
-            {/* Показываем Lottie анимацию после загрузки */}
-            {isLottieLoaded && lottieData && (
-              <div className="gift-modal-lottie-container">
-                <Lottie
-                  animationData={lottieData}
-                  loop={true}
-                  autoplay={true}
-                  className="gift-modal-lottie"
+        <div className="modal-body column">
+          <div className="column gift-info">
+            <div className="gift-modal-image-container">
+              {!isLottieLoaded && (
+                <img
+                  src={gift.data_url}
+                  alt={`${gift.telegram_gift_name} ${gift.telegram_gift_model}`}
+                  className="gift-modal-image"
                 />
+              )}
+
+              {isLottieLoaded && lottieData && (
+                <div className="gift-modal-lottie-container">
+                  <Lottie
+                    animationData={lottieData}
+                    loop={true}
+                    autoplay={true}
+                    className="gift-modal-lottie"
+                  />
+                </div>
+              )}
+
+              {isLottieLoading && (
+                <div className="gift-modal-loading">
+                  <div className="loading-spinner"></div>
+                </div>
+              )}
+            </div>
+            <div className="flex withdrawal">
+              <div className="card column">
+                <span>Комиссия за вывод:</span>
+                <div> 0.2 <TonCoin /> </div>
               </div>
-            )}
-            
-            {/* Индикатор загрузки Lottie */}
-            {isLottieLoading && (
-              <div className="gift-modal-loading">
-                <div className="loading-spinner"></div>
-                <p>Загрузка анимации...</p>
+            </div>
+            <div className="gift-modal-info column">
+            <div className="column table">
+              <div className="item row">
+                <span className="title">
+                  Модель
+                </span>
+                <span className="description">
+                  {gift.telegram_gift_model} ({gift.telegram_gift_model_rare}%)
+                </span>
               </div>
-            )}
+              <div className="item row">
+                <span className="title">
+                  Фон
+                </span>
+                <span className="description">
+                  {gift.telegram_gift_backdrop} ({gift.telegram_gift_backdrop_rare}%)
+                </span>
+              </div>
+              <div className="item row">
+                <span className="title">
+                  Узор
+                </span>
+                <span className="description">
+                  {gift.telegram_gift_symbol} ({gift.telegram_gift_symbol_rare}%)
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="gift-modal-info">
-            <h2 className="gift-modal-name">{gift.telegram_gift_name}</h2>
-            <p className="gift-modal-number">#{gift.telegram_gift_number}</p>
-            <p className="gift-modal-model">{gift.telegram_gift_model}</p>
-            {gift.telegram_gift_backdrop && (
-              <p className="gift-modal-backdrop">Backdrop: {gift.telegram_gift_backdrop}</p>
-            )}
-            {gift.telegram_gift_symbol && (
-              <p className="gift-modal-symbol">Symbol: {gift.telegram_gift_symbol}</p>
-            )}
+          </div>
+
+          <div onClick={() => withdrawal()}  className="button-block">
+            <div className="button">
+              Вывести
+            </div>
           </div>
         </div>
       </div>

@@ -32,7 +32,7 @@ export class UserService {
           level: 2
         }
       }
-      const levelKey = KEY_BY_LEVEL[res.user_info.level]
+      const levelKey = KEY_BY_LEVEL[res.user_info.level as keyof typeof KEY_BY_LEVEL]
 
       const result: UserInfo = {
         uid: res.user_info.uid,

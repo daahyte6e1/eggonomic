@@ -1,6 +1,5 @@
 import type { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { beginCell } from '@ton/core';
 
 import { useEffect, useState } from 'react';
 import { List } from '@telegram-apps/telegram-ui';
@@ -9,8 +8,9 @@ import { Page } from '@/components/Page.tsx';
 import './SingleLevel.scss';
 import {GradientCircle} from '@/components/GradientCircle';
 import {LevelIndicator} from '@/components/LevelIndicator';
-import {getLevelInfoByKey} from '@/helpers';
-import { useTonConnectUI, SendTransactionRequest } from '@tonconnect/ui-react';
+import {getLevelInfoByKey, createTransaction} from '@/helpers';
+import { useUserContext } from '@/context/UserContext';
+import { initDataRaw as _initDataRaw, useSignal } from '@telegram-apps/sdk-react';
 
 import {TonCoin} from '@/components/Icons';
 
@@ -34,6 +34,8 @@ interface LevelInfo {
 export const SingleLevel: FC = () => {
   const { levelKey } = useParams();
   const [levelInformation, setLevelInformation] = useState<LevelInfo | null>(null)
+  const { initializeUser } = useUserContext();
+  const initDataRaw = useSignal(_initDataRaw);
 
   useEffect(() => {
     if (levelKey) {
@@ -42,32 +44,17 @@ export const SingleLevel: FC = () => {
     }
   }, [levelKey])
 
-  const [tonConnectUI] = useTonConnectUI();
 
-  async function createTransaction(amount: number, memo: string): Promise<void> {
-
-    const cell = beginCell()
-      .storeUint(0, 32)
-      .storeStringTail(memo)
-      .endCell();
-
-    const boc = cell.toBoc({ idx: false });
-    const payload = btoa(String.fromCharCode(...boc));
-
-    const transaction: SendTransactionRequest = {
-      validUntil: Math.floor(Date.now() / 1000) + 60,
-      network: -3 as any, //todo need delete
-      messages: [
-        {
-          address: 'UQAc2HeqsF1fQaoMPueedr5aIByh2PUCMbtrH3nbctOBFtXk',
-          amount: Math.round(amount * 1e9).toString(),
-          payload: payload
-        }
-      ]
-    };
-
-    const result = await tonConnectUI.sendTransaction(transaction);
-    console.log(result)
+  const createTransactionHandler = async (price: number, key: string) => {
+    try {
+      await createTransaction(price, key)
+      
+      if (initDataRaw) {
+        await initializeUser(initDataRaw)
+      }
+    } catch (e) {
+      console.error(e)
+    }
   }
   if (!levelInformation || !levelInformation.prices) {
     return (
@@ -102,7 +89,7 @@ export const SingleLevel: FC = () => {
         <div className='level-list column'>
           {levelInformation.prices.map((price) => (
             <div
-              onClick={() => createTransaction(price.price, price.key)}
+              onClick={() => createTransactionHandler(price.price, price.key)}
               key={price.key}
               className='card'
             >

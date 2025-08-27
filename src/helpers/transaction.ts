@@ -1,0 +1,34 @@
+import {SendTransactionRequest, useTonConnectUI} from '@tonconnect/ui-react';
+import {beginCell} from '@ton/core';
+import {SendTransactionResponse} from '@tonconnect/sdk'
+
+const [tonConnectUI] = useTonConnectUI();
+
+async function createTransaction(amount: number, memo: string): Promise<SendTransactionResponse> {
+  const cell = beginCell()
+    .storeUint(0, 32)
+    .storeStringTail(memo)
+    .endCell();
+
+  const boc = cell.toBoc({ idx: false });
+  const payload = btoa(String.fromCharCode(...boc));
+
+  const transaction: SendTransactionRequest = {
+    validUntil: Math.floor(Date.now() / 1000) + 60,
+    network: -3 as any, //todo need delete
+    messages: [
+      {
+        address: 'UQAc2HeqsF1fQaoMPueedr5aIByh2PUCMbtrH3nbctOBFtXk',
+        amount: Math.round(amount * 1e9).toString(),
+        payload: payload
+      }
+    ]
+  };
+
+  const result = await tonConnectUI.sendTransaction(transaction);
+  return result
+}
+
+export {
+  createTransaction
+}
