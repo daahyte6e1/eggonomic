@@ -11,3 +11,4 @@ if (typeof window !== 'undefined') {
 // Also make them available as global variables
 (globalThis as any).Buffer = Buffer;
 (globalThis as any).process = process;
+

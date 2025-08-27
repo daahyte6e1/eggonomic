@@ -1,8 +1,11 @@
 // import { APIManager } from '@/helpers';
 
+import {APIManager} from "@/helpers";
+
 export interface UserInfo {
   uid: string;
   key: string;
+  level: number;
   uf_wallet_address?: string;
 }
 
@@ -12,8 +15,17 @@ export interface UserServiceResponse {
   user_info: {
     uid: string;
     key: string;
+    level: number
   };
   uf_wallet_address?: string;
+}
+
+export interface LevelInfo {
+  '6_months_price': number
+  month_price: number
+  multiplier: number
+  name: string
+  year_price: number
 }
 
 export class UserService {
@@ -30,13 +42,16 @@ export class UserService {
         "show_msg": "",
         "user_info": {
           "key": "SqsjveiLNrx5sAntpwPqxP3roywtUrUgZq6zQRQIgsQ8CXyvN6zH",
-          "uid": "900008774"
+          "uid": "900008774",
+          level: 2
         }
       }
-
+      const levelsInfo = await APIManager.get<LevelInfo>('/eggs/api/get_levels_info', res.user_info.key)
+      console.log(levelsInfo)
       const result: UserInfo = {
         uid: res.user_info.uid,
         key: res.user_info.key,
+        level: res.user_info.level,
         // uf_wallet_address: res.uf_wallet_address || '',
       };
 

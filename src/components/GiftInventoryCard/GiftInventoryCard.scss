@@ -1,10 +1,11 @@
 .gift-inventory-card {
-  width: 112px;
+  width: 100%;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   position: relative;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
 
   &:hover {
     transform: translateY(-2px);

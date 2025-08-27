@@ -3,7 +3,7 @@ import { UserService } from '@/services/UserService';
 import { APIManager } from '@/helpers/APIManager';
 
 interface UserInfo {
-  level: string,
+  level: number,
   uid: string | null;
   key: string | null;
   uf_wallet_address: string | null;
@@ -70,7 +70,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     uid: null,
     key: null,
     uf_wallet_address: null,
-    level: 'member'
+    level: 1
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -86,7 +86,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       uid: null,
       key: null,
       uf_wallet_address: null,
-      level: 'member'
+      level: 1
     });
     setUserPointsState(0);
     setNftsData([]);
@@ -108,7 +108,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         uid: userData.uid,
         key: userData.key,
         uf_wallet_address: userData.uf_wallet_address || '',
-        level: 'member'
+        level: 1
       });
 
       // Загружаем данные пользователя (баланс и NFT)

@@ -14,7 +14,7 @@ const LEVEL_INFO = {
     isCircle: true,
     levelPageTitle: 'Ранг отсутствует',
     levelPageDescription: 'Чем выше ранг, тем больше дохода приносит стейкинг',
-    factor: 1,
+    multiplier: 1,
     prices: []
   },
   member: {
@@ -32,7 +32,7 @@ const LEVEL_INFO = {
     cardTitle: 'Egg Shaper',
     levelPageTitle: 'Вы Egg Shaper',
     levelPageDescription: 'Чем выше ранг, тем больше дохода приносит стейкинг',
-    factor: 2,
+    multiplier: 2,
     prices: [
       // {
       //   key: 'one_month_member',
@@ -81,7 +81,7 @@ const LEVEL_INFO = {
     cardTitle: 'Hatch Support',
     levelPageTitle: 'Вы Hatch Support',
     levelPageDescription: 'Чем выше ранг, тем больше дохода приносит стейкинг',
-    factor: 4,
+    multiplier: 4,
     prices: [
       // {
       //   key: 'one_month_supporter',
@@ -130,7 +130,7 @@ const LEVEL_INFO = {
     cardTitle: 'True Believer',
     levelPageTitle: 'Вы True Believer',
     levelPageDescription: 'Поздравляем, у вас максимальный ранг!',
-    factor: 8,
+    multiplier: 8,
     prices: [
       // {
       //   key: 'one_month_supporter',
@@ -174,7 +174,7 @@ export const getLevelCardTitleByKey = (key: string) => LEVEL_INFO[key as keyof t
 
 export const getLevelByKey = (key: string) => LEVEL_INFO[key as keyof typeof LEVEL_INFO].level
 
-export const getLevelFactorByKey = (key: string) => LEVEL_INFO[key as keyof typeof LEVEL_INFO].factor
+export const getLevelFactorByKey = (key: string) => LEVEL_INFO[key as keyof typeof LEVEL_INFO].multiplier
 
 export const getLevelMinPriceByKey = (key: string) => LEVEL_INFO[key as keyof typeof LEVEL_INFO].prices[0].price
 
