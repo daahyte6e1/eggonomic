@@ -1,3 +1,3 @@
 export { APIManager } from './APIManager';
 export { publicUrl } from './publicUrl';
-export { getLevelInfoByKey } from './getLevelInfoByKey';
+export { getLevelInfoByKey, KEY_BY_LEVEL } from './getLevelInfoByKey';

@@ -1,13 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { UserService } from '@/services/UserService';
 import { APIManager } from '@/helpers/APIManager';
+import {UserInfo} from '@/types';
 
-interface UserInfo {
-  level: number,
-  uid: string | null;
-  key: string | null;
-  uf_wallet_address: string | null;
-}
 
 interface NFTData {
   amount_to_checkin: number;
@@ -67,10 +62,10 @@ interface UserProviderProps {
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [userInfo, setUserInfoState] = useState<UserInfo>({
-    uid: null,
-    key: null,
-    uf_wallet_address: null,
-    level: 1
+    uid: '',
+    key: '',
+    uf_wallet_address: '',
+    level: ''
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -83,10 +78,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const clearUserInfo = useCallback(() => {
     setUserInfoState({
-      uid: null,
-      key: null,
-      uf_wallet_address: null,
-      level: 1
+      uid: '',
+      key: '',
+      uf_wallet_address: '',
+      level: ''
     });
     setUserPointsState(0);
     setNftsData([]);
@@ -108,7 +103,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         uid: userData.uid,
         key: userData.key,
         uf_wallet_address: userData.uf_wallet_address || '',
-        level: 1
+        level: userData.level
       });
 
       // Загружаем данные пользователя (баланс и NFT)

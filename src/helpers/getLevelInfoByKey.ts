@@ -29,8 +29,8 @@ const LEVEL_INFO = {
     },
     title: 'Member',
     isCircle: false,
-    cardTitle: 'Egg Shaper',
-    levelPageTitle: 'Вы Egg Shaper',
+    cardTitle: 'Member',
+    levelPageTitle: 'Вы Member',
     levelPageDescription: 'Чем выше ранг, тем больше дохода приносит стейкинг',
     multiplier: 2,
     prices: [
@@ -164,6 +164,13 @@ const LEVEL_INFO = {
       }
     ]
   }
+}
+
+export const KEY_BY_LEVEL = {
+  1: 'unranked',
+  2: 'member',
+  3: 'supporter',
+  4: 'believer'
 }
 
 export const LEVEL_LIST = ['believer', 'supporter', 'member']

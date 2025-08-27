@@ -1,13 +1,6 @@
 // import { APIManager } from '@/helpers';
-
-import {APIManager} from "@/helpers";
-
-export interface UserInfo {
-  uid: string;
-  key: string;
-  level: number;
-  uf_wallet_address?: string;
-}
+import { KEY_BY_LEVEL } from '@/helpers';
+import {UserInfo} from '@/types';
 
 export interface UserServiceResponse {
   result: boolean;
@@ -20,13 +13,6 @@ export interface UserServiceResponse {
   uf_wallet_address?: string;
 }
 
-export interface LevelInfo {
-  '6_months_price': number
-  month_price: number
-  multiplier: number
-  name: string
-  year_price: number
-}
 
 export class UserService {
   static async initializeUser(initDataRaw: string): Promise<UserInfo> {
@@ -46,12 +32,12 @@ export class UserService {
           level: 2
         }
       }
-      const levelsInfo = await APIManager.get<LevelInfo>('/eggs/api/get_levels_info', res.user_info.key)
-      console.log(levelsInfo)
+      const levelKey = KEY_BY_LEVEL[res.user_info.level]
+
       const result: UserInfo = {
         uid: res.user_info.uid,
         key: res.user_info.key,
-        level: res.user_info.level,
+        level: levelKey,
         // uf_wallet_address: res.uf_wallet_address || '',
       };
 
