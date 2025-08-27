@@ -3,26 +3,28 @@ import './ActivePositions.scss'
 
 import {GiftCard} from "@/components/GiftCard/GiftCard";
 import { useUserContext } from '@/context/UserContext';
+import {getLevelInfoByKey} from "@/helpers";
 
 interface GiftData {
   collection: string;
   model: string;
   count: number;
   speed: number;
-  factor: number;
+  multiplier: number;
   pic: string;
 }
 
 export const ActivePositions: FC = () => {
   const { userInfo, nftsData, isLoading, error, isAuthenticated } = useUserContext();
 
+  const levelInfo = getLevelInfoByKey(userInfo.level)
   // Трансформируем NFT данные в формат GiftData
   const giftsData: GiftData[] = nftsData.map(nft => ({
     collection: nft.name,
     model: nft.model,
     count: nft.count,
     speed: 24, // пока оставляем 24
-    factor: 4, // пока оставляем 4
+    multiplier: levelInfo?.multiplier || 1,
     pic: nft.pic,
   }));
 
