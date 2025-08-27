@@ -11,6 +11,7 @@ import {LevelIndicator} from '@/components/LevelIndicator';
 import {getLevelInfoByKey, createTransaction} from '@/helpers';
 import { useUserContext } from '@/context/UserContext';
 import { initDataRaw as _initDataRaw, useSignal } from '@telegram-apps/sdk-react';
+import { useTonConnectUI } from '@tonconnect/ui-react';
 
 import {TonCoin} from '@/components/Icons';
 
@@ -36,6 +37,7 @@ export const SingleLevel: FC = () => {
   const [levelInformation, setLevelInformation] = useState<LevelInfo | null>(null)
   const { initializeUser } = useUserContext();
   const initDataRaw = useSignal(_initDataRaw);
+  const [tonConnectUI] = useTonConnectUI();
 
   useEffect(() => {
     if (levelKey) {
@@ -47,15 +49,20 @@ export const SingleLevel: FC = () => {
 
   const createTransactionHandler = async (price: number, key: string) => {
     try {
-      await createTransaction(price, key)
+      await createTransaction(tonConnectUI, price, key)
       
       if (initDataRaw) {
         await initializeUser(initDataRaw)
       }
-    } catch (e) {
-      console.error(e)
+    } catch {
+      // Handle error silently or log to a proper logging service
     }
   }
+
+  const handleTransactionClick = (price: number, key: string) => {
+    void createTransactionHandler(price, key);
+  };
+
   if (!levelInformation || !levelInformation.prices) {
     return (
       <></>
@@ -89,7 +96,7 @@ export const SingleLevel: FC = () => {
         <div className='level-list column'>
           {levelInformation.prices.map((price) => (
             <div
-              onClick={() => createTransactionHandler(price.price, price.key)}
+              onClick={() => handleTransactionClick(price.price, price.key)}
               key={price.key}
               className='card'
             >

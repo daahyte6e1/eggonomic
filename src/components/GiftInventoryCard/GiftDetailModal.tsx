@@ -3,8 +3,8 @@ import { useState, useRef, useEffect } from 'react';
 import Lottie from 'lottie-react';
 import './GiftDetailModal.scss';
 import {TonCoin} from "@/components/Icons";
-import {Link} from "@/components/Link/Link";
 import {createTransaction} from "@/helpers";
+import { useTonConnectUI } from '@tonconnect/ui-react';
 
 interface LottieData {
   [key: string]: unknown;
@@ -46,6 +46,7 @@ export const GiftDetailModal: FC<GiftDetailModalProps> = ({ gift, isOpen, onClos
   const modalRef = useRef<HTMLDivElement>(null);
   const startYRef = useRef(0);
   const currentYRef = useRef(0);
+  const [tonConnectUI] = useTonConnectUI();
 
   // Загрузка Lottie анимации
   useEffect(() => {
@@ -159,7 +160,11 @@ export const GiftDetailModal: FC<GiftDetailModalProps> = ({ gift, isOpen, onClos
     };
   }, [isOpen]);
 
-  const withdrawal = () => createTransaction(0.2, `refund${gift.telegram_gift_id}`)
+  const withdrawal = () => createTransaction(tonConnectUI, 0.2, `refund${gift.telegram_gift_id}`)
+
+  const handleWithdrawal = () => {
+    void withdrawal();
+  };
 
   if (!isOpen) return null;
 
@@ -246,7 +251,7 @@ export const GiftDetailModal: FC<GiftDetailModalProps> = ({ gift, isOpen, onClos
           </div>
           </div>
 
-          <div onClick={() => withdrawal()}  className="button-block">
+          <div onClick={handleWithdrawal}  className="button-block">
             <div className="button">
               Вывести
             </div>

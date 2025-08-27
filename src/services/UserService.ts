@@ -15,9 +15,9 @@ export interface UserServiceResponse {
 
 
 export class UserService {
-  static async initializeUser(initDataRaw: string): Promise<UserInfo> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  static initializeUser(_initDataRaw: string): Promise<UserInfo> {
     try {
-      console.log(initDataRaw)
       // const jsondata = JSON.stringify({ initData: initDataRaw });
       // const res = await APIManager.post<UserServiceResponse>('/eggs/api/initdata', jsondata);
       //
@@ -41,7 +41,7 @@ export class UserService {
         // uf_wallet_address: res.uf_wallet_address || '',
       };
 
-      return result;
+      return Promise.resolve(result);
     } catch (error) {
       throw new Error(error instanceof Error ? error.message : 'Failed to initialize user');
     }
