@@ -1,0 +1,212 @@
+.gift-detail-page {
+  .modal-content {
+    width: 100%;
+    background: #000000;
+    border-radius: 20px 20px 0 0;
+    position: relative;
+    animation: slideUp 0.3s ease-out;
+    transition: transform 0.3s ease-out;
+
+    &.dragging {
+      transition: none;
+    }
+  }
+
+  .modal-header {
+    padding: 16px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .drag-indicator {
+      width: 40px;
+      height: 4px;
+      background-color: rgba(255, 255, 255);
+      border-radius: 2px;
+      cursor: grab;
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
+  }
+
+  .modal-body {
+    padding: 0;
+    height: calc(100% - 36px);
+    overflow-y: auto;
+    justify-content: space-between;
+
+    .gift-info {
+      gap: 20px;
+    }
+
+    .button-block {
+      border-top: 0.6px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      background-color: #000000;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      left: 0;
+
+      .button {
+        display: flex;
+        background-color: #FFFFFF;
+        color: #000000;
+        justify-content: center;
+        text-align: center;
+        border-radius: 15px;
+        padding: 15px 0;
+        margin: 20px;
+      }
+    }
+
+    .gift-modal-image-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .gift-modal-image {
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        object-fit: cover;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        transition: opacity 0.3s ease-in-out;
+      }
+
+      .gift-modal-lottie-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .gift-modal-lottie {
+          width: 100%;
+          height: 100%;
+
+          svg {
+            border-radius: 20px;
+            display: block;
+          }
+        }
+      }
+
+      .gift-modal-loading {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+
+        .loading-spinner {
+          width: 40px;
+          height: 40px;
+          border: 3px solid rgba(255, 255, 255, 0.3);
+          border-top: 3px solid #ffffff;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          margin-bottom: 16px;
+        }
+
+        p {
+          font-size: 14px;
+          opacity: 0.8;
+          margin: 0;
+        }
+      }
+    }
+
+    .gift-modal-info {
+      text-align: center;
+      color: white;
+      gap: 10px;
+
+      .table {
+
+        .item:first-child {
+          .title {
+            border-radius: 20px 0 0 0;
+          }
+        }
+
+        .item:first-child {
+          .description {
+            border-radius: 0 20px 0 0;
+          }
+        }
+
+        .item:last-child {
+          .title {
+            border-radius: 0 0 0 20px;
+          }
+        }
+
+        .item:last-child {
+          .description {
+            border-radius: 0 0 20px 0;
+          }
+        }
+
+        .item {
+          .title,
+          .description {
+            display: flex;
+            padding: 15px 20px;
+            border: 0.6px solid rgba(255, 255, 255, 0.1);
+          }
+
+          .title {
+            background: rgba(255, 255, 255, 0.1);
+            width: 30%;
+            border-right: none;
+          }
+
+          .description {
+            border-left: none;
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    .withdrawal {
+      .card {
+        width: 100%;
+        display: flex;
+        gap: 10px;
+        justify-content: start;
+        align-items: start;
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+

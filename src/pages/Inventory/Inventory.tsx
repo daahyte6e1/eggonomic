@@ -5,6 +5,7 @@ import { initDataRaw as _initDataRaw, useSignal } from '@telegram-apps/sdk-react
 import { Link } from '@/components/Link/Link.tsx'
 import { Page } from '@/components/Page.tsx';
 import { useUserContext } from '@/context/UserContext.tsx';
+import { useGiftContext } from '@/context/GiftContext.tsx';
 import { APIManager } from '@/helpers';
 import './Inventory.scss';
 import {SearchBlock} from "@/components/SearchBlock/SearchBlock";
@@ -41,13 +42,22 @@ type FilteredGifts = {
 }
 
 export const Inventory: FC = () => {
-  const { userInfo, userPoints } = useUserContext();
+  const {userInfo, userPoints} = useUserContext();
+  const {setGifts} = useGiftContext();
   const initDataRaw = useSignal(_initDataRaw);
-  const [gifts, setGifts] = useState<Gift[]>([]);
+  const [localGifts, setLocalGifts] = useState<Gift[]>([]);
   const [filteredGifts, setFilteredGifts] = useState<FilteredGifts>({staked: [], notStaked: []});
-  const [searchText, setSearchText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
+  const updateFilteredData = (gifts: Gift[]): void => {
+    const filteredGifts = gifts.reduce((accumulator, gift: Gift) => {
+      if (gift.staked) accumulator.staked.push(gift)
+      if (!gift.staked) accumulator.notStaked.push(gift)
+
+      return accumulator
+    }, {staked: [], notStaked: []} as FilteredGifts)
+    setFilteredGifts(filteredGifts)
+  }
   useEffect(() => {
     const fetchInventory = async () => {
       if (!initDataRaw) {
@@ -57,20 +67,13 @@ export const Inventory: FC = () => {
 
       try {
         setIsLoading(true);
-        
-        const data = await APIManager.getTextable(`/eggs/api/inventory/${userInfo.key}`, initDataRaw);
-        // const giftsData = [];
-        const giftsData = Array.isArray(data) ? (data as Gift[]) : [];
-        const filteredGifts = giftsData.reduce((accumulator, gift: Gift) => {
-          if (gift.staked) accumulator.staked.push(gift)
-          if (!gift.staked) accumulator.notStaked.push(gift)
 
-          return accumulator
-        }, {staked: [], notStaked: []} as FilteredGifts)
+        const data = await APIManager.getTextable(`/eggs/api/inventory/${userInfo.key}`, initDataRaw);
+        const giftsData = Array.isArray(data) ? (data as Gift[]) : [];
+        setLocalGifts(giftsData);
         setGifts(giftsData);
-        setFilteredGifts(filteredGifts);
+        updateFilteredData(giftsData)
       } catch {
-        // Ошибка обрабатывается в UI через состояние isLoading
       } finally {
         setIsLoading(false);
       }
@@ -80,14 +83,12 @@ export const Inventory: FC = () => {
   }, [initDataRaw, userInfo.key]);
 
   const handleSearch = (searchText: string) => {
-    setSearchText(searchText);
-    
     if (!searchText.trim()) {
-      setFilteredGifts(filteredGifts);
+      updateFilteredData(localGifts);
       return;
     }
 
-    const filtered = gifts.reduce((accumulator: FilteredGifts, gift: Gift) => {
+    const filtered = localGifts.reduce((accumulator: FilteredGifts, gift: Gift) => {
       const isCorrectBySearchText =
         gift.telegram_gift_name.toLowerCase().includes(searchText.toLowerCase()) ||
         gift.telegram_gift_model.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -100,7 +101,7 @@ export const Inventory: FC = () => {
 
       return accumulator
     }, {staked: [], notStaked: []} as FilteredGifts)
-    
+
     setFilteredGifts(filtered);
   };
 
@@ -114,75 +115,61 @@ export const Inventory: FC = () => {
     }
   }, [userInfo])
 
-  const hasStakedGifts = Boolean(filteredGifts.staked.length)
   const hasNotStakedGifts = Boolean(filteredGifts.notStaked.length)
-  const hasGifts = hasStakedGifts || hasNotStakedGifts
+  const hasGifts = localGifts.length
 
   return (
     <Page back={true}>
       <List className="inventory-page page">
         <div className="">
-          <SearchBlock onSearch={handleSearch} />
+          <SearchBlock onSearch={handleSearch}/>
           {isLoading
-            ? (<div className='loading' />)
-            : hasGifts && searchText
-              ? (
-                <div className="no-results">
-                  <p>По вашему запросу ничего не найдено</p>
-                </div>
-              )
-              : !hasGifts
-                ? (
-                  <div className="inventory-empty">
-                    <p>У вас пока нет подарков</p>
+            ? (<div className='loading'/>)
+            : (
+              <div className="gift-grid-content content column bg-ellipse-sm bg-ellipse bg-ellipse-top">
+                <div className="card">
+                    <div className="card-header column">
+                      <div className="balance">
+                        {userPoints}
+                        <Coin height="17" width="16"/>
+                      </div>
+                      <Link to='/level' className='level'>
+                        {levelTitle}
+                        <Arrow/>
+                      </Link>
+                      <div className="staked-block">
+                        <span> Добыча в час: </span>
+                        <span>1000 <Coin width='9' height='10'/> </span>
+                      </div>
+                    </div>
+                    <div className="gifts-grid">
+                      {filteredGifts.staked.map((gift) => (
+                        <GiftInventoryCard key={gift.id} gift={gift}/>
+                      ))}
+                    </div>
                   </div>
-                )
-                : (
-                  <div className="gift-grid-content content column bg-ellipse-sm bg-ellipse bg-ellipse-top">
-                    {hasStakedGifts && (<div className="card">
-                        <div className="card-header column">
-                          <div className="balance">
-                            {userPoints}
-                            <Coin height="17" width="16" />
-                          </div>
-                          <Link to='/level' className='level'>
-                            {levelTitle}
-                            <Arrow/>
-                          </Link>
-                          <div className="staked-block">
-                            <span> Добыча в час: </span>
-                            <span>1000 <Coin width='9' height='10'/> </span>
-                          </div>
-                        </div>
-                        <div className="gifts-grid">
-                          {filteredGifts.staked.map((gift) => (
-                            <GiftInventoryCard key={gift.id} gift={gift} />
-                          ))}
-                        </div>
+                {hasNotStakedGifts && (<div className="card">
+                    <div className="card-header column">
+                      <div className="balance">
+                        Профиль
                       </div>
-                    )}
-                    {hasNotStakedGifts && (<div className="card">
-                        <div className="card-header column">
-                          <div className="balance">
-                            Профиль
-                          </div>
-                          <div className="staked-block">
-                            <span> Добыча в час: </span>
-                            <span> Неактивно </span>
-                          </div>
-                        </div>
-                        <div className="gifts-grid">
-                          {filteredGifts.notStaked
-                            .map((gift) => (
-                              <GiftInventoryCard key={gift.id} gift={gift} />
-                            ))}
-                        </div>
+                      <div className="staked-block">
+                        <span> Добыча в час: </span>
+                        <span> Неактивно </span>
                       </div>
-                    )}
-            </div>
-          )}
+                    </div>
+                    <div className="gifts-grid">
+                      {filteredGifts.notStaked
+                        .map((gift) => (
+                          <GiftInventoryCard key={gift.id} gift={gift}/>
+                        ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
         </div>
-        </List>
+      </List>
     </Page>
   );
 };

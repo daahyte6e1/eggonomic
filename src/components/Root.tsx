@@ -3,6 +3,7 @@ import { TonConnectUIProvider } from '@tonconnect/ui-react';
 import { App } from '@/components/App.tsx';
 import { ErrorBoundary } from '@/components/ErrorBoundary.tsx';
 import { UserProvider } from '@/context/UserContext.tsx';
+import { GiftProvider } from '@/context/GiftContext.tsx';
 import { UserInitializer } from '@/components/UserInitializer.tsx';
 import { publicUrl } from '@/helpers'
 
@@ -30,9 +31,11 @@ export function Root() {
         manifestUrl={publicUrl('tonconnect-manifest.json')}
       >
         <UserProvider>
-          <UserInitializer>
-            <App/>
-          </UserInitializer>
+          <GiftProvider>
+            <UserInitializer>
+              <App/>
+            </UserInitializer>
+          </GiftProvider>
         </UserProvider>
       </TonConnectUIProvider>
     </ErrorBoundary>

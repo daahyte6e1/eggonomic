@@ -16,12 +16,6 @@ export const Home: FC = () => {
       <List className='home-page bg-ellipse-dual page'>
         <WalletBlock />
         <BalanceBlock />
-        {/*<LevelIndicator*/}
-        {/*  size={150}*/}
-        {/*  colors={["#FFFF4A", "#FFDE59", "#FF9D00", "#E5D411", "#DEB200", "#C99B02"]}*/}
-        {/*  numberColor="#ba8832"*/}
-        {/*  number={1}*/}
-        {/*/>*/}
         <MenuBlock />
         <ActivePositions />
       </List>

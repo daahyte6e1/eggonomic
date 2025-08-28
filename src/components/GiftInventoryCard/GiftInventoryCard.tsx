@@ -1,6 +1,5 @@
 import type { FC } from 'react';
-import { useState } from 'react';
-import { GiftDetailModal } from './GiftDetailModal';
+import { useNavigate } from 'react-router-dom';
 import './GiftInventoryCard.scss';
 
 interface GiftInventoryCardProps {
@@ -29,37 +28,25 @@ interface GiftInventoryCardProps {
 }
 
 export const GiftInventoryCard: FC<GiftInventoryCardProps> = ({ gift }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleCardClick = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+    navigate(`/gift/${gift.id}`);
   };
 
   return (
-    <>
-      <div className="gift-inventory-card" onClick={handleCardClick}>
-        <div className="gift-image-container">
-          <img
-            src={gift.data_url}
-            alt={`${gift.telegram_gift_name} ${gift.telegram_gift_model}`}
-            className="gift-image"
-          />
-        </div>
-        <div className="gift-info">
-          <div className="gift-name">{gift.telegram_gift_name}</div>
-          <div className="gift-number">#{gift.telegram_gift_number}</div>
-        </div>
+    <div className="gift-inventory-card" onClick={handleCardClick}>
+      <div className="gift-image-container">
+        <img
+          src={gift.data_url}
+          alt={`${gift.telegram_gift_name} ${gift.telegram_gift_model}`}
+          className="gift-image"
+        />
       </div>
-
-      <GiftDetailModal
-        gift={gift}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-      />
-    </>
+      <div className="gift-info">
+        <div className="gift-name">{gift.telegram_gift_name}</div>
+        <div className="gift-number">#{gift.telegram_gift_number}</div>
+      </div>
+    </div>
   );
 };
