@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { UserService } from '@/services/UserService';
 import { APIManager } from '@/helpers/APIManager';
-import {UserInfo} from '@/types';
+import {UserInfo, NFTInfo, LoadNFTsResponse} from '@/types';
 
 
 interface NFTData {
@@ -35,6 +35,7 @@ interface UserContextType {
   userInfo: UserInfo;
   userPoints: number;
   nftsData: NFTData[];
+  availableNFTs: NFTInfo[];
   isAuthenticated: boolean;
   setUserInfo: (info: Partial<UserInfo>) => void;
   clearUserInfo: () => void;
@@ -71,6 +72,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
   const [userPoints, setUserPointsState] = useState<number>(0);
   const [nftsData, setNftsData] = useState<NFTData[]>([]);
+  const [availableNFTs, setAvailableNFTs] = useState<NFTInfo[]>([]);
 
   const setUserInfo = useCallback((info: Partial<UserInfo>) => {
     setUserInfoState(prev => ({ ...prev, ...info }));
@@ -85,6 +87,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     });
     setUserPointsState(0);
     setNftsData([]);
+    setAvailableNFTs([]);
     setError(null);
   }, []);
 
@@ -116,6 +119,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           if (stakesResponse.nfts) {
             setNftsData(stakesResponse.nfts);
           }
+        }
+        
+        // Загружаем доступные NFT для стейкинга
+        const availableNFTsResponse = await APIManager.get<LoadNFTsResponse>('/eggs/api/load_nfts', userData.key);
+        if (availableNFTsResponse.result && availableNFTsResponse.nfts) {
+          setAvailableNFTs(availableNFTsResponse.nfts);
         }
       } catch {
         // Не прерываем инициализацию, если не удалось загрузить данные
@@ -163,6 +172,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     userInfo,
     userPoints,
     nftsData,
+    availableNFTs,
     isAuthenticated: !!userInfo.key,
     setUserInfo,
     clearUserInfo,

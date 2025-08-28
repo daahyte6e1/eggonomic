@@ -8,7 +8,7 @@ interface GiftCardProps {
   giftData: {
     collection: string;
     model: string;
-    count: number;
+    count?: number;
     speed: number;
     multiplier: number;
     pic: string;
@@ -27,9 +27,9 @@ export const GiftCard: FC<GiftCardProps> = ({giftData}) => {
         <span>
           {giftData.collection} • {giftData.model}
         </span>
-        <span>
+        {giftData.count && (<span>
           У вас: {giftData.count}
-        </span>
+        </span>)}
         <div className='speed'>
           <Coin width='12' height='12'/>
           {giftData.speed} в сутки • <span className='factor'>X{giftData.multiplier}</span>

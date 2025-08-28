@@ -1,40 +1,38 @@
 import type { FC } from 'react';
-import './ActivePositions.scss'
+import './AvailablePositions.scss'
 
-import {GiftCard} from "@/components/GiftCard/GiftCard";
+import { GiftCard } from "@/components/GiftCard/GiftCard";
 import { useUserContext } from '@/context/UserContext';
-import {getLevelInfoByKey} from "@/helpers";
+import { getLevelInfoByKey } from "@/helpers";
 
 interface GiftData {
   collection: string;
   model: string;
-  count: number;
+  count?: number;
   speed: number;
   multiplier: number;
   pic: string;
 }
 
-export const ActivePositions: FC = () => {
-  const { userInfo, nftsData, isLoading, error, isAuthenticated } = useUserContext();
+export const AvailablePositions: FC = () => {
+  const { userInfo, availableNFTs, isLoading, error, isAuthenticated } = useUserContext();
 
-  const levelInfo = getLevelInfoByKey(userInfo.level)
-  // Трансформируем NFT данные в формат GiftData
-  const giftsData: GiftData[] = nftsData.map(nft => ({
-    collection: nft.name,
-    model: nft.model,
-    count: nft.count,
-    speed: 24, // пока оставляем 24
-    multiplier: levelInfo?.multiplier || 1,
-    pic: nft.pic,
-  }));
+  const levelInfo = getLevelInfoByKey(userInfo.level);
+
+  const giftsData: GiftData[] = availableNFTs
+    .map(nft => ({
+      collection: nft.name,
+      model: nft.model,
+      speed: nft["1_point_per_hours"],
+      multiplier: levelInfo?.multiplier || 1,
+      pic: nft.pic,
+    }));
 
   if (!isAuthenticated) {
     return (
       <div className="content position-content">
         <div className="card column">
-          <span>Для просмотра активных позиций необходимо авторизоваться</span>
-          <div>key: {userInfo.key}</div>
-          <div>isAuthenticated: {isAuthenticated}</div>
+          <span>Для просмотра доступных позиций необходимо авторизоваться</span>
         </div>
       </div>
     );
@@ -44,7 +42,7 @@ export const ActivePositions: FC = () => {
     return (
       <div className="content position-content">
         <div className="card column">
-          <span>Загрузка активных позиций...</span>
+          <span>Загрузка доступных позиций...</span>
         </div>
       </div>
     );
@@ -64,7 +62,7 @@ export const ActivePositions: FC = () => {
     return (
       <div className="content position-content">
         <div className="card column">
-          <span>У вас нет активных позиций</span>
+          <span>Нет доступных позиций для стейкинга</span>
         </div>
       </div>
     );
@@ -73,7 +71,7 @@ export const ActivePositions: FC = () => {
   return (
     <div className="content position-content">
       <div className="card column">
-        <span>Вы участвуете:</span>
+        <span>Доступные позиции для стейкинга:</span>
         {giftsData.map((giftData, index) => (
           <GiftCard key={index} giftData={giftData} />
         ))}
@@ -81,5 +79,3 @@ export const ActivePositions: FC = () => {
     </div>
   );
 };
-
-

@@ -6,7 +6,8 @@ import { WalletBlock } from '@/components/WalletBlock/WalletBlock'
 import { BalanceBlock } from '@/components/BalanceBlock/BalanceBlock';
 import { MenuBlock } from '@/components/MenuBlock/MenuBlock';
 
-import { ActivePositions } from "@/components/ActivePositions/ActivePositions";
+import { ActivePositions } from '@/components/ActivePositions/ActivePositions';
+import { AvailablePositions } from '@/components/AvailablePositions';
 
 import './Home.css'
 
@@ -18,6 +19,7 @@ export const Home: FC = () => {
         <BalanceBlock />
         <MenuBlock />
         <ActivePositions />
+        <AvailablePositions />
       </List>
     </Page>
   );
