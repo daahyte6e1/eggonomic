@@ -6,7 +6,7 @@ import { Link } from '@/components/Link/Link.tsx'
 import { Page } from '@/components/Page.tsx';
 import { useUserContext } from '@/context/UserContext.tsx';
 import { useGiftContext } from '@/context/GiftContext.tsx';
-import {APIManager, createErrorNotification} from '@/helpers';
+import {APIManager} from '@/helpers';
 import './Inventory.scss';
 import {SearchBlock} from '@/components/SearchBlock/SearchBlock';
 import { GiftInventoryCard } from '@/components/GiftInventoryCard';
