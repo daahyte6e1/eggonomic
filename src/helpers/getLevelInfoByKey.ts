@@ -181,7 +181,7 @@ export const getLevelCardTitleByKey = (key: string) => LEVEL_INFO[key as keyof t
 
 export const getLevelByKey = (key: string) => LEVEL_INFO[key as keyof typeof LEVEL_INFO].level
 
-export const getLevelFactorByKey = (key: string) => LEVEL_INFO[key as keyof typeof LEVEL_INFO].multiplier
+export const getLevelMultiplierByKey = (key: string) => LEVEL_INFO[key as keyof typeof LEVEL_INFO].multiplier
 
 export const getLevelMinPriceByKey = (key: string) => LEVEL_INFO[key as keyof typeof LEVEL_INFO].prices[0].price
 

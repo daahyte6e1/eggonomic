@@ -10,7 +10,8 @@ import './Level.scss';
 import {
   getLevelByKey,
   getLevelCardTitleByKey,
-  getLevelFactorByKey, getLevelGradientTextColorByKey,
+  getLevelMultiplierByKey,
+  getLevelGradientTextColorByKey,
   getLevelInfoByKey,
   getLevelMinPriceByKey,
   LEVEL_LIST
@@ -103,7 +104,7 @@ export const Level: FC = () => {
               <div className="additions">
                 <div className="item">
                   <Factor />
-                  Доходность Х{getLevelFactorByKey(el)}
+                  Доходность Х{getLevelMultiplierByKey(el)}
                 </div>
               </div>
               <div className={el + ' item price-item'}>

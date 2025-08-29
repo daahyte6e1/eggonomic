@@ -15,18 +15,24 @@ interface GiftData {
 }
 
 export const ActivePositions: FC = () => {
-  const { userInfo, nftsData, isLoading, error, isAuthenticated } = useUserContext();
+  const { userInfo, nftsData, isLoading, error, isAuthenticated, availableNFTs } = useUserContext();
 
   const levelInfo = getLevelInfoByKey(userInfo.level)
-  // Трансформируем NFT данные в формат GiftData
-  const giftsData: GiftData[] = nftsData.map(nft => ({
-    collection: nft.name,
-    model: nft.model,
-    count: nft.count,
-    speed: 24, // пока оставляем 24
-    multiplier: levelInfo?.multiplier || 1,
-    pic: nft.pic,
-  }));
+
+  const giftsData: GiftData[] = nftsData.reduce((acc, nft) => {
+    if (!nft.count) return acc
+
+    const speedInfo = availableNFTs.find(el => el.id === nft.gift_id)
+    acc.push({
+      collection: nft.name,
+      model: nft.model,
+      count: nft.count,
+      speed: speedInfo ? (24 / speedInfo['1_point_per_hours']) : 0,
+      multiplier: levelInfo?.multiplier || 1,
+      pic: nft.pic,
+    })
+    return acc
+  }, [])
 
   if (!isAuthenticated) {
     return (

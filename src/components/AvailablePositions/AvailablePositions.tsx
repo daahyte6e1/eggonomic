@@ -23,7 +23,7 @@ export const AvailablePositions: FC = () => {
     .map(nft => ({
       collection: nft.name,
       model: nft.model,
-      speed: nft["1_point_per_hours"],
+      speed: 24 / nft["1_point_per_hours"],
       multiplier: levelInfo?.multiplier || 1,
       pic: nft.pic,
     }));

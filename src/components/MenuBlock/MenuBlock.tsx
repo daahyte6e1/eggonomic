@@ -25,10 +25,10 @@ export const MenuBlock: FC = () => {
         <Ranking />
         {levelTitle}
       </Link>
-      <div className="card column">
+      <Link to='/referrals' className="card column">
         <Referrals />
         Referrals
-      </div>
+      </Link>
       <Link to="/inventory" className="card column">
         <Inventory />
         Inventory

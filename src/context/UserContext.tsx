@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
+import {FC, createContext, useContext, useState, ReactNode, useCallback, useEffect} from 'react';
 import { UserService } from '@/services/UserService';
 import { APIManager } from '@/helpers/APIManager';
-import {UserInfo, NFTInfo, LoadNFTsResponse} from '@/types';
+import {UserInfo, NFTInfo, LoadNFTsResponse, ReferralInfo} from '@/types';
+import {getLevelMultiplierByKey} from "@/helpers/getLevelInfoByKey";
 
 
 interface NFTData {
@@ -36,15 +37,18 @@ interface UserContextType {
   userPoints: number;
   nftsData: NFTData[];
   availableNFTs: NFTInfo[];
+  referralInfo: ReferralInfo | null;
   isAuthenticated: boolean;
   setUserInfo: (info: Partial<UserInfo>) => void;
   clearUserInfo: () => void;
   initializeUser: (initDataRaw: string) => Promise<void>;
   setUserPoints: (points: number) => void;
   loadUserData: () => Promise<void>;
+  loadReferralInfo: () => Promise<void>;
   isLoading: boolean;
   error: string | null;
   clearError: () => void;
+  summarySpeed: number;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -61,18 +65,20 @@ interface UserProviderProps {
   children: ReactNode;
 }
 
-export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
+export const UserProvider: FC<UserProviderProps> = ({ children }) => {
   const [userInfo, setUserInfoState] = useState<UserInfo>({
     uid: '',
     key: '',
     uf_wallet_address: '',
     level: ''
   });
+  const [summarySpeed, setSummarySpeed] = useState<number>(0)
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [userPoints, setUserPointsState] = useState<number>(0);
   const [nftsData, setNftsData] = useState<NFTData[]>([]);
   const [availableNFTs, setAvailableNFTs] = useState<NFTInfo[]>([]);
+  const [referralInfo, setReferralInfo] = useState<ReferralInfo | null>(null);
 
   const setUserInfo = useCallback((info: Partial<UserInfo>) => {
     setUserInfoState(prev => ({ ...prev, ...info }));
@@ -88,12 +94,28 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     setUserPointsState(0);
     setNftsData([]);
     setAvailableNFTs([]);
+    setReferralInfo(null);
     setError(null);
   }, []);
 
   const clearError = useCallback(() => {
     setError(null);
   }, []);
+
+  const loadReferralInfo = useCallback(async () => {
+    if (!userInfo.key) return;
+
+    try {
+      const requestBody = JSON.stringify({key: userInfo.key});
+      const response = await APIManager.post<ReferralInfo>('/eggs/api/load_ref_info', requestBody);
+
+      if (response.result) {
+        setReferralInfo(response);
+      }
+    } catch (err) {
+      console.error('Ошибка загрузки реферальной информации:', err);
+    }
+  }, [userInfo.key]);
 
   const initializeUser = useCallback(async (initDataRaw: string) => {
     try {
@@ -109,7 +131,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         level: userData.level
       });
 
-      // Загружаем данные пользователя (баланс и NFT)
       try {
         const stakesResponse = await APIManager.get<StakesResponse>('/eggs/api/load_stakes', userData.key);
         if (stakesResponse.result) {
@@ -121,13 +142,13 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           }
         }
         
-        // Загружаем доступные NFT для стейкинга
         const availableNFTsResponse = await APIManager.get<LoadNFTsResponse>('/eggs/api/load_nfts', userData.key);
         if (availableNFTsResponse.result && availableNFTsResponse.nfts) {
           setAvailableNFTs(availableNFTsResponse.nfts);
         }
+
+        await loadReferralInfo();
       } catch {
-        // Не прерываем инициализацию, если не удалось загрузить данные
         setError('Не удалось загрузить данные пользователя');
       }
     } catch (error) {
@@ -137,7 +158,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [loadReferralInfo]);
 
   const setUserPoints = useCallback((points: number) => {
     setUserPointsState(points);
@@ -160,12 +181,27 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           setNftsData(stakesResponse.nfts);
         }
       }
+
+      await loadReferralInfo();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Ошибка загрузки данных';
       setError(errorMessage);
       throw error;
     }
-  }, [userInfo.key]);
+  }, [userInfo.key, loadReferralInfo]);
+
+  useEffect(() => {
+    const summarySpeed = nftsData.reduce((acc, nft) => {
+      if (nft.count <= 0) return acc
+
+      const speedInfo = availableNFTs.find(el => el.id === nft.gift_id)
+      if (!speedInfo) return acc
+
+      acc += (24 / speedInfo['1_point_per_hours'] * nft.count / 24) * getLevelMultiplierByKey(userInfo.level)
+      return acc
+    }, 0)
+    setSummarySpeed(Number(summarySpeed.toFixed(1)))
+  }, [nftsData, availableNFTs, userInfo.level]);
 
   const value: UserContextType = {
     setUserPoints,
@@ -173,13 +209,16 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     userPoints,
     nftsData,
     availableNFTs,
+    referralInfo,
     isAuthenticated: !!userInfo.key,
     setUserInfo,
     clearUserInfo,
     initializeUser,
     loadUserData,
+    loadReferralInfo,
     isLoading,
     error,
+    summarySpeed,
     clearError,
   };
 

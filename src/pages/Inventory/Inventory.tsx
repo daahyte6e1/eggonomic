@@ -42,12 +42,11 @@ type FilteredGifts = {
 }
 
 export const Inventory: FC = () => {
-  const {userInfo, userPoints} = useUserContext();
+  const {userInfo, userPoints, summarySpeed} = useUserContext();
   const {setGifts} = useGiftContext();
   const initDataRaw = useSignal(_initDataRaw);
   const [localGifts, setLocalGifts] = useState<Gift[]>([]);
   const [filteredGifts, setFilteredGifts] = useState<FilteredGifts>({staked: [], notStaked: []});
-  const [isLoading, setIsLoading] = useState(true);
 
   const updateFilteredData = (gifts: Gift[]): void => {
     const filteredGifts = gifts.reduce((accumulator, gift: Gift) => {
@@ -60,22 +59,15 @@ export const Inventory: FC = () => {
   }
   useEffect(() => {
     const fetchInventory = async () => {
-      if (!initDataRaw) {
-        setIsLoading(false);
-        return;
-      }
+      if (!initDataRaw) return;
 
       try {
-        setIsLoading(true);
-
         const data = await APIManager.getTextable(`/eggs/api/inventory/${userInfo.key}`, initDataRaw);
         const giftsData = Array.isArray(data) ? (data as Gift[]) : [];
         setLocalGifts(giftsData);
         setGifts(giftsData);
         updateFilteredData(giftsData)
       } catch {
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -116,60 +108,56 @@ export const Inventory: FC = () => {
   }, [userInfo])
 
   const hasNotStakedGifts = Boolean(filteredGifts.notStaked.length)
-  const hasGifts = localGifts.length
 
   return (
     <Page back={true}>
       <List className="inventory-page page">
         <div className="">
           <SearchBlock onSearch={handleSearch}/>
-          {isLoading
-            ? (<div className='loading'/>)
-            : (
-              <div className="gift-grid-content content column bg-ellipse-sm bg-ellipse bg-ellipse-top">
-                <div className="card">
-                    <div className="card-header column">
-                      <div className="balance">
-                        {userPoints}
-                        <Coin height="17" width="16"/>
-                      </div>
-                      <Link to='/level' className='level'>
-                        {levelTitle}
-                        <Arrow/>
-                      </Link>
-                      <div className="staked-block">
-                        <span> Добыча в час: </span>
-                        <span>1000 <Coin width='9' height='10'/> </span>
-                      </div>
-                    </div>
-                    <div className="gifts-grid">
-                      {filteredGifts.staked.map((gift) => (
-                        <GiftInventoryCard key={gift.id} gift={gift}/>
-                      ))}
-                    </div>
+
+          <div className="gift-grid-content content column bg-ellipse-sm bg-ellipse bg-ellipse-top">
+            <div className="card">
+              <div className="card-header column">
+                <div className="balance">
+                  {userPoints}
+                  <Coin height="17" width="16"/>
+                </div>
+                <Link to='/level' className='level'>
+                  {levelTitle}
+                  <Arrow/>
+                </Link>
+                <div className="staked-block">
+                  <span> Добыча в час: </span>
+                  <span>{summarySpeed} <Coin width='9' height='10'/> </span>
+                </div>
+              </div>
+              <div className="gifts-grid">
+                {filteredGifts.staked.map((gift) => (
+                  <GiftInventoryCard key={gift.id} gift={gift}/>
+                ))}
+              </div>
+            </div>
+            {hasNotStakedGifts && (<div className="card">
+                <div className="card-header column">
+                  <div className="balance">
+                    Профиль
                   </div>
-                {hasNotStakedGifts && (<div className="card">
-                    <div className="card-header column">
-                      <div className="balance">
-                        Профиль
-                      </div>
-                      <div className="staked-block">
-                        <span> Добыча в час: </span>
-                        <span> Неактивно </span>
-                      </div>
-                    </div>
-                    <div className="gifts-grid">
-                      {filteredGifts.notStaked
-                        .map((gift) => (
-                          <GiftInventoryCard key={gift.id} gift={gift}/>
-                        ))}
-                    </div>
+                  <div className="staked-block">
+                    <span> Добыча в час: </span>
+                    <span> Неактивно </span>
                   </div>
-                )}
+                </div>
+                <div className="gifts-grid">
+                  {filteredGifts.notStaked
+                    .map((gift) => (
+                      <GiftInventoryCard key={gift.id} gift={gift}/>
+                    ))}
+                </div>
               </div>
             )}
+          </div>
         </div>
       </List>
     </Page>
   );
-};
+}

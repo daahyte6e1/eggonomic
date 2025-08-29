@@ -31,3 +31,10 @@ export interface LoadNFTsResponse {
   nfts: NFTInfo[];
   result: boolean;
 }
+
+export interface ReferralInfo {
+  earned: number;
+  referrals_count: number;
+  result: boolean;
+  tax: number;
+}
