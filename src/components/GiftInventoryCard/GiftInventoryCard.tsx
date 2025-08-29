@@ -35,17 +35,17 @@ export const GiftInventoryCard: FC<GiftInventoryCardProps> = ({ gift }) => {
   };
 
   return (
-    <div className="gift-inventory-card" onClick={handleCardClick}>
-      <div className="gift-image-container">
+    <div className='gift-inventory-card' onClick={handleCardClick}>
+      <div className='gift-image-container'>
         <img
           src={gift.data_url}
           alt={`${gift.telegram_gift_name} ${gift.telegram_gift_model}`}
-          className="gift-image"
+          className='gift-image'
         />
       </div>
-      <div className="gift-info">
-        <div className="gift-name">{gift.telegram_gift_name}</div>
-        <div className="gift-number">#{gift.telegram_gift_number}</div>
+      <div className='gift-info'>
+        <div className='gift-name'>{gift.telegram_gift_name}</div>
+        <div className='gift-number'>#{gift.telegram_gift_number}</div>
       </div>
     </div>
   );

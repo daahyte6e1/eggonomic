@@ -8,7 +8,7 @@ async function createTransaction(tonConnectUI: TonConnectUI, amount: number, mem
     .storeStringTail(memo)
     .endCell();
 
-  const boc = cell.toBoc({ idx: false });
+  const boc = cell.toBoc({idx: false});
   const payload = btoa(String.fromCharCode(...boc));
 
   const transaction: SendTransactionRequest = {

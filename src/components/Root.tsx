@@ -4,6 +4,7 @@ import { App } from '@/components/App.tsx';
 import { ErrorBoundary } from '@/components/ErrorBoundary.tsx';
 import { UserProvider } from '@/context/UserContext.tsx';
 import { GiftProvider } from '@/context/GiftContext.tsx';
+import { NotificationProvider } from '@/context/NotificationContext.tsx';
 import { UserInitializer } from '@/components/UserInitializer.tsx';
 import { publicUrl } from '@/helpers'
 
@@ -32,9 +33,11 @@ export function Root() {
       >
         <UserProvider>
           <GiftProvider>
-            <UserInitializer>
-              <App/>
-            </UserInitializer>
+            <NotificationProvider>
+              <UserInitializer>
+                <App/>
+              </UserInitializer>
+            </NotificationProvider>
           </GiftProvider>
         </UserProvider>
       </TonConnectUIProvider>

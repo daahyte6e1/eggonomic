@@ -6,14 +6,14 @@ import {Coin} from '@/components/Icons'
 
 export const WalletBlock: FC = () => {
   return (
-    <div className="wallet-content content">
-      <div className="card row">
-        <div className="row wallet-info">
+    <div className='wallet-content content'>
+      <div className='card row'>
+        <div className='row wallet-info'>
           <Coin />
-          <span className="wallet">Кошелек</span>
+          <span className='wallet'>Кошелек</span>
         </div>
 
-        <div className="wallet-connect">
+        <div className='wallet-connect'>
           <TonConnectButton />
         </div>
       </div>

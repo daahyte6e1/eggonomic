@@ -17,15 +17,15 @@ export const SearchBlock: FC<SearchBlockProps> = ({ onSearch }) => {
   };
 
   return (
-    <div className="search-content content">
-      <div className="card row">
+    <div className='search-content content'>
+      <div className='card row'>
         <SearchIcon />
         <input
-          type="text"
-          placeholder="Поиск подарков в Инвентаре"
+          type='text'
+          placeholder='Поиск подарков в Инвентаре'
           value={searchText}
           onChange={handleInputChange}
-          className="search-input"
+          className='search-input'
         />
       </div>
     </div>

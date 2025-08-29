@@ -1,0 +1,49 @@
+// Дополнительные стили для NotificationItem
+.notification-item {
+  // Анимация появления
+  &.visible {
+    animation: slideInRight 0.3s ease-out;
+  }
+  
+  // Анимация исчезновения
+  &.notification-exit {
+    animation: slideOutRight 0.3s ease-in;
+  }
+}
+
+// Ключевые кадры для анимаций
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+// Адаптивность для мобильных устройств
+@media (max-width: 768px) {
+  .notification-container {
+    right: 8px;
+    left: 8px;
+    max-width: none;
+    
+    .notification-item {
+      min-width: auto;
+      width: 100%;
+    }
+  }
+}

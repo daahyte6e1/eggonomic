@@ -6,12 +6,13 @@ import { Link } from '@/components/Link/Link.tsx'
 import { Page } from '@/components/Page.tsx';
 import { useUserContext } from '@/context/UserContext.tsx';
 import { useGiftContext } from '@/context/GiftContext.tsx';
-import { APIManager } from '@/helpers';
+import {APIManager, createErrorNotification} from '@/helpers';
 import './Inventory.scss';
-import {SearchBlock} from "@/components/SearchBlock/SearchBlock";
+import {SearchBlock} from '@/components/SearchBlock/SearchBlock';
 import { GiftInventoryCard } from '@/components/GiftInventoryCard';
-import {Arrow, Coin} from "@/components/Icons";
-import {getLevelTitleByKey} from "@/helpers/getLevelInfoByKey";
+import {Arrow, Coin} from '@/components/Icons';
+import {getLevelTitleByKey} from '@/helpers/getLevelInfoByKey';
+import {useNotifications} from '@/context/NotificationContext';
 
 interface Gift {
   id: number;
@@ -42,6 +43,8 @@ type FilteredGifts = {
 }
 
 export const Inventory: FC = () => {
+  const { addNotification } = useNotifications()
+
   const {userInfo, userPoints, summarySpeed} = useUserContext();
   const {setGifts} = useGiftContext();
   const initDataRaw = useSignal(_initDataRaw);
@@ -68,11 +71,12 @@ export const Inventory: FC = () => {
         setGifts(giftsData);
         updateFilteredData(giftsData)
       } catch {
+        addNotification(createErrorNotification('Ошибка!', 'Ошибка загрузки инвентаря.'))
       }
     };
 
     void fetchInventory();
-  }, [initDataRaw, userInfo.key]);
+  }, [initDataRaw, userInfo.key, setGifts, addNotification]);
 
   const handleSearch = (searchText: string) => {
     if (!searchText.trim()) {
@@ -111,43 +115,43 @@ export const Inventory: FC = () => {
 
   return (
     <Page back={true}>
-      <List className="inventory-page page">
-        <div className="">
+      <List className='inventory-page page'>
+        <div className=''>
           <SearchBlock onSearch={handleSearch}/>
 
-          <div className="gift-grid-content content column bg-ellipse-sm bg-ellipse bg-ellipse-top">
-            <div className="card">
-              <div className="card-header column">
-                <div className="balance">
+          <div className='gift-grid-content content column bg-ellipse-sm bg-ellipse bg-ellipse-top'>
+            <div className='card'>
+              <div className='card-header column'>
+                <div className='balance'>
                   {userPoints}
-                  <Coin height="17" width="16"/>
+                  <Coin height='17' width='16'/>
                 </div>
                 <Link to='/level' className='level'>
                   {levelTitle}
                   <Arrow/>
                 </Link>
-                <div className="staked-block">
+                <div className='staked-block'>
                   <span> Добыча в час: </span>
                   <span>{summarySpeed} <Coin width='9' height='10'/> </span>
                 </div>
               </div>
-              <div className="gifts-grid">
+              <div className='gifts-grid'>
                 {filteredGifts.staked.map((gift) => (
                   <GiftInventoryCard key={gift.id} gift={gift}/>
                 ))}
               </div>
             </div>
-            {hasNotStakedGifts && (<div className="card">
-                <div className="card-header column">
-                  <div className="balance">
+            {hasNotStakedGifts && (<div className='card'>
+                <div className='card-header column'>
+                  <div className='balance'>
                     Профиль
                   </div>
-                  <div className="staked-block">
+                  <div className='staked-block'>
                     <span> Добыча в час: </span>
                     <span> Неактивно </span>
                   </div>
                 </div>
-                <div className="gifts-grid">
+                <div className='gifts-grid'>
                   {filteredGifts.notStaked
                     .map((gift) => (
                       <GiftInventoryCard key={gift.id} gift={gift}/>

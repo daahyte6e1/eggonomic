@@ -15,12 +15,12 @@ import {
   getLevelInfoByKey,
   getLevelMinPriceByKey,
   LEVEL_LIST
-} from "@/helpers/getLevelInfoByKey";
-import LevelBackground from "@/components/LevelBackground";
-import {GradientCircle} from "@/components/GradientCircle";
-import {LevelIndicator} from "@/components/LevelIndicator";
-import {Factor, GradientCoin} from "@/components/Icons";
-import {Link} from "@/components/Link/Link";
+} from '@/helpers/getLevelInfoByKey';
+import LevelBackground from '@/components/LevelBackground';
+import {GradientCircle} from '@/components/GradientCircle';
+import {LevelIndicator} from '@/components/LevelIndicator';
+import {Factor, GradientCoin} from '@/components/Icons';
+import {Link} from '@/components/Link/Link';
 
 interface LevelInfo {
   level: number;
@@ -66,11 +66,11 @@ export const Level: FC = () => {
 
   return (
     <Page back={true}>
-      <List className="level-page column page">
+      <List className='level-page column page'>
         <div className='background-block'>
           <LevelBackground colors={levelInformation.backgroundColors}/>
         </div>
-        <div className="column information-block">
+        <div className='column information-block'>
           {levelInformation.isCircle
             ? (
               <GradientCircle
@@ -88,21 +88,21 @@ export const Level: FC = () => {
               />
             )
           }
-          <span className="title">{levelInformation.levelPageTitle}</span>
-          <span className="description">{levelInformation.levelPageDescription}</span>
+          <span className='title'>{levelInformation.levelPageTitle}</span>
+          <span className='description'>{levelInformation.levelPageDescription}</span>
         </div>
-        <div className="level-list column">
+        <div className='level-list column'>
           {LEVEL_LIST.map((el) => (
             <div 
               onClick={() => updateActiveLevelHandler(el)}
               key={el} 
               className={`card column ${activeLevel === el ? 'active' : ''} ${checkIsDisabled(el) ? 'disabled' : ''}`}
             >
-              <span className="title">
+              <span className='title'>
                 {getLevelCardTitleByKey(el)}
               </span>
-              <div className="additions">
-                <div className="item">
+              <div className='additions'>
+                <div className='item'>
                   <Factor />
                   Доходность Х{getLevelMultiplierByKey(el)}
                 </div>
@@ -114,8 +114,8 @@ export const Level: FC = () => {
             </div>
           ))}
         </div>
-        <div className="button-block">
-          <div className="block">
+        <div className='button-block'>
+          <div className='block'>
           <Link to={`/level/${activeLevel}`} className={`button ${activeLevel ? 'active' : 'in-active'}`}>
             Повысить ранг
           </Link>

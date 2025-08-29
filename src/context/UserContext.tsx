@@ -2,7 +2,7 @@ import {FC, createContext, useContext, useState, ReactNode, useCallback, useEffe
 import { UserService } from '@/services/UserService';
 import { APIManager } from '@/helpers/APIManager';
 import {UserInfo, NFTInfo, LoadNFTsResponse, ReferralInfo} from '@/types';
-import {getLevelMultiplierByKey} from "@/helpers/getLevelInfoByKey";
+import {getLevelMultiplierByKey} from '@/helpers/getLevelInfoByKey';
 
 
 interface NFTData {
@@ -105,15 +105,11 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
   const loadReferralInfo = useCallback(async () => {
     if (!userInfo.key) return;
 
-    try {
-      const requestBody = JSON.stringify({key: userInfo.key});
-      const response = await APIManager.post<ReferralInfo>('/eggs/api/load_ref_info', requestBody);
+    const requestBody = JSON.stringify({key: userInfo.key});
+    const response = await APIManager.post<ReferralInfo>('/eggs/api/load_ref_info', requestBody);
 
-      if (response.result) {
-        setReferralInfo(response);
-      }
-    } catch (err) {
-      console.error('Ошибка загрузки реферальной информации:', err);
+    if (response.result) {
+      setReferralInfo(response);
     }
   }, [userInfo.key]);
 
@@ -131,8 +127,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
         level: userData.level
       });
 
-      try {
-        const stakesResponse = await APIManager.get<StakesResponse>('/eggs/api/load_stakes', userData.key);
+              const stakesResponse = await APIManager.get<StakesResponse>('/eggs/api/load_stakes', userData.key);
         if (stakesResponse.result) {
           if (stakesResponse.stake_points_count !== undefined) {
             setUserPointsState(stakesResponse.stake_points_count);
@@ -148,9 +143,6 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
         }
 
         await loadReferralInfo();
-      } catch {
-        setError('Не удалось загрузить данные пользователя');
-      }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Ошибка инициализации пользователя';
       setError(errorMessage);

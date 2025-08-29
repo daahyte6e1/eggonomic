@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 import './AvailablePositions.scss'
 
-import { GiftCard } from "@/components/GiftCard/GiftCard";
+import { GiftCard } from '@/components/GiftCard/GiftCard';
 import { useUserContext } from '@/context/UserContext';
-import { getLevelInfoByKey } from "@/helpers";
+import { getLevelInfoByKey } from '@/helpers';
 
 interface GiftData {
   collection: string;
@@ -23,15 +23,15 @@ export const AvailablePositions: FC = () => {
     .map(nft => ({
       collection: nft.name,
       model: nft.model,
-      speed: 24 / nft["1_point_per_hours"],
+      speed: 24 / nft['1_point_per_hours'],
       multiplier: levelInfo?.multiplier || 1,
       pic: nft.pic,
     }));
 
   if (!isAuthenticated) {
     return (
-      <div className="content position-content">
-        <div className="card column">
+      <div className='content position-content'>
+        <div className='card column'>
           <span>Для просмотра доступных позиций необходимо авторизоваться</span>
         </div>
       </div>
@@ -40,8 +40,8 @@ export const AvailablePositions: FC = () => {
 
   if (isLoading) {
     return (
-      <div className="content position-content">
-        <div className="card column">
+      <div className='content position-content'>
+        <div className='card column'>
           <span>Загрузка доступных позиций...</span>
         </div>
       </div>
@@ -50,8 +50,8 @@ export const AvailablePositions: FC = () => {
 
   if (error) {
     return (
-      <div className="content position-content">
-        <div className="card column">
+      <div className='content position-content'>
+        <div className='card column'>
           <span>Ошибка: {error}</span>
         </div>
       </div>
@@ -60,8 +60,8 @@ export const AvailablePositions: FC = () => {
 
   if (giftsData.length === 0) {
     return (
-      <div className="content position-content">
-        <div className="card column">
+      <div className='content position-content'>
+        <div className='card column'>
           <span>Нет доступных позиций для стейкинга</span>
         </div>
       </div>
@@ -69,8 +69,8 @@ export const AvailablePositions: FC = () => {
   }
 
   return (
-    <div className="content position-content">
-      <div className="card column">
+    <div className='content position-content'>
+      <div className='card column'>
         <span>Доступные позиции для стейкинга:</span>
         {giftsData.map((giftData, index) => (
           <GiftCard key={index} giftData={giftData} />

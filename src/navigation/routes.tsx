@@ -3,7 +3,7 @@ import type { ComponentType, JSX } from 'react';
 import { Home } from '@/pages/Home/Home';
 import { Inventory } from '@/pages/Inventory/Inventory';
 import {Level} from '@/pages/Level/Level'
-import {SingleLevel} from "@/pages/SingleLevel/SingleLevel";
+import {SingleLevel} from '@/pages/SingleLevel/SingleLevel';
 import { GiftDetail } from '@/pages/GiftDetail';
 import { Referrals } from '@/pages/Referrals'
 interface Route {

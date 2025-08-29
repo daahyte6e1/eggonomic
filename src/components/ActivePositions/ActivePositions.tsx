@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 import './ActivePositions.scss'
 
-import {GiftCard} from "@/components/GiftCard/GiftCard";
+import {GiftCard} from '@/components/GiftCard/GiftCard';
 import { useUserContext } from '@/context/UserContext';
-import {getLevelInfoByKey} from "@/helpers";
+import {getLevelInfoByKey} from '@/helpers';
 
 interface GiftData {
   collection: string;
@@ -19,7 +19,7 @@ export const ActivePositions: FC = () => {
 
   const levelInfo = getLevelInfoByKey(userInfo.level)
 
-  const giftsData: GiftData[] = nftsData.reduce((acc, nft) => {
+  const giftsData: GiftData[] = nftsData.reduce((acc: GiftData[], nft) => {
     if (!nft.count) return acc
 
     const speedInfo = availableNFTs.find(el => el.id === nft.gift_id)
@@ -32,12 +32,12 @@ export const ActivePositions: FC = () => {
       pic: nft.pic,
     })
     return acc
-  }, [])
+  }, [] as GiftData[])
 
   if (!isAuthenticated) {
     return (
-      <div className="content position-content">
-        <div className="card column">
+      <div className='content position-content'>
+        <div className='card column'>
           <span>Для просмотра активных позиций необходимо авторизоваться</span>
           <div>key: {userInfo.key}</div>
           <div>isAuthenticated: {isAuthenticated}</div>
@@ -48,8 +48,8 @@ export const ActivePositions: FC = () => {
 
   if (isLoading) {
     return (
-      <div className="content position-content">
-        <div className="card column">
+      <div className='content position-content'>
+        <div className='card column'>
           <span>Загрузка активных позиций...</span>
         </div>
       </div>
@@ -58,8 +58,8 @@ export const ActivePositions: FC = () => {
 
   if (error) {
     return (
-      <div className="content position-content">
-        <div className="card column">
+      <div className='content position-content'>
+        <div className='card column'>
           <span>Ошибка: {error}</span>
         </div>
       </div>
@@ -68,8 +68,8 @@ export const ActivePositions: FC = () => {
 
   if (giftsData.length === 0) {
     return (
-      <div className="content position-content">
-        <div className="card column">
+      <div className='content position-content'>
+        <div className='card column'>
           <span>У вас нет активных позиций</span>
         </div>
       </div>
@@ -77,8 +77,8 @@ export const ActivePositions: FC = () => {
   }
 
   return (
-    <div className="content position-content">
-      <div className="card column">
+    <div className='content position-content'>
+      <div className='card column'>
         <span>Вы участвуете:</span>
         {giftsData.map((giftData, index) => (
           <GiftCard key={index} giftData={giftData} />

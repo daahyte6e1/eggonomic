@@ -8,12 +8,13 @@ import { Page } from '@/components/Page.tsx';
 import './SingleLevel.scss';
 import {GradientCircle} from '@/components/GradientCircle';
 import {LevelIndicator} from '@/components/LevelIndicator';
-import {getLevelInfoByKey, createTransaction} from '@/helpers';
+import {getLevelInfoByKey, createTransaction, createErrorNotification, createSuccessNotification} from '@/helpers';
 import { useUserContext } from '@/context/UserContext';
 import { initDataRaw as _initDataRaw, useSignal } from '@telegram-apps/sdk-react';
 import { useTonConnectUI } from '@tonconnect/ui-react';
 
 import {TonCoin} from '@/components/Icons';
+import {useNotifications} from '@/context/NotificationContext';
 
 interface LevelInfo {
   level: number;
@@ -33,6 +34,7 @@ interface LevelInfo {
 }
 
 export const SingleLevel: FC = () => {
+  const { addNotification } = useNotifications()
   const { levelKey } = useParams();
   const [levelInformation, setLevelInformation] = useState<LevelInfo | null>(null)
   const { initializeUser } = useUserContext();
@@ -50,12 +52,13 @@ export const SingleLevel: FC = () => {
   const createTransactionHandler = async (price: number, key: string) => {
     try {
       await createTransaction(tonConnectUI, price, key)
-      
+      addNotification(createSuccessNotification('Успех!', 'Данные будут обновлены после модерации.'))
+
       if (initDataRaw) {
         await initializeUser(initDataRaw)
       }
     } catch {
-      // Handle error silently or log to a proper logging service
+      addNotification(createErrorNotification('Ошибка!', 'Ошибка загрузки данных!'))
     }
   }
 
