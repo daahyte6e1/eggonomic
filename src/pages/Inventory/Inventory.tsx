@@ -71,7 +71,6 @@ export const Inventory: FC = () => {
         setGifts(giftsData);
         updateFilteredData(giftsData)
       } catch {
-        addNotification(createErrorNotification('Ошибка!', 'Ошибка загрузки инвентаря.'))
       }
     };
 
