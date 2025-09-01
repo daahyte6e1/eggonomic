@@ -57,8 +57,8 @@ export const SingleLevel: FC = () => {
       if (initDataRaw) {
         await initializeUser(initDataRaw)
       }
-    } catch {
-      addNotification(createErrorNotification('Ошибка!', 'Ошибка загрузки данных!'))
+    } catch (error) {
+      addNotification(createErrorNotification('Ошибка!', error.message))
     }
   }
 

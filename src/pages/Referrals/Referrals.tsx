@@ -38,6 +38,12 @@ export const Referrals: FC = () => {
     setIsModalOpen(false)
   }
 
+  const handleModalBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      closeModal()
+    }
+  }
+
   if (!referralInfo) return <></>
 
   return (
@@ -60,32 +66,33 @@ export const Referrals: FC = () => {
           </div>
         </div>
         </div>
+        {isModalOpen && (<div className='modal-backdrop' onClick={handleModalBackdropClick}/>)}
         <div className={`modal ${isModalOpen ? 'open' : ''} `}>
           <div className='content'>
-            <div onClick={closeModal} className='close-button'>
-              <Cross />
-            </div>
-            <div className='column'>
-              <img
-                src={publicUrl('./ref.png')}
-                alt='referral'
-              />
-              <span className='modal-title'>
-                Реферальная ссылка
-              </span>
-              <span className='modal-description'>
-                Отправляйте эту ссылку своим друзьям, чтобы получить дополнительный доход
-              </span>
-              <div className='card column'>
-                <span>
-                  {refLink}
+              <div onClick={closeModal} className='close-button'>
+                <Cross />
+              </div>
+              <div className='column'>
+                <img
+                  src={publicUrl('./ref.png')}
+                  alt='referral'
+                />
+                <span className='modal-title'>
+                  Реферальная ссылка
                 </span>
-                <div onClick={copyLink} className='button'>
-                  Скопировать
+                <span className='modal-description'>
+                  Отправляйте эту ссылку своим друзьям, чтобы получить дополнительный доход
+                </span>
+                <div className='card column'>
+                  <span>
+                    {refLink}
+                  </span>
+                  <div onClick={copyLink} className='button'>
+                    Скопировать
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
         </div>
       </List>
     </Page>
