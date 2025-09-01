@@ -13,7 +13,6 @@ async function createTransaction(tonConnectUI: TonConnectUI, amount: number, mem
 
   const transaction: SendTransactionRequest = {
     validUntil: Math.floor(Date.now() / 1000) + 60,
-    network: CHAIN.TESTNET, //todo need delete
     messages: [
       {
         address: 'UQAc2HeqsF1fQaoMPueedr5aIByh2PUCMbtrH3nbctOBFtXk',
