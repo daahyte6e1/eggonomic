@@ -1,6 +1,6 @@
 import {SendTransactionRequest, TonConnectUI} from '@tonconnect/ui-react';
 import {beginCell} from '@ton/core';
-import {SendTransactionResponse, CHAIN} from '@tonconnect/sdk'
+import {SendTransactionResponse} from '@tonconnect/sdk'
 
 async function createTransaction(tonConnectUI: TonConnectUI, amount: number, memo: string): Promise<SendTransactionResponse> {
   try {
