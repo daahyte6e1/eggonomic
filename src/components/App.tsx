@@ -1,6 +1,6 @@
 import {useEffect, useMemo} from 'react';
 import { Navigate, Route, Routes, HashRouter } from 'react-router-dom';
-import { retrieveLaunchParams, useSignal, isMiniAppDark } from '@telegram-apps/sdk-react';
+import { retrieveLaunchParams, useSignal, isMiniAppDark, requestFullscreen } from '@telegram-apps/sdk-react';
 import { AppRoot } from '@telegram-apps/telegram-ui';
 
 import { routes } from '@/navigation/routes.tsx';
@@ -20,6 +20,14 @@ export function App() {
 
     addNotification(createErrorNotification('Ошибка!', error))
   }, [error, addNotification])
+  useEffect(() => {
+    console.log('xxxxxxx', lp.tgWebAppPlatform)
+    const mobilePlatformList = ['android', 'ios']
+    if (!mobilePlatformList.includes(lp.tgWebAppPlatform)) return
+
+    requestFullscreen();
+  }, [])
+
   return (
     <AppRoot
       appearance={isDark ? 'dark' : 'light'}
