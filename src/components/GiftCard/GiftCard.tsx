@@ -6,10 +6,7 @@ import {Coin} from '@/components/Icons';
 import {useUserContext} from "@/context/UserContext";
 import {useEffect, useState} from "react";
 import {
-  factorGradient, getFactorGradient,
-  getLevelTitleByKey,
-  getPageBackgroundColorByKey,
-  getRankingGradientColorByKey
+  getFactorGradient
 } from "@/helpers/getLevelInfoByKey";
 
 interface GiftCardProps {

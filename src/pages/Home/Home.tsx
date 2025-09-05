@@ -13,9 +13,24 @@ import './Home.css'
 import {useUserContext} from '@/context/UserContext';
 import {useEffect, useState} from 'react';
 import {getPageBackgroundColorByKey} from '@/helpers/getLevelInfoByKey';
+import {useTonConnectUI, type ConnectedWallet} from "@tonconnect/ui-react";
+import { APIManager } from '@/helpers/APIManager';
 
 export const Home: FC = () => {
   const {userInfo} = useUserContext()
+  const [tonConnectUI] = useTonConnectUI();
+  
+  useEffect(() => {
+    const handleWalletChange = (wallet: ConnectedWallet | null) => {
+      if (!wallet) return
+
+      const jsondata = JSON.stringify({ wallet_address: wallet.account.address })
+      void APIManager.post('/eggs/api/save_wallet', jsondata, userInfo.key)
+    }
+
+    tonConnectUI.onStatusChange(handleWalletChange)
+  }, [tonConnectUI, userInfo.key])
+
   const [backgroundColorByKey, setBackgroundColorByKey] = useState<string[]>([])
 
   useEffect(() => {
@@ -27,10 +42,7 @@ export const Home: FC = () => {
   return (
     <Page back={false}>
       <List className='home-page page'>
-        <BackgroundShapes
-          colors={backgroundColorByKey}
-          style={{
-        }} />
+        <BackgroundShapes colors={backgroundColorByKey}/>
         <WalletBlock />
         <BalanceBlock />
         <MenuBlock />

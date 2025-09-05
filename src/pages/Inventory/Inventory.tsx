@@ -71,6 +71,12 @@ export const Inventory: FC = () => {
         setGifts(giftsData);
         updateFilteredData(giftsData)
       } catch {
+        // Handle error silently or add proper error handling
+        addNotification({
+          type: 'error',
+          title: 'Error',
+          message: 'Failed to load inventory'
+        });
       }
     };
 

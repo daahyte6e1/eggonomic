@@ -35,7 +35,7 @@ export const Arrow: FC<IconProps> = ({width = 8, height = 12}) => {
   )
 }
 
-export const Ranking: FC = ({color = '#5D01D6'}) => {
+export const Ranking: FC<IconProps> = ({color = '#5D01D6'}) => {
   return (
     <svg width='34' height='34' viewBox='0 0 34 34' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <path d='M9.44921 19.8333H5.66671C4.10837 19.8333 2.83337 21.1083 2.83337 22.6666V29.7499C2.83337 30.5291 3.47087 31.1666 4.25004 31.1666H9.44921C10.2284 31.1666 10.8659 30.5291 10.8659 29.7499V21.2499C10.8659 20.4708 10.2284 19.8333 9.44921 19.8333Z' fill='url(#gradientColor)'/>
