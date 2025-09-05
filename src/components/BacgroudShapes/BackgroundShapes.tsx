@@ -10,7 +10,6 @@ export const BackgroundShapes: FC<Props> = ({
 }) => {
   const [c0, c1] = colors;
 
-
   return (
     <div
       aria-hidden

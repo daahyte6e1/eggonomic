@@ -48,9 +48,6 @@
     justify-content: center;
   }
 
-  .gift-grid-content.bg-ellipse-top:before {
-    border-radius: 20px;
-  }
   .gift-grid-content {
     min-height: 100px;
     position: relative;
@@ -58,11 +55,19 @@
     gap: 20px;
     padding: 0 20px;
 
+    &.loading {
+      .card {
+        min-height: 400px;
+      }
+    }
+
     .card {
       display: unset;
+
       .card-header {
         display: flex;
         gap: 20px;
+
         .level {
           font-weight: 500;
           line-height: 10px;
@@ -70,38 +75,44 @@
           gap: 10px;
           align-items: center;
           text-align: center;
+
           &.believer {
             background-image: linear-gradient(
-              to bottom,
-              #FFFFFF 0%,
-              #5D01D6 200%
+                            to bottom,
+                            #FFFFFF 0%,
+                            #5D01D6 200%
             );
           }
+
           &.supporter {
             background-image: linear-gradient(
-              to bottom,
-              #FFFFFF 0%,
-              #E8AA00 200%
+                            to bottom,
+                            #FFFFFF 0%,
+                            #E8AA00 200%
             );
           }
+
           &.member {
             background-image: linear-gradient(
-              to bottom,
-              #FFFFFF 0%,
-              #FFC628 200%
+                            to bottom,
+                            #FFFFFF 0%,
+                            #FFC628 200%
             );
           }
+
           &.unranked {
             background-image: linear-gradient(
-              to bottom,
-              #FFFFFF 0%,
-              #4B4345 200%
+                            to bottom,
+                            #FFFFFF 0%,
+                            #4B4345 200%
             );
           }
+
           color: transparent;
           background-clip: text;
           font-size: 14px;
         }
+
         .staked-block {
           padding-top: 15px;
           display: flex;
@@ -110,6 +121,7 @@
           padding-bottom: 20px;
         }
       }
+
       .balance {
         font-size: 24px;
         line-height: 20px;
@@ -155,7 +167,6 @@
       grid-template-columns: repeat(auto-fill, 30%);
     }
   }
-  .loading,
   .inventory-empty {
     height: 100vh;
   }

@@ -1,5 +1,10 @@
 .search-content {
   margin-bottom: 20px;
+  position: relative;
+  .background {
+    position: absolute;
+    width: 100%;
+  }
 
   .card {
     justify-content: unset;

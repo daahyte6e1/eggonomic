@@ -43,7 +43,7 @@ type FilteredGifts = {
 }
 
 export const Inventory: FC = () => {
-  const {userInfo, userPoints, summarySpeed} = useUserContext();
+  const {userInfo, userPoints, summarySpeed, isLoading} = useUserContext();
   const {setGifts} = useGiftContext();
   const initDataRaw = useSignal(_initDataRaw);
   const [localGifts, setLocalGifts] = useState<Gift[]>([]);
@@ -120,8 +120,8 @@ export const Inventory: FC = () => {
         <div className=''>
           <SearchBlock onSearch={handleSearch}/>
 
-          <div className='gift-grid-content content column' style={{ position: 'relative' }}>
-            <DynamicBackground colors={backgroundColorByKey} />
+          <div className={`gift-grid-content content column ${isLoading ? 'loading' : ''}`} style={{ position: 'relative' }}>
+            <DynamicBackground  colors={backgroundColorByKey} />
             <div className='card'>
               <div className='card-header column'>
                 <div className='balance'>

@@ -17,7 +17,7 @@ import {useTonConnectUI, type ConnectedWallet} from "@tonconnect/ui-react";
 import { APIManager } from '@/helpers/APIManager';
 
 export const Home: FC = () => {
-  const {userInfo} = useUserContext()
+  const {userInfo, isLoading} = useUserContext()
   const [tonConnectUI] = useTonConnectUI();
   
   useEffect(() => {
@@ -42,7 +42,7 @@ export const Home: FC = () => {
   return (
     <Page back={false}>
       <List className='home-page page'>
-        <BackgroundShapes colors={backgroundColorByKey}/>
+        <BackgroundShapes className={isLoading ? 'loading' : ''} colors={backgroundColorByKey}/>
         <WalletBlock />
         <BalanceBlock />
         <MenuBlock />

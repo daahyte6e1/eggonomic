@@ -104,12 +104,12 @@ export const Level: FC = () => {
               <div className='additions'>
                 <div className='item'>
                   <Factor />
-                  Доходность Х{getLevelMultiplierByKey(el)}
+                  <span>Доходность Х{getLevelMultiplierByKey(el)}</span>
                 </div>
               </div>
               <div className={el + ' item price-item'}>
                 <GradientCoin start={getLevelGradientTextColorByKey(el).start} end={getLevelGradientTextColorByKey(el).end} />
-                От {getLevelMinPriceByKey(el)} TON
+                <span>От {getLevelMinPriceByKey(el)} TON</span>
               </div>
             </div>
           ))}
