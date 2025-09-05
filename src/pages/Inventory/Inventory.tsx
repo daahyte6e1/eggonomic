@@ -1,4 +1,4 @@
-import type React, { FC } from 'react';
+import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { List } from '@telegram-apps/telegram-ui';
 import { initDataRaw as _initDataRaw, useSignal } from '@telegram-apps/sdk-react';
@@ -12,7 +12,6 @@ import {SearchBlock} from '@/components/SearchBlock/SearchBlock';
 import { GiftInventoryCard } from '@/components/GiftInventoryCard';
 import {Arrow, Coin} from '@/components/Icons';
 import {getLevelTitleByKey, getPageBackgroundColorByKey} from '@/helpers/getLevelInfoByKey';
-import {useNotifications} from '@/context/NotificationContext';
 import {DynamicBackground} from "@/components/BacgroudShapes";
 
 interface Gift {
