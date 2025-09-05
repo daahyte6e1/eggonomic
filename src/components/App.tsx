@@ -7,6 +7,7 @@ import { routes } from '@/navigation/routes.tsx';
 import {NotificationContainer, useNotifications} from '@/components/NotificationSystem';
 import {useUserContext} from '@/context/UserContext';
 import {createErrorNotification} from '@/helpers';
+import { AppPreloader } from '@/components/AppPreloader';
 
 export function App() {
   const {error} = useUserContext()
@@ -21,7 +22,6 @@ export function App() {
     addNotification(createErrorNotification('Ошибка!', error))
   }, [error, addNotification])
   useEffect(() => {
-    console.log('xxxxxxx', lp.tgWebAppPlatform)
     const mobilePlatformList = ['android', 'ios']
     if (!mobilePlatformList.includes(lp.tgWebAppPlatform)) return
 
