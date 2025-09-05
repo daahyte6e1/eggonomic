@@ -1,14 +1,12 @@
 .gift-card {
-  gap: 10px;
+  gap: 12px;
   img {
     border-radius: 11.5px;
   }
   .description {
-    gap: 8px;
     .factor {
       font-size: 16px;
       font-weight: 700;
-      background: linear-gradient(90deg, #b55eff, #7f4dff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }

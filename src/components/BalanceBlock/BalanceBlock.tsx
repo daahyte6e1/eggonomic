@@ -11,11 +11,11 @@ export const BalanceBlock: FC = () => {
         Баланс
       </div>
       <div className='balance'>
-        {userPoints}
+        <span>{userPoints}</span>
         <Coin height='25' width='24' />
       </div>
       <div className='card'>
-        Мои награды <Arrow />
+        <span>Мои награды</span> <Arrow />
       </div>
     </div>
   );

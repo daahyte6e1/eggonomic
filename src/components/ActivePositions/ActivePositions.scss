@@ -1,5 +1,9 @@
 .position-content {
   align-items: start!important;
+  margin-bottom: 20px!important;
+  .position-title {
+    line-height: 9px;
+  }
   .card {
     gap: 20px;
   }

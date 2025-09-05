@@ -71,7 +71,7 @@ export const AvailablePositions: FC = () => {
   return (
     <div className='content position-content'>
       <div className='card column'>
-        <span>Доступные позиции для стейкинга:</span>
+        <span className='position-title'>Доступно:</span>
         {giftsData.map((giftData, index) => (
           <GiftCard key={index} giftData={giftData} />
         ))}
