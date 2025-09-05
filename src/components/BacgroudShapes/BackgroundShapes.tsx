@@ -20,6 +20,7 @@ export const BackgroundShapes: FC<Props> = ({
         viewBox='0 0 430 932'
         preserveAspectRatio='xMidYMid slice'
         xmlns='http://www.w3.org/2000/svg'
+        style={{width: '100%', height: '100%'}}
       >
         <g clipPath='url(#clip0)'>
           <rect width='100%' height='100%' fill='#121212' />
