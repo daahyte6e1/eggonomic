@@ -4,8 +4,6 @@ import './BackgroundShapes.scss'
 export const BackgroundShapes: FC = ({
   colors,
   background = "#121212",
-  width = 430,
-  height = 932,
   className = "",
   style = {},
 }) => {
@@ -15,18 +13,16 @@ export const BackgroundShapes: FC = ({
   return (
     <div
       aria-hidden
-      className={`background-shapes ${className} `}
+      className={`background-shapes ${className}`}
       style={style}
     >
       <svg
-        width={width}
-        height={height}
-        viewBox={`0 0 ${width} ${height}`}
-        fill="none"
+        viewBox="0 0 430 932"
+        preserveAspectRatio="xMidYMid slice"
         xmlns="http://www.w3.org/2000/svg"
       >
         <g clipPath="url(#clip0)">
-          <rect width={width} height={height} fill={background} />
+          <rect width="100%" height="100%" fill={background} />
 
           <g filter="url(#filter0)">
             <ellipse cx="408.598" cy="312.021" rx="50" ry="185.5" fill={c0} />
@@ -126,7 +122,7 @@ export const BackgroundShapes: FC = ({
           </filter>
 
           <clipPath id="clip0">
-            <rect width={width} height={height} fill="white" />
+            <rect width="100%" height="100%" fill="white" />
           </clipPath>
         </defs>
       </svg>

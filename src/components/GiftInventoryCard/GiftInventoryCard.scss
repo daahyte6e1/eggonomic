@@ -2,6 +2,7 @@
   width: 100%;
   border-radius: 12px;
   display: flex;
+  gap: 8px;
   flex-direction: column;
   position: relative;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -13,6 +14,8 @@
   }
 
   .gift-image-container {
+    max-width: 112px;
+    max-height: 112px;
     .gift-image {
       width: 100%;
       height: 100%;
@@ -21,18 +24,14 @@
   }
 
   .gift-info {
-    padding: 8px;
 
+    display: flex;
+    gap: 8px;
     .gift-name {
-      color: white;
-      font-size: 16px;
-      font-weight: 600;
       text-align: center;
-      margin-bottom: 2px;
-      line-height: 1.2;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 10px;
     }
 
     .gift-number {

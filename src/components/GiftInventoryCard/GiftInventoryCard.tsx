@@ -43,7 +43,7 @@ export const GiftInventoryCard: FC<GiftInventoryCardProps> = ({ gift }) => {
           className='gift-image'
         />
       </div>
-      <div className='gift-info'>
+      <div className='gift-info column'>
         <div className='gift-name'>{gift.telegram_gift_name}</div>
         <div className='gift-number'>#{gift.telegram_gift_number}</div>
       </div>
