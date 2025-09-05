@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type React, { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { List } from '@telegram-apps/telegram-ui';
 import { initDataRaw as _initDataRaw, useSignal } from '@telegram-apps/sdk-react';
@@ -11,8 +11,9 @@ import './Inventory.scss';
 import {SearchBlock} from '@/components/SearchBlock/SearchBlock';
 import { GiftInventoryCard } from '@/components/GiftInventoryCard';
 import {Arrow, Coin} from '@/components/Icons';
-import {getLevelTitleByKey} from '@/helpers/getLevelInfoByKey';
+import {getLevelTitleByKey, getPageBackgroundColorByKey} from '@/helpers/getLevelInfoByKey';
 import {useNotifications} from '@/context/NotificationContext';
+import {DynamicBackground} from "@/components/BacgroudShapes";
 
 interface Gift {
   id: number;
@@ -43,12 +44,11 @@ type FilteredGifts = {
 }
 
 export const Inventory: FC = () => {
-  const { addNotification } = useNotifications()
-
   const {userInfo, userPoints, summarySpeed} = useUserContext();
   const {setGifts} = useGiftContext();
   const initDataRaw = useSignal(_initDataRaw);
   const [localGifts, setLocalGifts] = useState<Gift[]>([]);
+  const [userInfoLevel, setUserInfoLevel] = useState<string>('');
   const [filteredGifts, setFilteredGifts] = useState<FilteredGifts>({staked: [], notStaked: []});
 
   const updateFilteredData = (gifts: Gift[]): void => {
@@ -62,26 +62,17 @@ export const Inventory: FC = () => {
   }
   useEffect(() => {
     const fetchInventory = async () => {
-      if (!initDataRaw) return;
+      if (!initDataRaw || !userInfo.key) return;
 
-      try {
-        const data = await APIManager.getTextable(`/eggs/api/inventory/${userInfo.key}`, initDataRaw);
-        const giftsData = Array.isArray(data) ? (data as Gift[]) : [];
-        setLocalGifts(giftsData);
-        setGifts(giftsData);
-        updateFilteredData(giftsData)
-      } catch {
-        // Handle error silently or add proper error handling
-        addNotification({
-          type: 'error',
-          title: 'Error',
-          message: 'Failed to load inventory'
-        });
-      }
+      const data = await APIManager.getTextable(`/eggs/api/inventory/${userInfo.key}`, initDataRaw);
+      const giftsData = Array.isArray(data) ? (data as Gift[]) : [];
+      setLocalGifts(giftsData);
+      setGifts(giftsData);
+      updateFilteredData(giftsData)
     };
 
     void fetchInventory();
-  }, [initDataRaw, userInfo.key, setGifts, addNotification]);
+  }, [initDataRaw, userInfo.key]);
 
   const handleSearch = (searchText: string) => {
     if (!searchText.trim()) {
@@ -108,13 +99,19 @@ export const Inventory: FC = () => {
 
 
   const [levelTitle, setLevelTitle] = useState<string>('')
+  const [backgroundColorByKey, setBackgroundColorByKey] = useState<string[]>([])
 
   useEffect(() => {
+    if (!userInfo.level) return
+
+    setUserInfoLevel(userInfo.level)
+    const backgroundColorByKey = getPageBackgroundColorByKey(userInfo.level)
+    if (backgroundColorByKey) setBackgroundColorByKey(backgroundColorByKey)
+
     const levelTitle = getLevelTitleByKey(userInfo.level)
-    if (levelTitle) {
-      setLevelTitle(levelTitle)
-    }
-  }, [userInfo])
+    if (levelTitle) setLevelTitle(levelTitle)
+
+  }, [userInfo.level])
 
   const hasNotStakedGifts = Boolean(filteredGifts.notStaked.length)
 
@@ -124,14 +121,15 @@ export const Inventory: FC = () => {
         <div className=''>
           <SearchBlock onSearch={handleSearch}/>
 
-          <div className='gift-grid-content content column bg-ellipse-sm bg-ellipse bg-ellipse-top'>
+          <div className='gift-grid-content content column' style={{ position: 'relative' }}>
+            <DynamicBackground colors={backgroundColorByKey} />
             <div className='card'>
               <div className='card-header column'>
                 <div className='balance'>
                   {userPoints}
                   <Coin height='17' width='16'/>
                 </div>
-                <Link to='/level' className='level'>
+                <Link to='/level' className={`level ${userInfoLevel}`}>
                   {levelTitle}
                   <Arrow/>
                 </Link>

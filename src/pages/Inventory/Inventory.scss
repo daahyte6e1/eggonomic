@@ -69,11 +69,34 @@
           gap: 10px;
           align-items: center;
           text-align: center;
-          background-image: linear-gradient(
-            to bottom,
-            #FFFFFF 0%,
-            #896CBC 100%
-          );
+          &.believer {
+            background-image: linear-gradient(
+              to bottom,
+              #FFFFFF 0%,
+              #5D01D6 200%
+            );
+          }
+          &.supporter {
+            background-image: linear-gradient(
+              to bottom,
+              #FFFFFF 0%,
+              #E8AA00 200%
+            );
+          }
+          &.member {
+            background-image: linear-gradient(
+              to bottom,
+              #FFFFFF 0%,
+              #FFC628 200%
+            );
+          }
+          &.unranked {
+            background-image: linear-gradient(
+              to bottom,
+              #FFFFFF 0%,
+              #4B4345 200%
+            );
+          }
           color: transparent;
           background-clip: text;
           font-size: 14px;
@@ -127,16 +150,12 @@
     grid-template-columns: repeat(auto-fill, 112px);
     gap: 10px;
     justify-content: space-between;
+    @media (max-width: 520px) {
+      grid-template-columns: repeat(auto-fill, 30%);
+    }
   }
   .loading,
   .inventory-empty {
     height: 100vh;
-  }
-}
-@media (max-width: 768px) {
-  .inventory-page {
-    .gifts-grid {
-      grid-template-columns: repeat(auto-fill, 30%);
-    }
   }
 }
