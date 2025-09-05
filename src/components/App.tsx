@@ -7,7 +7,6 @@ import { routes } from '@/navigation/routes.tsx';
 import {NotificationContainer, useNotifications} from '@/components/NotificationSystem';
 import {useUserContext} from '@/context/UserContext';
 import {createErrorNotification} from '@/helpers';
-import { AppPreloader } from '@/components/AppPreloader';
 
 export function App() {
   const {error} = useUserContext()
