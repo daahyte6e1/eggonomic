@@ -12,7 +12,7 @@ import {SearchBlock} from '@/components/SearchBlock/SearchBlock';
 import { GiftInventoryCard } from '@/components/GiftInventoryCard';
 import {Arrow, Coin} from '@/components/Icons';
 import {getLevelTitleByKey, getPageBackgroundColorByKey} from '@/helpers/getLevelInfoByKey';
-import {DynamicBackground} from "@/components/BacgroudShapes";
+import {BackgroundShapes} from "@/components/BacgroudShapes";
 
 interface Gift {
   id: number;
@@ -121,7 +121,7 @@ export const Inventory: FC = () => {
           <SearchBlock onSearch={handleSearch}/>
 
           <div className={`gift-grid-content content column ${isLoading ? 'loading' : ''}`} style={{ position: 'relative' }}>
-            <DynamicBackground  colors={backgroundColorByKey} />
+            <BackgroundShapes  colors={backgroundColorByKey} />
             <div className='card'>
               <div className='card-header column'>
                 <div className='balance'>
