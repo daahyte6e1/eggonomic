@@ -29,7 +29,7 @@ export class UserService {
         "user_info": {
           "key": "SqsjveiLNrx5sAntpwPqxP3roywtUrUgZq6zQRQIgsQ8CXyvN6zH",
           "uid": "900008774",
-          level: 2
+          level: 4
         }
       }
       const levelKey = KEY_BY_LEVEL[res.user_info.level as keyof typeof KEY_BY_LEVEL]
