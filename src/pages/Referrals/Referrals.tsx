@@ -4,7 +4,7 @@ import type { FC } from 'react';
 
 import { Page } from '@/components/Page.tsx';
 import { useUserContext } from '@/context/UserContext';
-import {createErrorNotification, createSuccessNotification, publicUrl} from '@/helpers';
+import {createErrorNotification, createSuccessNotification, publicUrl, formatNumber} from '@/helpers';
 
 import './Referrals.scss'
 import {Coin, Cross} from '@/components/Icons';
@@ -57,7 +57,7 @@ export const Referrals: FC = () => {
             Приглашайте друзей и получайте 30% от их заработка
           </span>
           <span className='card'>
-            Вы заработали: {referralInfo.earned} <Coin width='10' height='11'/>
+            Вы заработали: {formatNumber(referralInfo.earned)} <Coin width='10' height='11'/>
           </span>
 
         <div onClick={openReferralModal} className={`button-block ${isModalOpen ? 'hidden' : ''}`}>

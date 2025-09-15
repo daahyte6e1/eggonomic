@@ -6,7 +6,7 @@ import { Link } from '@/components/Link/Link.tsx'
 import { Page } from '@/components/Page.tsx';
 import { useUserContext } from '@/context/UserContext.tsx';
 import { useGiftContext } from '@/context/GiftContext.tsx';
-import {APIManager} from '@/helpers';
+import {APIManager, formatNumber} from '@/helpers';
 import './Inventory.scss';
 import {SearchBlock} from '@/components/SearchBlock/SearchBlock';
 import { GiftInventoryCard } from '@/components/GiftInventoryCard';
@@ -128,7 +128,7 @@ export const Inventory: FC = () => {
             <div className='card'>
               <div className='card-header column'>
                 <div className='balance'>
-                  {userPoints}
+                  {formatNumber(userPoints)}
                   <Coin height='17' width='16'/>
                 </div>
                 <Link to='/level' className={`level ${userInfoLevel}`}>
