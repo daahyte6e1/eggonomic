@@ -1,0 +1,117 @@
+.inventory-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  border-radius: 20px;
+  display: flex;
+  z-index: 10;
+  animation: fadeIn 0.3s ease-in-out;
+
+  .loader-content {
+    width: 100%;
+    padding: 15px 20px;
+  }
+
+  .loader-header {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .loader-balance {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+
+      .loader-balance-text {
+        width: 120px;
+        height: 24px;
+        border-radius: 4px;
+      }
+    }
+
+    .loader-level {
+      width: 100px;
+      height: 14px;
+      border-radius: 4px;
+    }
+
+    .loader-staked {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 15px;
+      padding-bottom: 20px;
+
+      .loader-staked-text {
+        width: 80px;
+        height: 14px;
+        border-radius: 4px;
+      }
+
+      .loader-staked-value {
+        width: 60px;
+        height: 14px;
+        border-radius: 4px;
+      }
+    }
+  }
+
+  .loader-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 112px);
+    gap: 10px;
+    justify-content: space-between;
+
+    @media (max-width: 520px) {
+      grid-template-columns: repeat(auto-fill, 30%);
+    }
+  }
+
+  .loader-gift-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+
+    .loader-gift-image {
+      max-width: 100%;
+      aspect-ratio: 1;
+      border-radius: 20%;
+      .image {
+        width: 100px;
+        height: 103px;
+      }
+    }
+
+    .loader-gift-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+
+      .loader-gift-name {
+        width: 80px;
+        height: 16px;
+        border-radius: 4px;
+      }
+
+      .loader-gift-number {
+        width: 40px;
+        height: 12px;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

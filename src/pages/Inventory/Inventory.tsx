@@ -10,6 +10,7 @@ import {APIManager, formatNumber} from '@/helpers';
 import './Inventory.scss';
 import {SearchBlock} from '@/components/SearchBlock/SearchBlock';
 import { GiftInventoryCard } from '@/components/GiftInventoryCard';
+import { InventoryLoader } from '@/components/InventoryLoader';
 import {Arrow, Coin} from '@/components/Icons';
 import {getLevelTitleByKey, getPageBackgroundColorByKey} from '@/helpers/getLevelInfoByKey';
 import {DynamicBackground} from "@/components/BacgroudShapes";
@@ -50,6 +51,8 @@ export const Inventory: FC = () => {
   const [userInfoLevel, setUserInfoLevel] = useState<string>('');
   const [filteredGifts, setFilteredGifts] = useState<FilteredGifts>({staked: [], notStaked: []});
 
+  const [localLoader, setLocalLoader] = useState<boolean>(true)
+
   const updateFilteredData = (gifts: Gift[]): void => {
     const filteredGifts = gifts.reduce((accumulator, gift: Gift) => {
       if (gift.staked) accumulator.staked.push(gift)
@@ -61,14 +64,20 @@ export const Inventory: FC = () => {
   }
   useEffect(() => {
     const fetchInventory = async () => {
-      if (!initDataRaw || !userInfo.key) return;
-
-      const data = await APIManager.getTextable(`/eggs/api/inventory/${userInfo.key}`, initDataRaw);
-      const giftsData = Array.isArray(data) ? (data as Gift[]) : [];
-      setLocalGifts(giftsData);
-      setGifts(giftsData);
-      updateFilteredData(giftsData)
-    };
+      try {
+        if (!initDataRaw || !userInfo.key) return;
+        setLocalLoader(true)
+        const data = await APIManager.getTextable(`/eggs/api/inventory/${userInfo.key}`, initDataRaw);
+        const giftsData = Array.isArray(data) ? (data as Gift[]) : [];
+        setLocalGifts(giftsData);
+        setGifts(giftsData);
+        updateFilteredData(giftsData)
+      } catch {
+        console.error('Fail to fetch')
+      } finally {
+        setLocalLoader(false)
+      }
+    }
 
     void fetchInventory();
   }, [initDataRaw, userInfo.key]);
@@ -120,12 +129,13 @@ export const Inventory: FC = () => {
         <div className='inventory-container'>
           <div className='search-block-wrapper'>
             <DynamicBackground colors={backgroundColorByKey} />
-            <SearchBlock onSearch={handleSearch}/>
+            <SearchBlock onSearch={handleSearch} isLoading={localLoader}/>
           </div>
 
-          <div className={`gift-grid-content content column ${isLoading ? 'loading' : ''}`}>
+          <div className={`gift-grid-content content column ${(isLoading || localLoader) ? 'loading' : ''}`}>
             <DynamicBackground colors={backgroundColorByKey} />
             <div className='card'>
+              {(isLoading || localLoader) && <InventoryLoader />}
               <div className='card-header column'>
                 <div className='balance'>
                   {formatNumber(userPoints)}

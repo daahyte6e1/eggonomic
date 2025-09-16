@@ -1,0 +1,1 @@
+export { InventoryLoader } from './InventoryLoader';
