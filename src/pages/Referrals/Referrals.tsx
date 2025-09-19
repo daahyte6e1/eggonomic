@@ -83,7 +83,7 @@ export const Referrals: FC = () => {
                 <span className='modal-description'>
                   Отправляйте эту ссылку своим друзьям, чтобы получить дополнительный доход
                 </span>
-                <div className='card column'>
+                <div className='column card link-block'>
                   <span>
                     {refLink}
                   </span>
