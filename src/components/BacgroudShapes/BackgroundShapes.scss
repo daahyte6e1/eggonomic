@@ -3,7 +3,7 @@
   position: fixed;
   inset: 0;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   overflow: hidden;
   background: #121212;
 
@@ -21,16 +21,16 @@
 
   // правая верхняя группа
   .shape-1 {
-    width: 40vw;
-    height: 70vh;
+    width: 30vw;
+    height: 60vh;
     top: -10vh;
     right: -15vw;
     background: var(--c0);
   }
 
   .shape-2 {
-    width: 35vw;
-    height: 60vh;
+    width: 25vw;
+    height: 50vh;
     top: 0;
     right: -18vw;
     transform: rotate(16deg);
@@ -39,8 +39,8 @@
   }
 
   .shape-3 {
-    width: 30vw;
-    height: 50vh;
+    width: 20vw;
+    height: 40vh;
     top: 5vh;
     right: -20vw;
     transform: rotate(32deg);
@@ -50,28 +50,28 @@
 
   // левая группа
   .shape-4 {
-    width: 40vw;
-    height: 70vh;
+    width: 20vw;
+    height: 35vh;
     left: -25vw;
-    top: 20vh;
+    top: 30vh;
     background: var(--c0);
   }
 
   .shape-5 {
-    width: 35vw;
-    height: 60vh;
+    width: 17vw;
+    height: 30vh;
     left: -20vw;
-    top: 22vh;
+    top: 32vh;
     transform: rotate(-15deg);
     filter: blur(80px);
     background: var(--c0);
   }
 
   .shape-6 {
-    width: 30vw;
-    height: 50vh;
+    width: 15vw;
+    height: 25vh;
     left: -15vw;
-    top: 25vh;
+    top: 35vh;
     transform: rotate(-30deg);
     filter: blur(65px);
     background: var(--c1);

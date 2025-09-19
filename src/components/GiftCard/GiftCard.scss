@@ -1,5 +1,9 @@
 .gift-card {
   gap: 12px;
+  .card {
+    width: unset;
+    padding: 7.5px;
+  }
   img {
     border-radius: 11.5px;
   }

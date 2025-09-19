@@ -32,12 +32,16 @@ export const GiftCard: FC<GiftCardProps> = ({giftData}) => {
     const factorStyle = {backgroundImage: `linear-gradient(180deg, ${start}, ${end})`}
     if (factorStyle) setFactorStyle(factorStyle)
   }, [userInfo.level])
+  const processingImageLink = (link: string): string => publicUrl(link.replace('.svg', '.png'))
+
   return (
     <div className='gift-card row'>
-      <img
-        src={publicUrl(giftData.pic)}
-        alt={`${giftData.collection} ${giftData.model}`}
-      />
+      <div className="card">
+        <img
+          src={processingImageLink(giftData.pic)}
+          alt={`${giftData.collection} ${giftData.model}`}
+        />
+      </div>
       <div className='description column'>
         <span>
           {giftData.collection} • {giftData.model}
