@@ -2,7 +2,7 @@ import {FC, createContext, useContext, useState, ReactNode, useCallback, useEffe
 import { UserService } from '@/services/UserService';
 import { APIManager } from '@/helpers/APIManager';
 import {UserInfo, NFTInfo, LoadNFTsResponse, ReferralInfo} from '@/types';
-import {getLevelMultiplierByKey} from '@/helpers/getLevelInfoByKey';
+import {getLevelMultiplierByKey, getPageBackgroundColorByKey} from '@/helpers/getLevelInfoByKey';
 
 
 interface NFTData {
@@ -49,6 +49,7 @@ interface UserContextType {
   error: string | null;
   clearError: () => void;
   summarySpeed: number;
+  backgroundColorByKey: string[];
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -79,6 +80,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
   const [nftsData, setNftsData] = useState<NFTData[]>([]);
   const [availableNFTs, setAvailableNFTs] = useState<NFTInfo[]>([]);
   const [referralInfo, setReferralInfo] = useState<ReferralInfo | null>(null);
+  const [backgroundColorByKey, setBackgroundColorByKey] = useState<string[]>([]);
 
   const setUserInfo = useCallback((info: Partial<UserInfo>) => {
     setUserInfoState(prev => ({ ...prev, ...info }));
@@ -95,6 +97,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
     setNftsData([]);
     setAvailableNFTs([]);
     setReferralInfo(null);
+    setBackgroundColorByKey([]);
     setError(null);
   }, []);
 
@@ -195,6 +198,16 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
     setSummarySpeed(Number(summarySpeed.toFixed(1)))
   }, [nftsData, availableNFTs, userInfo.level]);
 
+  useEffect(() => {
+    if (!userInfo.level) {
+      setBackgroundColorByKey([]);
+      return;
+    }
+
+    const backgroundColorByKey = getPageBackgroundColorByKey(userInfo.level);
+    setBackgroundColorByKey(backgroundColorByKey);
+  }, [userInfo.level]);
+
   const value: UserContextType = {
     setUserPoints,
     userInfo,
@@ -212,6 +225,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
     error,
     summarySpeed,
     clearError,
+    backgroundColorByKey,
   };
 
   return (

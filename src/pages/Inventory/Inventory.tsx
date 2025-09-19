@@ -12,7 +12,7 @@ import {SearchBlock} from '@/components/SearchBlock/SearchBlock';
 import { GiftInventoryCard } from '@/components/GiftInventoryCard';
 import { InventoryLoader } from '@/components/InventoryLoader';
 import {Arrow, Coin} from '@/components/Icons';
-import {getLevelTitleByKey, getPageBackgroundColorByKey} from '@/helpers/getLevelInfoByKey';
+import {getLevelTitleByKey} from '@/helpers/getLevelInfoByKey';
 import {DynamicBackground} from "@/components/BacgroudShapes";
 
 interface Gift {
@@ -44,7 +44,7 @@ type FilteredGifts = {
 }
 
 export const Inventory: FC = () => {
-  const {userInfo, userPoints, summarySpeed, isLoading} = useUserContext();
+  const {userInfo, userPoints, summarySpeed, isLoading, backgroundColorByKey} = useUserContext();
   const {setGifts} = useGiftContext();
   const initDataRaw = useSignal(_initDataRaw);
   const [localGifts, setLocalGifts] = useState<Gift[]>([]);
@@ -107,14 +107,11 @@ export const Inventory: FC = () => {
 
 
   const [levelTitle, setLevelTitle] = useState<string>('')
-  const [backgroundColorByKey, setBackgroundColorByKey] = useState<string[]>([])
 
   useEffect(() => {
     if (!userInfo.level) return
 
     setUserInfoLevel(userInfo.level)
-    const backgroundColorByKey = getPageBackgroundColorByKey(userInfo.level)
-    if (backgroundColorByKey) setBackgroundColorByKey(backgroundColorByKey)
 
     const levelTitle = getLevelTitleByKey(userInfo.level)
     if (levelTitle) setLevelTitle(levelTitle)
