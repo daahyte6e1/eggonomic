@@ -1,6 +1,6 @@
 import { List } from '@telegram-apps/telegram-ui';
 import type { FC } from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate, useNavigate } from 'react-router-dom';
 
 import { Page } from '@/components/Page.tsx';
 import { useGiftContext } from '@/context/GiftContext.tsx';
@@ -9,9 +9,10 @@ import './GiftDetail.scss'
 import Lottie from 'lottie-react';
 import {TonCoin} from '@/components/Icons';
 import {useEffect, useState} from 'react';
-import {createErrorNotification, createSuccessNotification, createTransaction} from '@/helpers';
+import {APIManager, createErrorNotification, createSuccessNotification, createTransaction} from '@/helpers';
 import {useTonConnectUI} from '@tonconnect/ui-react';
 import {useNotifications} from '@/context/NotificationContext';
+import {useUserContext} from "@/context/UserContext";
 
 interface LottieData {
   [key: string]: unknown;
@@ -21,7 +22,9 @@ export const GiftDetail: FC = () => {
   const { addNotification } = useNotifications()
   const { giftId } = useParams<{ giftId: string }>();
   const { getGiftById } = useGiftContext();
-  
+  const {userInfo} = useUserContext()
+  const navigate = useNavigate();
+
   const [isLottieLoaded, setIsLottieLoaded] = useState(false);
   const [isLottieLoading, setIsLottieLoading] = useState(false);
   const [lottieData, setLottieData] = useState<LottieData | null>(null);
@@ -62,8 +65,23 @@ export const GiftDetail: FC = () => {
     }
   }
 
+  const stakeManager = async () => {
+    try {
+      const jsondata = JSON.stringify({ gift_id: giftId })
+      const res = await APIManager.post('/eggs/api/stake_manage', jsondata, userInfo.key)
+      if (res.result) {
+        navigate('/inventory')
+      }
+    } catch (error) {
+
+    }
+  }
+
   const handleWithdrawal = () => {
     void withdrawal();
+  };
+  const handleStake = () => {
+    void stakeManager();
   };
 
   if (!gift) {
@@ -137,10 +155,15 @@ export const GiftDetail: FC = () => {
             </div>
           </div>
 
-          <div onClick={handleWithdrawal}  className='button-block'>
-            <div className='button'>
+          <div>{JSON.stringify(gift)}</div>
+          <div className='button-block'>
+            <div onClick={handleWithdrawal} className='button'>
               Вывести
             </div>
+
+            {gift.stakeable && <div onClick={handleStake} className='button'>
+              {!gift.staked ? 'Stake' : 'Unstake'}
+            </div>}
           </div>
         </div>
       </List>
