@@ -1,4 +1,4 @@
-// import { APIManager } from '@/helpers';
+import { APIManager } from '@/helpers';
 import { KEY_BY_LEVEL } from '@/helpers';
 import {UserInfo} from '@/types';
 
@@ -16,29 +16,20 @@ export interface UserServiceResponse {
 
 export class UserService {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  static initializeUser(_initDataRaw: string): Promise<UserInfo> {
+  static async initializeUser(initDataRaw: string): Promise<UserInfo> {
     try {
-      // const jsondata = JSON.stringify({ initData: initDataRaw });
-      // const res = await APIManager.post<UserServiceResponse>('/eggs/api/initdata', jsondata);
-      //
-      // if (!res || !res.result || !res.user_info) throw new Error(res?.show_msg || 'Invalid response from server');
+      const jsondata = JSON.stringify({ initData: initDataRaw });
+      const res = await APIManager.post<UserServiceResponse>('/eggs/api/initdata', jsondata);
 
-      const res = {
-        "result": true,
-        "show_msg": "",
-        "user_info": {
-          "key": "SqsjveiLNrx5sAntpwPqxP3roywtUrUgZq6zQRQIgsQ8CXyvN6zH",
-          "uid": "900008774",
-          level: 4
-        }
-      }
+      if (!res || !res.result || !res.user_info) throw new Error(res?.show_msg || 'Invalid response from server');
+
       const levelKey = KEY_BY_LEVEL[res.user_info.level as keyof typeof KEY_BY_LEVEL]
 
       const result: UserInfo = {
         uid: res.user_info.uid,
         key: res.user_info.key,
         level: levelKey,
-        // uf_wallet_address: res.uf_wallet_address || '',
+        uf_wallet_address: res.uf_wallet_address || '',
       };
 
       return Promise.resolve(result);

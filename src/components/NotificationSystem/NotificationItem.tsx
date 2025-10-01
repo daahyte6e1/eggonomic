@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useNotifications } from '@/context/NotificationContext'
 import type { Notification } from '@/context/NotificationContext'
 
@@ -6,35 +6,32 @@ interface NotificationItemProps {
   notification: Notification
 }
 
-
-
-const typeIcons = {
-  success: '✓',
-  error: '✕',
-  warning: '⚠',
-  info: 'ℹ'
-}
-
 export function NotificationItem({ notification }: NotificationItemProps) {
   const { removeNotification } = useNotifications()
   const [isVisible, setIsVisible] = useState(false)
+  const removeNotificationRef = useRef(removeNotification)
+
+  // Обновляем ref при изменении removeNotification
+  useEffect(() => {
+    removeNotificationRef.current = removeNotification
+  }, [removeNotification])
 
   useEffect(() => {
     setIsVisible(true)
-    
+
     if (notification.duration) {
       const timer = setTimeout(() => {
         setIsVisible(false)
-        setTimeout(() => removeNotification(notification.id), 300)
+        setTimeout(() => removeNotificationRef.current(notification.id), 300)
       }, notification.duration)
-      
+
       return () => clearTimeout(timer)
     }
-  }, [notification.duration, notification.id, removeNotification])
+  }, [notification.duration, notification.id]) // Убрали removeNotification из зависимостей
 
   const handleClose = () => {
     setIsVisible(false)
-    setTimeout(() => removeNotification(notification.id), 300)
+    setTimeout(() => removeNotificationRef.current(notification.id), 300)
   }
 
   return (
@@ -47,9 +44,6 @@ export function NotificationItem({ notification }: NotificationItemProps) {
     >
       <div className='notification-content'>
         <div className='notification-main'>
-          <div className='notification-icon'>
-            {typeIcons[notification.type]}
-          </div>
           <div className='notification-text'>
             <h4 className='notification-title'>{notification.title}</h4>
             <p className='notification-message'>{notification.message}</p>

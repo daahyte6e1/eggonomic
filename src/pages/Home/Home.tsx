@@ -9,6 +9,7 @@ import { MenuBlock } from '@/components/MenuBlock/MenuBlock';
 import { ActivePositions } from '@/components/ActivePositions/ActivePositions';
 import { AvailablePositions } from '@/components/AvailablePositions';
 import { BackgroundShapes} from '@/components/BacgroudShapes';
+import { CountdownTimer } from '@/components/CountdownTimer';
 import './Home.css'
 import {useUserContext} from '@/context/UserContext';
 import {useEffect} from 'react';
@@ -16,7 +17,7 @@ import {useTonConnectUI, type ConnectedWallet} from "@tonconnect/ui-react";
 import { APIManager } from '@/helpers/APIManager';
 
 export const Home: FC = () => {
-  const {userInfo, isLoading, backgroundColorByKey} = useUserContext()
+  const {userInfo, isLoading, backgroundColorByKey, isAuthenticated} = useUserContext()
   const [tonConnectUI] = useTonConnectUI();
   
   useEffect(() => {
@@ -29,15 +30,32 @@ export const Home: FC = () => {
 
     tonConnectUI.onStatusChange(handleWalletChange)
   }, [tonConnectUI, userInfo.key])
+
+  // Проверяем, есть ли данные пользователя
+  const hasUserData = isAuthenticated && userInfo.uid && userInfo.key;
+
   return (
     <Page back={false}>
       <List className='home-page page'>
         <BackgroundShapes className={isLoading ? 'loading' : ''} colors={backgroundColorByKey}/>
         <WalletBlock />
-        <BalanceBlock />
-        <MenuBlock />
-        <ActivePositions />
-        <AvailablePositions />
+        {hasUserData ? (
+          <>
+            <BalanceBlock />
+            <MenuBlock />
+            <ActivePositions />
+            <AvailablePositions />
+          </>
+        ) : (
+          <CountdownTimer 
+            targetDate="2025-10-11"
+            targetTimeString="00:00:00"
+            onComplete={() => {
+              // Можно добавить логику при завершении таймера
+              console.log('Таймер завершен');
+            }}
+          />
+        )}
       </List>
     </Page>
   );

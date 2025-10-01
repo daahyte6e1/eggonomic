@@ -130,22 +130,22 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
         level: userData.level
       });
 
-              const stakesResponse = await APIManager.get<StakesResponse>('/eggs/api/load_stakes', userData.key);
-        if (stakesResponse.result) {
-          if (stakesResponse.stake_points_count !== undefined) {
-            setUserPointsState(stakesResponse.stake_points_count);
-          }
-          if (stakesResponse.nfts) {
-            setNftsData(stakesResponse.nfts);
-          }
+      const stakesResponse = await APIManager.get<StakesResponse>('/eggs/api/load_stakes', userData.key);
+      if (stakesResponse.result) {
+        if (stakesResponse.stake_points_count !== undefined) {
+          setUserPointsState(stakesResponse.stake_points_count);
         }
-        
-        const availableNFTsResponse = await APIManager.get<LoadNFTsResponse>('/eggs/api/load_nfts', userData.key);
-        if (availableNFTsResponse.result && availableNFTsResponse.nfts) {
-          setAvailableNFTs(availableNFTsResponse.nfts);
+        if (stakesResponse.nfts) {
+          setNftsData(stakesResponse.nfts);
         }
+      }
 
-        await loadReferralInfo();
+      const availableNFTsResponse = await APIManager.get<LoadNFTsResponse>('/eggs/api/load_nfts', userData.key);
+      if (availableNFTsResponse.result && availableNFTsResponse.nfts) {
+        setAvailableNFTs(availableNFTsResponse.nfts);
+      }
+
+      await loadReferralInfo();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Ошибка инициализации пользователя';
       setError(errorMessage);

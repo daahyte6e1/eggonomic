@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, ReactNode } from 'react'
+import { createContext, useContext, useReducer, ReactNode, useCallback } from 'react'
 
 export interface Notification {
   id: string
@@ -79,21 +79,21 @@ const NotificationContext = createContext<NotificationContextType | undefined>(u
 export function NotificationProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(notificationReducer, initialState)
 
-  const addNotification = (notification: Omit<Notification, 'id' | 'createdAt'>) => {
+  const addNotification = useCallback((notification: Omit<Notification, 'id' | 'createdAt'>) => {
     dispatch({ type: 'ADD_NOTIFICATION', payload: notification })
-  }
+  }, [])
 
-  const removeNotification = (id: string) => {
+  const removeNotification = useCallback((id: string) => {
     dispatch({ type: 'REMOVE_NOTIFICATION', payload: id })
-  }
+  }, [])
 
-  const clearAllNotifications = () => {
+  const clearAllNotifications = useCallback(() => {
     dispatch({ type: 'CLEAR_ALL_NOTIFICATIONS' })
-  }
+  }, [])
 
-  const removeExpiredNotifications = () => {
+  const removeExpiredNotifications = useCallback(() => {
     dispatch({ type: 'REMOVE_EXPIRED_NOTIFICATIONS' })
-  }
+  }, [])
 
   const value: NotificationContextType = {
     notifications: state.notifications,
