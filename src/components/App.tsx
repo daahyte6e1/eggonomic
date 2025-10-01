@@ -24,8 +24,8 @@ export function App() {
     const mobilePlatformList = ['android', 'ios']
     if (!mobilePlatformList.includes(lp.tgWebAppPlatform)) return
 
-    requestFullscreen();
-  }, [])
+    void requestFullscreen();
+  }, [lp.tgWebAppPlatform])
 
   return (
     <AppRoot

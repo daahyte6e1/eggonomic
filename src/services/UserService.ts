@@ -15,7 +15,7 @@ export interface UserServiceResponse {
 
 
 export class UserService {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   static async initializeUser(initDataRaw: string): Promise<UserInfo> {
     try {
       const jsondata = JSON.stringify({ initData: initDataRaw });

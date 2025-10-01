@@ -52,7 +52,6 @@ export const Home: FC = () => {
             targetTimeString="00:00:00"
             onComplete={() => {
               // Можно добавить логику при завершении таймера
-              console.log('Таймер завершен');
             }}
           />
         )}

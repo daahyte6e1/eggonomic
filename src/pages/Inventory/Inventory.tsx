@@ -73,14 +73,14 @@ export const Inventory: FC = () => {
         setGifts(giftsData);
         updateFilteredData(giftsData)
       } catch {
-        console.error('Fail to fetch')
+        // Ошибка уже обработана в UserService
       } finally {
         setLocalLoader(false)
       }
     }
 
     void fetchInventory();
-  }, [initDataRaw, userInfo.key]);
+  }, [initDataRaw, userInfo.key, setGifts]);
 
   const handleSearch = (searchText: string) => {
     if (!searchText.trim()) {

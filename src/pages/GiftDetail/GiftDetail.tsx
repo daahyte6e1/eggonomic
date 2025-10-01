@@ -17,6 +17,9 @@ import {useUserContext} from "@/context/UserContext";
 interface LottieData {
   [key: string]: unknown;
 }
+interface Result {
+  result: boolean
+}
 export const GiftDetail: FC = () => {
   const [tonConnectUI] = useTonConnectUI();
   const { addNotification } = useNotifications()
@@ -68,12 +71,12 @@ export const GiftDetail: FC = () => {
   const stakeManager = async () => {
     try {
       const jsondata = JSON.stringify({ gift_id: giftId })
-      const res = await APIManager.post('/eggs/api/stake_manage', jsondata, userInfo.key)
+      const res: Result = await APIManager.post('/eggs/api/stake_manage', jsondata, userInfo.key)
       if (res.result) {
         navigate('/inventory')
       }
-    } catch (error) {
-
+    } catch {
+      // Ошибка уже обработана в UserService
     }
   }
 

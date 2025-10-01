@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import './CountdownTimer.scss';
 
 interface CountdownTimerProps {
@@ -54,7 +54,7 @@ export const CountdownTimer: FC<CountdownTimerProps> = ({
   }>({ hours: 0, minutes: 0, seconds: 0 });
 
   // Функция для вычисления целевого времени
-  const getTargetTimestamp = (): number => {
+  const getTargetTimestamp = useCallback((): number => {
     // Если передан готовый timestamp, используем его
     if (targetTime) {
       return targetTime;
@@ -78,7 +78,7 @@ export const CountdownTimer: FC<CountdownTimerProps> = ({
 
     // По умолчанию - 24 часа от текущего момента
     return Date.now() + 24 * 60 * 60 * 1000;
-  };
+  }, [targetTime, targetDate, targetTimeString]);
 
   // Обновляем ref при изменении onComplete
   useEffect(() => {
@@ -127,7 +127,7 @@ export const CountdownTimer: FC<CountdownTimerProps> = ({
     const timer = setInterval(calculateTimeLeft, 1000);
 
     return () => clearInterval(timer);
-  }, [targetTime, targetDate, targetTimeString]); // Все параметры времени в зависимостях
+  }, [targetTime, targetDate, targetTimeString, getTargetTimestamp]); // Все параметры времени в зависимостях
 
   const formatTime = (value: number): string => {
     return value.toString().padStart(2, '0');
