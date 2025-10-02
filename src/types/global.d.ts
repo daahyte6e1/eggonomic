@@ -1,7 +1,4 @@
-interface TonConnectUI {
-  // Add specific properties as needed
-  [key: string]: unknown;
-}
+import {TonConnectUI} from "@tonconnect/ui-react";
 
 interface StarsSwapWidget {
   init: (config: { partnerUid: string }) => void;
