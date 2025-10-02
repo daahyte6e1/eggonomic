@@ -135,9 +135,6 @@ export const CountdownTimer: FC<CountdownTimerProps> = ({
 
   return (
     <div className="countdown-timer content column">
-      <div className="timer-title">
-        Ожидание данных пользователя
-      </div>
       <div className="timer-display">
         <div className="time-unit">
           <span className="time-value">{formatTime(timeLeft.hours)}</span>
@@ -154,8 +151,14 @@ export const CountdownTimer: FC<CountdownTimerProps> = ({
           <span className="time-label">сек</span>
         </div>
       </div>
-      <div className="timer-description">
-        Данные пользователя загружаются...
+
+      <div>
+        <div className="timer-title">
+          Stars Swap — Public Beta (7 days)
+        </div>
+        <div className="timer-description">
+          Help us battle-test the new swap widget.
+        </div>
       </div>
     </div>
   );
