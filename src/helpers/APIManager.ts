@@ -66,10 +66,7 @@ export class APIManager {
       const result = await response.json() as unknown;
       return result as T;
     } catch (error) {
-      if (error instanceof Error) {
-        throw error;
-      }
-      throw new Error('Unknown error occurred');
+      console.error('Unknown error occurred:', error);
     }
   }
 

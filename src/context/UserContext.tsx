@@ -147,9 +147,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
 
       await loadReferralInfo();
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Ошибка инициализации пользователя';
-      setError(errorMessage);
-      throw error;
+      console.error('User init error: ', error)
     } finally {
       setIsLoading(false);
     }
@@ -161,7 +159,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
 
   const loadUserData = useCallback(async () => {
     if (!userInfo.key) {
-      setError('Невозможно загрузить данные: ключ пользователя недоступен');
+      console.error('No key in ', userInfo)
       return;
     }
 
@@ -179,9 +177,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
 
       await loadReferralInfo();
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Ошибка загрузки данных';
-      setError(errorMessage);
-      throw error;
+      console.error(error)
     }
   }, [userInfo.key, loadReferralInfo]);
 

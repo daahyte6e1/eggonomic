@@ -58,8 +58,8 @@ export const SingleLevel: FC = () => {
         await initializeUser(initDataRaw)
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Что то пошло не так!'
-      addNotification(createErrorNotification('Ошибка!', errorMessage))
+      console.error('Update level error: ', error)
+      addNotification(createErrorNotification('Ошибка!', 'Что то пошло не так!'))
     }
   }
 
