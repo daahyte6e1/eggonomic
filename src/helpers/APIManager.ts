@@ -67,6 +67,7 @@ export class APIManager {
       return result as T;
     } catch (error) {
       console.error('Unknown error occurred:', error);
+      throw error;
     }
   }
 

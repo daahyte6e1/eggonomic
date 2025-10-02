@@ -122,6 +122,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
       setError(null);
       
       const userData = await UserService.initializeUser(initDataRaw);
+      if (!userData) return
 
       setUserInfoState({
         uid: userData.uid,

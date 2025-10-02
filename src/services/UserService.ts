@@ -15,7 +15,7 @@ export interface UserServiceResponse {
 
 
 export class UserService {
-  static async initializeUser(initDataRaw: string): Promise<UserInfo> {
+  static async initializeUser(initDataRaw: string): Promise<UserInfo | null> {
     try {
       const jsondata = JSON.stringify({ initData: initDataRaw });
       const res = await APIManager.post<UserServiceResponse>('/eggs/api/initdata', jsondata);
@@ -34,6 +34,7 @@ export class UserService {
       return Promise.resolve(result);
     } catch (error) {
       console.error('Error sending init data:', error);
+      return null
     }
   }
 }
