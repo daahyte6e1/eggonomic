@@ -32,7 +32,7 @@ export const MenuBlock: FC<{isDemo?: boolean}> = ({isDemo = false}) => {
   useEffect(() => {
     // Загружаем скрипт виджета
     const script = document.createElement('script')
-    script.src = 'https://stars-swap.vercel.app/stars-swap-widget.umd.js'
+    script.src = `https://stars-swap.vercel.app/stars-swap-widget.umd.js?time=${Date.now()}`
     script.onload = () => {
       if (window.StarsSwapWidget) {
         window.StarsSwapWidget.init({
@@ -44,7 +44,7 @@ export const MenuBlock: FC<{isDemo?: boolean}> = ({isDemo = false}) => {
 
     const link = document.createElement('link')
     link.rel = 'stylesheet'
-    link.href = 'https://stars-swap.vercel.app/stars-swap.css'
+    link.href = `https://stars-swap.vercel.app/stars-swap.css?time=${Date.now()}`
     document.head.appendChild(link)
   }, [])
   const openWidget = () => {
