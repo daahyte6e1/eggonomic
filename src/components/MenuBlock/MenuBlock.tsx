@@ -77,10 +77,11 @@ export const MenuBlock: FC<{isDemo?: boolean}> = ({isDemo = false}) => {
               <span className='menu-text'>Referrals</span>
             </Link>
           </>)}
-      <Link to='/inventory' className='card column'>
-        <Inventory />
+      {userInfo.key && (
+        <Link to='/inventory' className='card column'>
+        <Inventory/>
         <span className='menu-text'>Inventory</span>
-      </Link>
+      </Link>)}
     </div>
   );
 };
