@@ -147,8 +147,8 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
       }
 
       await loadReferralInfo();
-    } catch (error) {
-      console.error('User init error: ', error)
+    } catch {
+      setError('Failed to initialize user');
     } finally {
       setIsLoading(false);
     }
@@ -160,7 +160,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
 
   const loadUserData = useCallback(async () => {
     if (!userInfo.key) {
-      console.error('No key in ', userInfo)
+      setError('No authentication key available');
       return;
     }
 
@@ -177,10 +177,10 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
       }
 
       await loadReferralInfo();
-    } catch (error) {
-      console.error(error)
+    } catch {
+      setError('Failed to load user data');
     }
-  }, [userInfo.key, loadReferralInfo]);
+  }, [userInfo, loadReferralInfo]);
 
   useEffect(() => {
     const summarySpeed = nftsData.reduce((acc, nft) => {

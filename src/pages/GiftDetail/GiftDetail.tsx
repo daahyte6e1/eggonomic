@@ -62,8 +62,8 @@ export const GiftDetail: FC = () => {
       await createTransaction(tonConnectUI, 0.2, `refund${gift?.telegram_gift_id}`)
       addNotification(createSuccessNotification('Success!', 'The gift will be displayed after moderation.'))
     } catch (error) {
-      console.error('On withdrawal error: ', error)
-      if (error.message.includes('Transaction was not sent')) {
+      // Withdrawal error handled below
+      if (error instanceof Error && error.message.includes('Transaction was not sent')) {
         addNotification(createErrorNotification('Error!', 'Transaction was not sent!'))
         return
       }

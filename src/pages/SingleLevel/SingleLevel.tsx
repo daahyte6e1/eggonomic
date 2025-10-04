@@ -57,8 +57,8 @@ export const SingleLevel: FC = () => {
       if (initDataRaw) {
         await initializeUser(initDataRaw)
       }
-    } catch (error) {
-      console.error('Update level error: ', error)
+    } catch {
+      // Update level error handled below
       addNotification(createErrorNotification('Error!', 'Something went wrong!'))
     }
   }
