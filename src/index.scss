@@ -5,6 +5,10 @@ body {
   margin: 0;
   padding-top: calc(var(--tg-viewport-safe-area-inset-top) + 30px);
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+
+  *, :after, :before, ::backdrop {
+    box-sizing: unset;
+  }
 }
 .tgui-cfed40fe81d34ad5 {
   padding: 0;
@@ -64,7 +68,4 @@ body {
   100% {
     background-position: 200% 0;
   }
-}
-*, :after, :before, ::backdrop {
-  box-sizing: unset;
 }
