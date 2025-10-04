@@ -18,7 +18,7 @@ export function App() {
   useEffect(() => {
     if (!error) return
 
-    addNotification(createErrorNotification('Ошибка!', error))
+    addNotification(createErrorNotification('Error!', error))
   }, [error, addNotification])
   useEffect(() => {
     const mobilePlatformList = ['android', 'ios']

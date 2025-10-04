@@ -52,14 +52,14 @@ export const SingleLevel: FC = () => {
   const createTransactionHandler = async (price: number, key: string) => {
     try {
       await createTransaction(tonConnectUI, price, key)
-      addNotification(createSuccessNotification('Успех!', 'Данные будут обновлены после модерации.'))
+      addNotification(createSuccessNotification('Success!', 'The data will be updated after moderation..'))
 
       if (initDataRaw) {
         await initializeUser(initDataRaw)
       }
     } catch (error) {
       console.error('Update level error: ', error)
-      addNotification(createErrorNotification('Ошибка!', 'Что то пошло не так!'))
+      addNotification(createErrorNotification('Error!', 'Something went wrong!'))
     }
   }
 

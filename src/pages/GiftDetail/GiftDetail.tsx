@@ -47,7 +47,6 @@ export const GiftDetail: FC = () => {
           })
           .catch(() => {
             setIsLottieLoading(false);
-            addNotification(createErrorNotification('Ошибка!', 'Ошибка загрузки!'))
           });
       }
     }
@@ -61,10 +60,14 @@ export const GiftDetail: FC = () => {
   const withdrawal = async () => {
     try {
       await createTransaction(tonConnectUI, 0.2, `refund${gift?.telegram_gift_id}`)
-      addNotification(createSuccessNotification('Успех!', 'Подарок будет выведен после модерации.'))
+      addNotification(createSuccessNotification('Success!', 'The gift will be displayed after moderation.'))
     } catch (error) {
       console.error('On withdrawal error: ', error)
-      addNotification(createErrorNotification('Ошибка!', 'Что то пошло не так!'))
+      if (error.message.includes('Transaction was not sent')) {
+        addNotification(createErrorNotification('Error!', 'Transaction was not sent!'))
+        return
+      }
+      addNotification(createErrorNotification('Error!', 'Something went wrong!'))
     }
   }
 
@@ -124,7 +127,7 @@ export const GiftDetail: FC = () => {
             </div>
             <div className='flex withdrawal'>
               <div className='card column'>
-                <span>Комиссия за вывод:</span>
+                <span>Withdrawal fee:</span>
                 <div> 0.2 <TonCoin /> </div>
               </div>
             </div>
@@ -132,7 +135,7 @@ export const GiftDetail: FC = () => {
               <div className='column table'>
                 <div className='item row'>
                 <span className='title'>
-                  Модель
+                  Model
                 </span>
                   <span className='description'>
                   {gift.telegram_gift_model} ({gift.telegram_gift_model_rare}%)
@@ -140,7 +143,7 @@ export const GiftDetail: FC = () => {
                 </div>
                 <div className='item row'>
                 <span className='title'>
-                  Фон
+                  Background
                 </span>
                   <span className='description'>
                   {gift.telegram_gift_backdrop} ({gift.telegram_gift_backdrop_rare}%)
@@ -148,7 +151,7 @@ export const GiftDetail: FC = () => {
                 </div>
                 <div className='item row'>
                 <span className='title'>
-                  Узор
+                  Symbol
                 </span>
                   <span className='description'>
                   {gift.telegram_gift_symbol} ({gift.telegram_gift_symbol_rare}%)
@@ -161,7 +164,7 @@ export const GiftDetail: FC = () => {
           <div>{JSON.stringify(gift)}</div>
           <div className='button-block'>
             <div onClick={handleWithdrawal} className='button'>
-              Вывести
+              Withdraw
             </div>
 
             {gift.stakeable && <div onClick={handleStake} className='button'>

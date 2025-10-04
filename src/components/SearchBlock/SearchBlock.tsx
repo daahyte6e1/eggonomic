@@ -24,7 +24,7 @@ export const SearchBlock: FC<SearchBlockProps> = ({ onSearch, isLoading = false 
         <SearchIcon />
         <input
           type='text'
-          placeholder='Поиск подарков в Инвентаре'
+          placeholder='Searching for gifts in Inventory'
           value={searchText}
           onChange={handleInputChange}
           className='search-input'

@@ -10,7 +10,7 @@ export const WalletBlock: FC = () => {
       <div className='card row'>
         <div className='row wallet-info'>
           <Coin />
-          <span className='wallet'>Кошелек</span>
+          <span className='wallet'>Wallet</span>
         </div>
 
         <div className='wallet-connect'>

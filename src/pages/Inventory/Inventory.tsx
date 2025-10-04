@@ -120,6 +120,7 @@ export const Inventory: FC = () => {
 
   const hasNotStakedGifts = Boolean(filteredGifts.notStaked.length)
 
+  const isDemo = true
   return (
     <Page back={true}>
       <List className='inventory-page page'>
@@ -138,13 +139,24 @@ export const Inventory: FC = () => {
                   {formatNumber(userPoints)}
                   <Coin height='17' width='16'/>
                 </div>
-                <Link to='/level' className={`level ${userInfoLevel}`}>
-                  {levelTitle}
-                  <Arrow/>
-                </Link>
+                { isDemo
+                  ? (
+                    <div className={`level ${userInfoLevel}`}>
+                      {levelTitle}
+                      <Arrow/>
+                    </div>
+                  )
+                  : (
+                    <Link to='/level' className={`level ${userInfoLevel}`}>
+                      {levelTitle}
+                      <Arrow/>
+                    </Link>
+                  )
+                }
+
                 <div className='staked-block'>
-                  <span> Добыча в час: </span>
-                  <span>{summarySpeed} <Coin width='9' height='10'/> </span>
+                  <span> Production per hour: </span>
+                  <span className="summary-block">{summarySpeed} <Coin width='9' height='10'/> </span>
                 </div>
               </div>
               <div className='gifts-grid'>
@@ -159,8 +171,8 @@ export const Inventory: FC = () => {
                     Профиль
                   </div>
                   <div className='staked-block'>
-                    <span> Добыча в час: </span>
-                    <span> Неактивно </span>
+                    <span> Production per hour:: </span>
+                    <span> Inactive </span>
                   </div>
                 </div>
                 <div className='gifts-grid'>

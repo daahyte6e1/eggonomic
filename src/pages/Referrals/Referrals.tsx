@@ -29,9 +29,9 @@ export const Referrals: FC = () => {
       if (!navigator || !navigator.clipboard) return
 
       void navigator.clipboard.writeText(refLink);
-      addNotification(createSuccessNotification('Успех!', 'Ссылка успешно скопирована!'))
+      addNotification(createSuccessNotification('Success!', 'The link was copied successfully.!'))
     } catch {
-      addNotification(createErrorNotification('Ошибка!', 'Ошибка при копировании. Скопируйте в ручную ссылку.'))
+      addNotification(createErrorNotification('Error!', 'Copy error. Please copy the link manually..'))
     }
   }
   const closeModal = () => {
